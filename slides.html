@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Alexander Kondratskiy" />
+  <meta name="date" content="2013-05-15" />
+  <title>Haskell Amuse Bouche</title>
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+    href="http://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <script src="http://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js.gz"
+    charset="utf-8" type="text/javascript"></script>
+</head>
+<body>
+<div class="slide titlepage">
+  <h1 class="title">Haskell Intro</h1>
+  <p class="author">Alexander Kondratskiy<br/><code>kholdstare0.0﹫gmail·com</code><br/>
+  </p>
+  <p class="date">2013-05-15</p>
+</div>
+<div class="section slide level1" id="substitution">
+<h1 id="substitution">Substitution</h1>
+<p>Lets's evaluate <code>mySum</code> on a small list, by following substitution rules</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- mySum []     = 0</span>
+<span class="co">-- mySum (x:xs) = x + (mySum xs)</span>
+mySum [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
+mySum <span class="dv">1</span><span class="fu">:</span>[<span class="dv">2</span>,<span class="dv">3</span>]
+<span class="dv">1</span> <span class="fu">+</span> (mySum [<span class="dv">2</span>,<span class="dv">3</span>])
+<span class="dv">1</span> <span class="fu">+</span> (mySum <span class="dv">2</span><span class="fu">:</span>[<span class="dv">3</span>])
+<span class="dv">1</span> <span class="fu">+</span> ( <span class="dv">2</span> <span class="fu">+</span> (mySum [<span class="dv">3</span>]))
+<span class="dv">1</span> <span class="fu">+</span> ( <span class="dv">2</span> <span class="fu">+</span> (mySum <span class="dv">3</span><span class="fu">:</span>[]))
+<span class="dv">1</span> <span class="fu">+</span> ( <span class="dv">2</span> <span class="fu">+</span> ( <span class="dv">3</span> <span class="fu">+</span> (mySum [])))
+<span class="dv">1</span> <span class="fu">+</span> ( <span class="dv">2</span> <span class="fu">+</span> ( <span class="dv">3</span> <span class="fu">+</span> (<span class="dv">0</span>)))
+<span class="dv">1</span> <span class="fu">+</span> ( <span class="dv">2</span> <span class="fu">+</span> ( <span class="dv">3</span> ))
+<span class="dv">1</span> <span class="fu">+</span> ( <span class="dv">5</span> )
+<span class="dv">6</span></code></pre>
+<p>Inefficient: requires O(n) space!</p>
+</div>
+<div class="section slide level1" id="tail-recursion">
+<h1 id="tail-recursion">Tail Recursion</h1>
+<p>Can we use O(1) space? Let's use tail recursion to implement a new sum function:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- Takes an accumulator as first argument</span>
+<span class="ot">mySum&#39; ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> <span class="dt">Int</span>
+mySum&#39; acc []     <span class="fu">=</span> acc
+mySum&#39; acc (x<span class="fu">:</span>xs) <span class="fu">=</span> mySum&#39; (acc<span class="fu">+</span>x) xs
+<span class="co">-- ^ add the head of the list to the accumulator</span></code></pre>
+</div>
+<div class="section slide level1" id="tail-recursion-1">
+<h1 id="tail-recursion-1">Tail Recursion</h1>
+<p>To see why this takes constant space, let's use substitution rules:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- mySum&#39; acc []     = acc</span>
+<span class="co">-- mySum&#39; acc (x:xs) = mySum&#39; (acc+x) xs</span>
+mySum&#39; <span class="dv">0</span>     [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
+mySum&#39; <span class="dv">0</span>     <span class="dv">1</span><span class="fu">:</span>[<span class="dv">2</span>,<span class="dv">3</span>]
+mySum&#39; (<span class="dv">0+1</span>) [<span class="dv">2</span>,<span class="dv">3</span>]
+mySum&#39; <span class="dv">1</span>     <span class="dv">2</span><span class="fu">:</span>[<span class="dv">3</span>]
+mySum&#39; (<span class="dv">1+2</span>) [<span class="dv">3</span>]
+mySum&#39; <span class="dv">3</span>     <span class="dv">3</span><span class="fu">:</span>[]
+mySum&#39; (<span class="dv">3+3</span>) []
+mySum&#39; <span class="dv">6</span>     []
+<span class="dv">6</span></code></pre>
+<p>This is equivalent to a flat loop in an imperative language</p>
+</div>
+</body>
+</html>

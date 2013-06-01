@@ -102,3 +102,8 @@ mySum' 6     []
 ~~~~
 
 This is equivalent to a flat loop in an imperative language.
+
+# WIP Benefits of Lazy Evaluation
+
+* Allows heavy reuse of code
+* Give example of filtering a list

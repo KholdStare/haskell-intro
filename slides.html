@@ -21,6 +21,78 @@
   </p>
   <p class="date">2013-05-15</p>
 </div>
+<div class="section slide level1" id="haskell">
+<h1 id="haskell">Haskell</h1>
+<blockquote>
+Haskell is a purely functional, statically typed programming langauge, with non-strict evaluation.
+</blockquote>
+
+<p>WAT</p>
+</div>
+<div class="section slide level1" id="haskell-1">
+<h1 id="haskell-1">Haskell</h1>
+<ul>
+<li>Purely functional
+<ul>
+<li>Pure - no side effects!</li>
+<li>Functional - functions are first-class values!</li>
+</ul></li>
+<li>Statically typed
+<ul>
+<li>Rich type system</li>
+<li>Inference engine</li>
+<li>Type polymorphism, Kinds, Kind Polmorphism</li>
+</ul></li>
+<li>Non-strict evaluation
+<ul>
+<li>A.k.a. lazy evaluation</li>
+</ul></li>
+</ul>
+</div>
+<div class="section slide level1" id="pure">
+<h1 id="pure">Pure</h1>
+<ul>
+<li>No side effects within functions
+<ul>
+<li>No mutation or implicit state - everything is immutable</li>
+<li>No IO</li>
+<li>No global state</li>
+</ul></li>
+<li>Functions are referentially transparent
+<ul>
+<li>Repeatable results</li>
+<li>Great for testing</li>
+</ul></li>
+<li>Allows for pervasive sharing
+<ul>
+<li>If everything immutable, no worry about mutation</li>
+<li>Concurrency/Parallelism is trivial</li>
+</ul></li>
+</ul>
+</div>
+<div class="section slide level1" id="pure-1">
+<h1 id="pure-1">Pure</h1>
+<ul>
+<li>Some intuition: Excel Spreadsheet
+<ul>
+<li>User-specified cells are inputs</li>
+<li>Formula cells are outputs</li>
+<li>Cells are not updated as state by Excel</li>
+<li>Can be made easily Parallel</li>
+</ul></li>
+</ul>
+</div>
+<div class="section slide level1" id="functional">
+<h1 id="functional">Functional</h1>
+<ul>
+<li>Functions are first-class values
+<ul>
+<li>Can be passed around</li>
+<li>Can be defined inline (lambda functions)</li>
+</ul></li>
+<li>Higher-order functions</li>
+</ul>
+</div>
 <div class="section slide level1" id="substitution">
 <h1 id="substitution">Substitution</h1>
 <p>Lets's evaluate <code>mySum</code> on a small list, by following substitution rules</p>
@@ -47,6 +119,10 @@ mySum <span class="dv">1</span><span class="fu">:</span>[<span class="dv">2</spa
 mySum&#39; acc []     <span class="fu">=</span> acc
 mySum&#39; acc (x<span class="fu">:</span>xs) <span class="fu">=</span> mySum&#39; (acc<span class="fu">+</span>x) xs
 <span class="co">-- ^ add the head of the list to the accumulator</span></code></pre>
+<ul>
+<li>No computation to be done after recursive call</li>
+<li>Essentially replace the current context with recursive call</li>
+</ul>
 </div>
 <div class="section slide level1" id="tail-recursion-1">
 <h1 id="tail-recursion-1">Tail Recursion</h1>
@@ -62,7 +138,7 @@ mySum&#39; <span class="dv">3</span>     <span class="dv">3</span><span class="f
 mySum&#39; (<span class="dv">3+3</span>) []
 mySum&#39; <span class="dv">6</span>     []
 <span class="dv">6</span></code></pre>
-<p>This is equivalent to a flat loop in an imperative language</p>
+<p>This is equivalent to a flat loop in an imperative language.</p>
 </div>
 </body>
 </html>

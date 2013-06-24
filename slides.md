@@ -1,3 +1,29 @@
+# Haskell - Why?
+
+<blockquote>
+“The most disastrous thing that you can ever learn is your first programming language.”
+― Alan Kay (pioneer in OOP)
+</blockquote>
+
+* First programming language shapes habits, limits thinking
+    * Overuse of `new` in C++ coming from Java
+    * Indexed `for` loops in Python coming from C
+* Obstructs idiomatic code in other langauges
+* What to do?
+
+# Haskell - Why?
+
+* Way to idiomatic code
+    * Read books of experts
+    * Read code of experts
+    * Or...
+
+# Haskell - Why?
+
+* Try something radically different.
+* Try something where nothing you know even applies.
+* Try Haskell.
+
 # Haskell
 
 <blockquote>

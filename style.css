@@ -1,16 +1,35 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400);
 body {
-  font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
+  background-color: #C5C5C5;
 }
 
 div.slide h1 {
+  font-weight: bold;
   background-color: #454545;
   color: #fff;
   padding: 0.5em 1em;
+
+  -webkit-box-shadow:   0px 1px 9px 1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow:      0px 1px 9px 1px rgba(0, 0, 0, 0.5);
+  box-shadow:           0px 1px 9px 1px rgba(0, 0, 0, 0.5);
+
+  /* hmm doent work */
+  background-repeat: no-repeat
+  background-position: center right 
+  background-image: url(http://www.haskell.org/wikiupload/4/4a/HaskellLogoStyPreview-1.png) 
 }
+
+img {
+  max-width: 350px;
+  max-height: 200px;
+}
+
 div.slide h1, div.slide.titlepage h1 {
   margin-right: -20px;
   margin-left: -20px;
 }
+
 h1 code {
   color: #cbe3ff;
   font-weight: bold;

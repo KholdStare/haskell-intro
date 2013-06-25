@@ -7,7 +7,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="author" content="Alexander Kondratskiy" />
   <meta name="date" content="2013-05-15" />
-  <title>Haskell Amuse Bouche</title>
+  <title>Haskell Intro</title>
   <link rel="stylesheet" type="text/css" media="screen, projection, print"
     href="http://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
   <link rel="stylesheet" type="text/css" href="style.css" />
@@ -33,7 +33,7 @@
 <li>Overuse of <code>new</code> in C++ coming from Java</li>
 <li>Indexed <code>for</code> loops in Python coming from C</li>
 </ul></li>
-<li>Obstructs idiomatic code in other langauges</li>
+<li>Obstructs idiomatic code in other languages</li>
 <li>What to do?</li>
 </ul>
 </div>
@@ -47,6 +47,7 @@
 <li>Or...</li>
 </ul></li>
 </ul>
+<p>TODO: Pictures books, github</p>
 </div>
 <div class="section slide level1" id="haskell---why-2">
 <h1 id="haskell---why-2">Haskell - Why?</h1>
@@ -55,11 +56,14 @@
 <li>Try something where nothing you know even applies.</li>
 <li>Try Haskell.</li>
 </ul>
+<div class="figure">
+<img src="images/HaskellLogo.jpg" /><p class="caption"></p>
+</div>
 </div>
 <div class="section slide level1" id="haskell">
 <h1 id="haskell">Haskell</h1>
 <blockquote>
-Haskell is a purely functional, statically typed programming langauge, with non-strict evaluation.
+Haskell is a purely functional, statically typed programming language, with non-strict evaluation.
 </blockquote>
 
 <p>WAT</p>
@@ -76,7 +80,7 @@ Haskell is a purely functional, statically typed programming langauge, with non-
 <ul>
 <li>Rich type system</li>
 <li>Inference engine</li>
-<li>Type polymorphism, Kinds, Kind Polmorphism</li>
+<li>Type polymorphism, Kinds, Kind Polymorphism</li>
 </ul></li>
 <li>Non-strict evaluation
 <ul>
@@ -87,6 +91,7 @@ Haskell is a purely functional, statically typed programming langauge, with non-
 <div class="section slide level1" id="pure">
 <h1 id="pure">Pure</h1>
 <ul>
+<li>Functions are functions in the mathematical sense</li>
 <li>No side effects within functions
 <ul>
 <li>No mutation or implicit state - everything is immutable</li>
@@ -113,7 +118,7 @@ Haskell is a purely functional, statically typed programming langauge, with non-
 <li>User-specified cells are inputs</li>
 <li>Formula cells are outputs</li>
 <li>Cells are not updated as state by Excel</li>
-<li>Can be made easily Parallel</li>
+<li>Can be easily parallelized</li>
 </ul></li>
 </ul>
 </div>
@@ -128,9 +133,37 @@ Haskell is a purely functional, statically typed programming langauge, with non-
 <li>Higher-order functions</li>
 </ul>
 </div>
+<div class="section slide level1" id="functional-1">
+<h1 id="functional-1">Functional</h1>
+<ul>
+<li>Limited intuition in imperative languages:
+<ul>
+<li><code>q_sort</code> from C</li>
+</ul></li>
+</ul>
+<p>TODO: put code</p>
+</div>
+<div class="section slide level1" id="lazy">
+<h1 id="lazy">Lazy</h1>
+<ul>
+<li>Lazy by default</li>
+<li>Evaluates values when they are needed</li>
+<li>Some intuition:
+<ul>
+<li>Short circuiting of boolean expressions</li>
+</ul></li>
+</ul>
+<p>TODO: put code</p>
+</div>
+<div class="section slide level1" id="summing-a-list">
+<h1 id="summing-a-list">Summing a list</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">mySum ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> <span class="dt">Int</span>
+mySum []     <span class="fu">=</span> <span class="dv">0</span>
+mySum (x<span class="fu">:</span>xs) <span class="fu">=</span> x <span class="fu">+</span> (mySum xs)</code></pre>
+</div>
 <div class="section slide level1" id="substitution">
 <h1 id="substitution">Substitution</h1>
-<p>Lets's evaluate <code>mySum</code> on a small list, by following substitution rules</p>
+<p>Let's evaluate <code>mySum</code> on a small list, by following substitution rules</p>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- mySum []     = 0</span>
 <span class="co">-- mySum (x:xs) = x + (mySum xs)</span>
 mySum [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
@@ -180,6 +213,19 @@ mySum&#39; <span class="dv">6</span>     []
 <ul>
 <li>Allows heavy reuse of code</li>
 <li>Give example of filtering a list</li>
+<li>fold, map, filter</li>
+</ul>
+</div>
+<div class="section slide level1" id="outline-of-topics">
+<h1 id="outline-of-topics">Outline of topics</h1>
+<p>Need some kind of goal</p>
+<ul>
+<li>Value assignments</li>
+<li>Add/subtract</li>
+<li>Types</li>
+<li>Lists</li>
+<li>Strings</li>
+<li>Functions</li>
 </ul>
 </div>
 </body>

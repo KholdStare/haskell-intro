@@ -8,7 +8,7 @@
 * First programming language shapes habits, limits thinking
     * Overuse of `new` in C++ coming from Java
     * Indexed `for` loops in Python coming from C
-* Obstructs idiomatic code in other langauges
+* Obstructs idiomatic code in other languages
 * What to do?
 
 # Haskell - Why?
@@ -18,16 +18,20 @@
     * Read code of experts
     * Or...
 
+TODO: Pictures books, github
+
 # Haskell - Why?
 
 * Try something radically different.
 * Try something where nothing you know even applies.
 * Try Haskell.
 
+![](images/HaskellLogo.jpg)
+
 # Haskell
 
 <blockquote>
-Haskell is a purely functional, statically typed programming langauge, with non-strict evaluation.
+Haskell is a purely functional, statically typed programming language, with non-strict evaluation.
 </blockquote>
 
 WAT
@@ -40,12 +44,13 @@ WAT
 * Statically typed
     * Rich type system
     * Inference engine
-    * Type polymorphism, Kinds, Kind Polmorphism
+    * Type polymorphism, Kinds, Kind Polymorphism
 * Non-strict evaluation
     * A.k.a. lazy evaluation
 
 # Pure
 
+* Functions are functions in the mathematical sense
 * No side effects within functions
     * No mutation or implicit state - everything is immutable
     * No IO
@@ -63,7 +68,7 @@ WAT
     * User-specified cells are inputs
     * Formula cells are outputs
     * Cells are not updated as state by Excel
-    * Can be made easily Parallel
+    * Can be easily parallelized
 
 # Functional
 
@@ -72,9 +77,33 @@ WAT
     * Can be defined inline (lambda functions)
 * Higher-order functions
 
+# Functional
+
+* Limited intuition in imperative languages:
+    * `q_sort` from C
+
+TODO: put code
+
+# Lazy
+
+* Lazy by default
+* Evaluates values when they are needed
+* Some intuition:
+    * Short circuiting of boolean expressions
+
+TODO: put code
+
+# Summing a list
+
+~~~~ {.haskell}
+mySum :: [Int] -> Int
+mySum []     = 0
+mySum (x:xs) = x + (mySum xs)
+~~~~
+
 # Substitution
 
-Lets's evaluate `mySum` on a small list, by following substitution rules
+Let's evaluate `mySum` on a small list, by following substitution rules
 
 ~~~~ {.haskell}
 -- mySum []     = 0
@@ -133,3 +162,16 @@ This is equivalent to a flat loop in an imperative language.
 
 * Allows heavy reuse of code
 * Give example of filtering a list
+* fold, map, filter
+
+# Outline of topics
+
+Need some kind of goal
+
+* Value assignments
+* Add/subtract
+* Types
+* Lists
+* Strings
+* Functions
+

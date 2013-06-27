@@ -175,3 +175,10 @@ Need some kind of goal
 * Strings
 * Functions
 
+# Ideas for small programs
+
+* converting bank hex files to single binary file
+* `Data.Text.Lazy.Read`
+* `Data.Bytestring`
+* `Data.Vector` ?
+* `transpose`

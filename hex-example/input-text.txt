@@ -1,0 +1,1 @@
+Haskell is a purely functional, statically typed programming language, with non-strict evaluation. 

@@ -17,12 +17,6 @@ enumerate = Prelude.zip [0..]
 -- | its hex code. One per line
 {-toHexDump :: Text -> Text-}
 
-doubleComp ::  (a -> (d -> e)) -> (b -> a) -> (b -> (d -> e))
-doubleComp f g a b = f (g a) b
-
-comp :: (b -> c) -> (a -> b) -> (a -> c)
-comp f g a = f (g a)
-
 -- | Given a basename, and a list of texts,
 -- | write each one out to <basename><N>.<suffix>
 dumpToBankFiles :: FilePath -> String -> [Text] -> IO ()

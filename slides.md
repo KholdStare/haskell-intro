@@ -93,6 +93,12 @@ TODO: put code
 
 TODO: put code
 
+# Haskell Philosophy
+
+* "What" rather than "How"
+* Data flow is king
+* Keep things pure
+
 # Summing a list
 
 ~~~~ {.haskell}
@@ -178,7 +184,3 @@ Need some kind of goal
 # Ideas for small programs
 
 * converting bank hex files to single binary file
-* `Data.Text.Lazy.Read`
-* `Data.Bytestring`
-* `Data.Vector` ?
-* `transpose`

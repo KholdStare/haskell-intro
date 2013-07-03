@@ -79,7 +79,7 @@ code.sourceCode span.dv { color: #e5786d; }
 code.sourceCode span.bn { color: #40a070; }
 code.sourceCode span.fl { color: #40a070; }
 code.sourceCode span.ch { color: #4070a0; }
-code.sourceCode span.st { color: #4070a0; }
+code.sourceCode span.st { color: #e5786d; }
 code.sourceCode span.co { color: #99968b; font-style: italic; }
 /*code.sourceCode span.ot { color: #007020; }*/
 code.sourceCode span.al { color: red; font-weight: bold; }
@@ -117,7 +117,6 @@ code.sourceCode span.er { color: red; font-weight: bold; }
 .panel {
     color: lighten($txtColor, 15%);
     background: $panelBackgroundColor;
-    border: solid 1px $borderColor;
     @include small-border-radius;
     @include single-box-shadow(rgba(0, 0, 0, 0.8), 0px, 1px, 4px, 0px);
     //overflow: hidden;

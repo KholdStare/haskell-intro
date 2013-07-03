@@ -164,11 +164,69 @@ mySum' 6     []
 
 This is equivalent to a flat loop in an imperative language.
 
-# WIP Benefits of Lazy Evaluation
+# Reusability
 
-* Allows heavy reuse of code
-* Give example of filtering a list
-* fold, map, filter
+* Our `mySum` function works great for adding a list of numbers
+* Can we make it more generic?
+* What we want are `Monoid`s
+
+# Typeclasses
+
+* Haskell has various interesting typeclasses:
+    * Monoids, Functors, Applicatives, Monads
+* Each one destills some essense of composability
+
+# The Monoid
+
+* The Monoid is the simplest typeclass
+* It decribes how to append two values of a datatype together
+
+<blockquote>
+"In abstract algebra, a __monoid__ is an algebraic structure with a single __associative binary operation__ and an __identity element__."
+― Wikipedia
+</blockquote>
+
+~~~~ {.haskell}
+class Monoid a where
+    mempty :: a             -- identity
+    mappend :: a -> a -> a  -- binary operation
+
+-- Rules:  (not checked, but assumed in usage)
+mappend a mempty = a      -- identity
+mappend a b = mappend b a -- associativity
+~~~~
+
+# The Monoid
+
+* You know lots of __Monoids__!
+
+~~~~ {.haskell}
+instance Monoid String where
+    mempty = ""            -- empty string is identity
+    mappend a b = a ++ b   -- binary op is string concatenation
+
+instance Monoid Int where
+    mempty = 0
+    mappend a b = a + b
+
+instance Monoid (Set a) where
+    mempty = empty
+    mappend s1 s2 = s1 `union` s2
+~~~~
+
+# `mconcat`
+
+* With a `Monoid` instance we get `mconcat` for free
+
+~~~~ {.haskell}
+-- Accumulate a value from a list, using mappend
+mconcat :: (Monoid m) => [m] -> m
+~~~~
+
+* Can use it to sum numbers or concatenate a list of strings!
+* Union a list of Sets!
+* Join ethernet packets!
+* Combine Databases!
 
 # Outline of topics
 
@@ -184,3 +242,9 @@ Need some kind of goal
 # Ideas for small programs
 
 * converting bank hex files to single binary file
+
+# WIP Benefits of Lazy Evaluation
+
+* Allows heavy reuse of code
+* Give example of filtering a list
+* fold, map, filter

@@ -155,6 +155,14 @@ Haskell is a purely functional, statically typed programming language, with non-
 </ul>
 <p>TODO: put code</p>
 </div>
+<div class="section slide level1" id="haskell-philosophy">
+<h1 id="haskell-philosophy">Haskell Philosophy</h1>
+<ul>
+<li>&quot;What&quot; rather than &quot;How&quot;</li>
+<li>Data flow is king</li>
+<li>Keep things pure</li>
+</ul>
+</div>
 <div class="section slide level1" id="summing-a-list">
 <h1 id="summing-a-list">Summing a list</h1>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">mySum ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> <span class="dt">Int</span>
@@ -208,12 +216,71 @@ mySum&#39; <span class="dv">6</span>     []
 <span class="dv">6</span></code></pre>
 <p>This is equivalent to a flat loop in an imperative language.</p>
 </div>
-<div class="section slide level1" id="wip-benefits-of-lazy-evaluation">
-<h1 id="wip-benefits-of-lazy-evaluation">WIP Benefits of Lazy Evaluation</h1>
+<div class="section slide level1" id="reusability">
+<h1 id="reusability">Reusability</h1>
 <ul>
-<li>Allows heavy reuse of code</li>
-<li>Give example of filtering a list</li>
-<li>fold, map, filter</li>
+<li>Our <code>mySum</code> function works great for adding a list of numbers</li>
+<li>Can we make it more generic?</li>
+<li>What we want are <code>Monoid</code>s</li>
+</ul>
+</div>
+<div class="section slide level1" id="typeclasses">
+<h1 id="typeclasses">Typeclasses</h1>
+<ul>
+<li>Haskell has various interesting typeclasses:
+<ul>
+<li>Monoids, Functors, Applicatives, Monads</li>
+</ul></li>
+<li>Each one destills some essense of composability</li>
+</ul>
+</div>
+<div class="section slide level1" id="the-monoid">
+<h1 id="the-monoid">The Monoid</h1>
+<ul>
+<li>The Monoid is the simplest typeclass</li>
+<li>It decribes how to append two values of a datatype together</li>
+</ul>
+<blockquote>
+&quot;In abstract algebra, a <strong>monoid</strong> is an algebraic structure with a single <strong>associative binary operation</strong> and an <strong>identity element</strong>.&quot; ― Wikipedia
+</blockquote>
+
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="dt">Monoid</span> a <span class="kw">where</span>
+<span class="ot">    mempty ::</span> a             <span class="co">-- identity</span>
+<span class="ot">    mappend ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a  <span class="co">-- binary operation</span>
+
+<span class="co">-- Rules:  (not checked, but assumed in usage)</span>
+mappend a mempty <span class="fu">=</span> a      <span class="co">-- identity</span>
+mappend a b <span class="fu">=</span> mappend b a <span class="co">-- associativity</span></code></pre>
+</div>
+<div class="section slide level1" id="the-monoid-1">
+<h1 id="the-monoid-1">The Monoid</h1>
+<ul>
+<li>You know lots of <strong>Monoids</strong>!</li>
+</ul>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Monoid</span> <span class="dt">String</span> <span class="kw">where</span>
+    mempty <span class="fu">=</span> <span class="st">&quot;&quot;</span>            <span class="co">-- empty string is identity</span>
+    mappend a b <span class="fu">=</span> a <span class="fu">++</span> b   <span class="co">-- binary op is string concatenation</span>
+
+<span class="kw">instance</span> <span class="dt">Monoid</span> <span class="dt">Int</span> <span class="kw">where</span>
+    mempty <span class="fu">=</span> <span class="dv">0</span>
+    mappend a b <span class="fu">=</span> a <span class="fu">+</span> b
+
+<span class="kw">instance</span> <span class="dt">Monoid</span> (<span class="dt">Set</span> a) <span class="kw">where</span>
+    mempty <span class="fu">=</span> empty
+    mappend s1 s2 <span class="fu">=</span> s1 <span class="ot">`union`</span> s2</code></pre>
+</div>
+<div class="section slide level1" id="mconcat">
+<h1 id="mconcat"><code>mconcat</code></h1>
+<ul>
+<li>With a <code>Monoid</code> instance we get <code>mconcat</code> for free</li>
+</ul>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- Accumulate a value from a list, using mappend</span>
+<span class="ot">mconcat ::</span> (<span class="dt">Monoid</span> m) <span class="ot">=&gt;</span> [m] <span class="ot">-&gt;</span> m</code></pre>
+<ul>
+<li>Can use it to sum numbers or concatenate a list of strings!</li>
+<li>Union a list of Sets!</li>
+<li>Join ethernet packets!</li>
+<li>Combine Databases!</li>
 </ul>
 </div>
 <div class="section slide level1" id="outline-of-topics">
@@ -226,6 +293,20 @@ mySum&#39; <span class="dv">6</span>     []
 <li>Lists</li>
 <li>Strings</li>
 <li>Functions</li>
+</ul>
+</div>
+<div class="section slide level1" id="ideas-for-small-programs">
+<h1 id="ideas-for-small-programs">Ideas for small programs</h1>
+<ul>
+<li>converting bank hex files to single binary file</li>
+</ul>
+</div>
+<div class="section slide level1" id="wip-benefits-of-lazy-evaluation">
+<h1 id="wip-benefits-of-lazy-evaluation">WIP Benefits of Lazy Evaluation</h1>
+<ul>
+<li>Allows heavy reuse of code</li>
+<li>Give example of filtering a list</li>
+<li>fold, map, filter</li>
 </ul>
 </div>
 </body>

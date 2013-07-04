@@ -216,8 +216,27 @@ mySum&#39; <span class="dv">6</span>     []
 <span class="dv">6</span></code></pre>
 <p>This is equivalent to a flat loop in an imperative language.</p>
 </div>
+<div class="section slide level1" id="tail-recursion-2">
+<h1 id="tail-recursion-2">Tail Recursion</h1>
+<ul>
+<li>Let's encapsulate this accumulator implementation</li>
+<li>Use <code>where</code> for scoped definitions</li>
+</ul>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">mySum ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> <span class="dt">Int</span>
+<span class="co">-- call implementation with 0 accumulator</span>
+mySum xs <span class="fu">=</span> mySum&#39; <span class="dv">0</span>   xs
+     <span class="kw">where</span> mySum&#39; acc []     <span class="fu">=</span> acc
+           mySum&#39; acc (x<span class="fu">:</span>xs) <span class="fu">=</span> mySum&#39; (acc<span class="fu">+</span>x) xs</code></pre>
+</div>
 <div class="section slide level1" id="reusability">
 <h1 id="reusability">Reusability</h1>
+<ul>
+<li>TODO: make generic for float etc.</li>
+<li>TODO: &quot;ask&quot; compiler</li>
+</ul>
+</div>
+<div class="section slide level1" id="reusability-1">
+<h1 id="reusability-1">Reusability</h1>
 <ul>
 <li>Our <code>mySum</code> function works great for adding a list of numbers</li>
 <li>Can we make it more generic?</li>
@@ -227,11 +246,55 @@ mySum&#39; <span class="dv">6</span>     []
 <div class="section slide level1" id="typeclasses">
 <h1 id="typeclasses">Typeclasses</h1>
 <ul>
+<li>Typeclasses allow you to attach behaviour onto existing data</li>
+</ul>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="kw">Num</span> a <span class="kw">where</span>
+<span class="ot">    (+) ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a
+<span class="ot">    (*) ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a
+<span class="ot">    (-) ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a
+<span class="ot">    negate ::</span> a <span class="ot">-&gt;</span> a
+<span class="ot">    abs ::</span> a <span class="ot">-&gt;</span> a</code></pre>
+<ul>
+<li>Anything can be treated as a number as long as it defines the above functions</li>
+</ul>
+</div>
+<div class="section slide level1" id="typeclasses-1">
+<h1 id="typeclasses-1">Typeclasses</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="kw">Eq</span> a <span class="kw">where</span>
+<span class="ot">    (==) ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+<span class="ot">    (/=) ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+
+<span class="kw">class</span> <span class="kw">Eq</span> a <span class="ot">=&gt;</span> <span class="kw">Ord</span> a <span class="kw">where</span>
+    <span class="co">-- minimal definition requires compare</span>
+    <span class="co">-- the rest are automatically defined in terms of it</span>
+<span class="ot">    compare ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Ordering</span>
+<span class="ot">    (&lt;)  ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+<span class="ot">    (&gt;=) ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+<span class="ot">    (&gt;)  ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+<span class="ot">    (&lt;=) ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+<span class="ot">    max  ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a
+<span class="ot">    min  ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a</code></pre>
+</div>
+<div class="section slide level1" id="typeclasses-2">
+<h1 id="typeclasses-2">Typeclasses</h1>
+<ul>
+<li>Typeclasses decouple behaviour and polymorphism from data.</li>
+<li>Wealth of reusable functions to be used</li>
+</ul>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">sort</span><span class="ot"> ::</span> <span class="kw">Ord</span> a <span class="ot">=&gt;</span> [a] <span class="ot">-&gt;</span> [a]
+<span class="fu">sort</span> <span class="st">&quot;Missisauga&quot;</span> <span class="fu">=</span> <span class="st">&quot;Maagiissssu&quot;</span>
+
+<span class="fu">group</span><span class="ot"> ::</span> <span class="kw">Eq</span> a <span class="ot">=&gt;</span> [a] <span class="ot">-&gt;</span> [[a]]
+<span class="fu">group</span> <span class="st">&quot;Missisauga&quot;</span> <span class="fu">=</span> [<span class="st">&quot;M&quot;</span>,<span class="st">&quot;i&quot;</span>,<span class="st">&quot;ss&quot;</span>,<span class="st">&quot;i&quot;</span>,<span class="st">&quot;ss&quot;</span>,<span class="st">&quot;a&quot;</span>,<span class="st">&quot;u&quot;</span>,<span class="st">&quot;g&quot;</span>,<span class="st">&quot;a&quot;</span>]</code></pre>
+</div>
+<div class="section slide level1" id="typeclasses-3">
+<h1 id="typeclasses-3">Typeclasses</h1>
+<ul>
 <li>Haskell has various interesting typeclasses:
 <ul>
 <li>Monoids, Functors, Applicatives, Monads</li>
 </ul></li>
-<li>Each one destills some essense of composability</li>
+<li>Each one distills some essense of composability TODO: doesn't mean anything ^</li>
 </ul>
 </div>
 <div class="section slide level1" id="the-monoid">
@@ -250,7 +313,7 @@ mySum&#39; <span class="dv">6</span>     []
 
 <span class="co">-- Rules:  (not checked, but assumed in usage)</span>
 mappend a mempty <span class="fu">=</span> a      <span class="co">-- identity</span>
-mappend a b <span class="fu">=</span> mappend b a <span class="co">-- associativity</span></code></pre>
+mappend a (mappend b c) <span class="fu">=</span> mappend (mappend a b) c <span class="co">-- associativity</span></code></pre>
 </div>
 <div class="section slide level1" id="the-monoid-1">
 <h1 id="the-monoid-1">The Monoid</h1>

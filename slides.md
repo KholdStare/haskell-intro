@@ -99,6 +99,18 @@ TODO: put code
 * Data flow is king
 * Keep things pure
 
+# Intro
+
+TODO: simple syntax breakdown
+
+# Lists
+
+TODO: lists
+
+# Reverse
+
+TODO: implement a reverse function?
+
 # Summing a list
 
 ~~~~ {.haskell}
@@ -164,6 +176,24 @@ mySum' 6     []
 
 This is equivalent to a flat loop in an imperative language.
 
+# Tail Recursion
+
+* Let's encapsulate this accumulator implementation
+* Use `where` for scoped definitions
+
+~~~~ {.haskell}
+mySum :: [Int] -> Int
+-- call implementation with 0 accumulator
+mySum xs = mySum' 0   xs
+     where mySum' acc []     = acc
+           mySum' acc (x:xs) = mySum' (acc+x) xs
+~~~~
+
+# Reusability
+
+* TODO: make generic for float etc.
+* TODO: "ask" compiler
+
 # Reusability
 
 * Our `mySum` function works great for adding a list of numbers
@@ -172,9 +202,57 @@ This is equivalent to a flat loop in an imperative language.
 
 # Typeclasses
 
+* Typeclasses allow you to attach behaviour onto existing data
+
+~~~~ {.haskell}
+class Num a where
+    (+) :: a -> a -> a
+    (*) :: a -> a -> a
+    (-) :: a -> a -> a
+    negate :: a -> a
+    abs :: a -> a
+~~~~
+
+* Anything can be treated as a number as long as it defines the above functions
+
+# Typeclasses
+
+~~~~ {.haskell}
+class Eq a where
+    (==) :: a -> a -> Bool
+    (/=) :: a -> a -> Bool
+
+class Eq a => Ord a where
+    -- minimal definition requires compare
+    -- the rest are automatically defined in terms of it
+    compare :: a -> a -> Ordering
+    (<)  :: a -> a -> Bool
+    (>=) :: a -> a -> Bool
+    (>)  :: a -> a -> Bool
+    (<=) :: a -> a -> Bool
+    max  :: a -> a -> a
+    min  :: a -> a -> a
+~~~~
+
+# Typeclasses
+
+* Typeclasses decouple behaviour and polymorphism from data.
+* Wealth of reusable functions to be used
+
+~~~~ {.haskell}
+sort :: Ord a => [a] -> [a]
+sort "Missisauga" = "Maagiissssu"
+
+group :: Eq a => [a] -> [[a]]
+group "Missisauga" = ["M","i","ss","i","ss","a","u","g","a"]
+~~~~
+
+# Typeclasses
+
 * Haskell has various interesting typeclasses:
     * Monoids, Functors, Applicatives, Monads
-* Each one destills some essense of composability
+* Each one distills some essense of composability
+TODO: doesn't mean anything ^
 
 # The Monoid
 
@@ -193,7 +271,7 @@ class Monoid a where
 
 -- Rules:  (not checked, but assumed in usage)
 mappend a mempty = a      -- identity
-mappend a b = mappend b a -- associativity
+mappend a (mappend b c) = mappend (mappend a b) c -- associativity
 ~~~~
 
 # The Monoid

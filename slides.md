@@ -34,7 +34,13 @@ TODO: Pictures books, github
 Haskell is a purely functional, statically typed programming language, with non-strict evaluation.
 </blockquote>
 
-WAT
+# Haskell
+
+<blockquote>
+Haskell is a purely functional, statically typed programming language, with non-strict evaluation.
+</blockquote>
+
+**_WAT_**
 
 # Haskell
 
@@ -50,11 +56,14 @@ WAT
 
 # Pure
 
-* Functions are functions in the mathematical sense
+* Functions are functions in the _mathematical_ sense
 * No side effects within functions
     * No mutation or implicit state - everything is immutable
     * No IO
     * No global state
+
+# Pure
+
 * Functions are referentially transparent
     * Repeatable results
     * Great for testing
@@ -126,30 +135,31 @@ Let's evaluate `mySum` on a small list, by following substitution rules
 ~~~~ {.haskell}
 -- mySum []     = 0
 -- mySum (x:xs) = x + (mySum xs)
-mySum [1,2,3]
-mySum 1:[2,3]
-1 + (mySum [2,3])
-1 + (mySum 2:[3])
-1 + ( 2 + (mySum [3]))
-1 + ( 2 + (mySum 3:[]))
-1 + ( 2 + ( 3 + (mySum [])))
-1 + ( 2 + ( 3 + (0)))
-1 + ( 2 + ( 3 ))
-1 + ( 5 )
-6
+  mySum [1,2,3]
+= mySum 1:[2,3]
+= 1 + (mySum [2,3])
+= 1 + (mySum 2:[3])
+= 1 + ( 2 + (mySum [3]))
+= 1 + ( 2 + (mySum 3:[]))
+= 1 + ( 2 + ( 3 + (mySum [])))
+= 1 + ( 2 + ( 3 + (0)))
+= 1 + ( 2 + ( 3 ))
+= 1 + ( 5 )
+= 6
 ~~~~
 
 Inefficient: requires O(n) space!
 
 # Tail Recursion
 
-Can we use O(1) space? Let's use tail recursion to implement a new sum function:
+* Can we use O(1) space?
+* Use tail recursion to implement a new sum function:
 
 ~~~~ {.haskell}
 -- Takes an accumulator as first argument
 mySum' :: Int -> [Int] -> Int
 mySum' acc []     = acc
-mySum' acc (x:xs) = mySum' (acc+x) xs
+mySum' acc (x:xs) = mySum' (acc + x) xs
 -- ^ add the head of the list to the accumulator
 ~~~~
 
@@ -162,16 +172,16 @@ To see why this takes constant space, let's use substitution rules:
 
 ~~~~ {.haskell}
 -- mySum' acc []     = acc
--- mySum' acc (x:xs) = mySum' (acc+x) xs
-mySum' 0     [1,2,3]
-mySum' 0     1:[2,3]
-mySum' (0+1) [2,3]
-mySum' 1     2:[3]
-mySum' (1+2) [3]
-mySum' 3     3:[]
-mySum' (3+3) []
-mySum' 6     []
-6
+-- mySum' acc (x:xs) = mySum' (acc + x) xs
+  mySum' 0     [1,2,3]
+= mySum' 0     1:[2,3]
+= mySum' (0+1) [2,3]
+= mySum' 1     2:[3]
+= mySum' (1+2) [3]
+= mySum' 3     3:[]
+= mySum' (3+3) []
+= mySum' 6     []
+= 6
 ~~~~
 
 This is equivalent to a flat loop in an imperative language.
@@ -186,25 +196,130 @@ mySum :: [Int] -> Int
 -- call implementation with 0 accumulator
 mySum xs = mySum' 0   xs
      where mySum' acc []     = acc
-           mySum' acc (x:xs) = mySum' (acc+x) xs
+           mySum' acc (x:xs) = mySum' (acc + x) xs
 ~~~~
 
-# Reusability
+# Towards Reusability
 
-* TODO: make generic for float etc.
-* TODO: "ask" compiler
+* The type signature of `mySum` is quite restrictive
+* We may want to sum
+    * `Float`s
+    * `Double`s
+    * `Complex` numbers
+* Can we make it generic?
 
-# Reusability
+# Type Inference
+
+* The compiler can infer types
+* We can neglect type signatures
+
+~~~~ {.haskell}
+-- Compiles without type signature!
+mySum xs = mySum' 0   xs
+     where mySum' acc []     = acc
+           mySum' acc (x:xs) = mySum' (acc + x) xs
+~~~~
+
+* And ask the compiler what it thinks:
+
+~~~~ {.haskell}
+-- Query the type in interpreter
+> :type mySum
+mySum :: Num a => [a] -> a
+~~~~
+
+# Type Inference - How?
+
+~~~~ {.haskell}
+--  Says "Type a has to be a Number"
+mySum :: Num a => [a] -> a
+mySum xs = mySum' 0   xs
+     where mySum' acc []     = acc
+           mySum' acc (x:xs) = mySum' (acc + x) xs
+--                the clue to the compiler ^
+~~~~
+
+* The compiler looks at what we have used:
+    * Elements combined with operator `+`
+* The "interface" that exposes `+` is `Num`
+* Therefore `mySum` can only be used on lists of `Num`s
+
+# Type Inference
+
+* Let's try on different types:
+
+~~~~ {.haskell}
+> mySum [1, 2, 3, 4, 5, 6, 7]
+28 :: Int
+
+> mySum [2.5, 3.5, 4.5, 5.5, 6.5, 7.5]
+30.0 :: Double
+~~~~
+
+# Type Inference - Benefits
+
+* Compiler infers most generic type
+* Genericity for free
+* Type annotations more useful to programmers than compiler
+
+## Abstracting loops
+
+* TODO
+* For loops very low level - no semantics
+* Transforming a list - `map`
+* Accumulating over a list - `fold`
+
+# Functions
+
+TODO: functions
+
+* Functions are first class values!
+    * Can be passed around
+    * Can be assigned
+    * Can be created
+
+# Functions - Passed Around
+
+* Accumulating over a list is abstracted as a "fold"
+
+~~~~ {.haskell}
+mySum xs = foldl' (+) 0 
+~~~~
+
+# Functions - Passed Around
+
+~~~~ {.haskell}
+map (toUpper) "lowercase text"
+~~~~
+
+# Functions - Assigned
+
+~~~~ {.haskell}
+stringToUpper = map (toUpper) 
+~~~~
+
+# Functions - Created
+
+~~~~ {.haskell}
+map (\x -> x * 2) [1, 2, 3, 4, 5]
+~~~~
+
+TODO: move after first "mySum" example ?
+
+# More Reusability?
 
 * Our `mySum` function works great for adding a list of numbers
-* Can we make it more generic?
-* What we want are `Monoid`s
+* But more types can be aggregated:
+    * e.g. `String`s
+* Can we capture this behaviour in an "interface"?
 
 # Typeclasses
 
-* Typeclasses allow you to attach behaviour onto existing data
+* Typeclasses are the "interfaces" of Haskell
+* Much more flexible and general
 
 ~~~~ {.haskell}
+-- The Num typeclass we saw before
 class Num a where
     (+) :: a -> a -> a
     (*) :: a -> a -> a
@@ -214,6 +329,24 @@ class Num a where
 ~~~~
 
 * Anything can be treated as a number as long as it defines the above functions
+
+# Typeclasses - Instances
+
+* Data can adhere to a typeclass by specifying an `instance`
+* Attach behaviour after the fact onto existing data
+
+~~~~ {.haskell}
+instance Num Int where
+    (+) = intSum  -- assuming intSum
+    (*) = intMult --          intMult
+    (-) = intSub  --          intSub are provided elsewhere
+    negate x =  0 - x
+    abs x = if x < 0
+            then negate x
+            else x
+~~~~
+
+TODO: needs knowledge of funcion assignment
 
 # Typeclasses
 
@@ -241,9 +374,11 @@ class Eq a => Ord a where
 
 ~~~~ {.haskell}
 sort :: Ord a => [a] -> [a]
+-- example:
 sort "Missisauga" = "Maagiissssu"
 
 group :: Eq a => [a] -> [[a]]
+-- example:
 group "Missisauga" = ["M","i","ss","i","ss","a","u","g","a"]
 ~~~~
 

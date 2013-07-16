@@ -1,4 +1,6 @@
-# Haskell - Why?
+# HASKELL
+
+## Haskell - Why?
 
 <blockquote>
 “The most disastrous thing that you can ever learn is your first programming language.”
@@ -11,7 +13,7 @@
 * Obstructs idiomatic code in other languages
 * What to do?
 
-# Haskell - Why?
+## Haskell - Why?
 
 * Way to idiomatic code
     * Read books of experts
@@ -20,7 +22,7 @@
 
 TODO: Pictures books, github
 
-# Haskell - Why?
+## Haskell - Why?
 
 * Try something radically different.
 * Try something where nothing you know even applies.
@@ -28,13 +30,13 @@ TODO: Pictures books, github
 
 ![](images/HaskellLogo.jpg)
 
-# Haskell
+## Haskell
 
 <blockquote>
 Haskell is a purely functional, statically typed programming language, with non-strict evaluation.
 </blockquote>
 
-# Haskell
+## Haskell
 
 <blockquote>
 Haskell is a purely functional, statically typed programming language, with non-strict evaluation.
@@ -42,7 +44,9 @@ Haskell is a purely functional, statically typed programming language, with non-
 
 **_WAT_**
 
-# Haskell
+# The Language
+
+## The Language
 
 * Purely functional
     * Pure - no side effects!
@@ -54,7 +58,7 @@ Haskell is a purely functional, statically typed programming language, with non-
 * Non-strict evaluation
     * A.k.a. lazy evaluation
 
-# Pure
+## Pure
 
 * Functions are functions in the _mathematical_ sense
 * No side effects within functions
@@ -62,7 +66,7 @@ Haskell is a purely functional, statically typed programming language, with non-
     * No IO
     * No global state
 
-# Pure
+## Pure
 
 * Functions are referentially transparent
     * Repeatable results
@@ -71,7 +75,7 @@ Haskell is a purely functional, statically typed programming language, with non-
     * If everything immutable, no worry about mutation
     * Concurrency/Parallelism is trivial
 
-# Pure
+## Pure
 
 * Some intuition: Excel Spreadsheet
     * User-specified cells are inputs
@@ -79,21 +83,24 @@ Haskell is a purely functional, statically typed programming language, with non-
     * Cells are not updated as state by Excel
     * Can be easily parallelized
 
-# Functional
+TODO: Excel picture
+
+## Functional
 
 * Functions are first-class values
     * Can be passed around
     * Can be defined inline (lambda functions)
 * Higher-order functions
+    * Functions that return new functions
 
-# Functional
+## Functional
 
 * Limited intuition in imperative languages:
     * `q_sort` from C
 
 TODO: put code
 
-# Lazy
+## Lazy
 
 * Lazy by default
 * Evaluates values when they are needed
@@ -102,25 +109,29 @@ TODO: put code
 
 TODO: put code
 
-# Haskell Philosophy
+## Haskell Philosophy
 
 * "What" rather than "How"
 * Data flow is king
 * Keep things pure
 
-# Intro
+# Syntax Intro
+
+## Intro
 
 TODO: simple syntax breakdown
 
-# Lists
+## Lists
 
 TODO: lists
 
-# Reverse
+## Reverse
 
 TODO: implement a reverse function?
 
-# Summing a list
+# Function Example
+
+## Summing a list
 
 ~~~~ {.haskell}
 mySum :: [Int] -> Int
@@ -128,7 +139,7 @@ mySum []     = 0
 mySum (x:xs) = x + (mySum xs)
 ~~~~
 
-# Substitution
+## Substitution
 
 Let's evaluate `mySum` on a small list, by following substitution rules
 
@@ -150,7 +161,7 @@ Let's evaluate `mySum` on a small list, by following substitution rules
 
 Inefficient: requires O(n) space!
 
-# Tail Recursion
+## Tail Recursion
 
 * Can we use O(1) space?
 * Use tail recursion to implement a new sum function:
@@ -166,7 +177,7 @@ mySum' acc (x:xs) = mySum' (acc + x) xs
 * No computation to be done after recursive call
 * Essentially replace the current context with recursive call
 
-# Tail Recursion
+## Tail Recursion
 
 To see why this takes constant space, let's use substitution rules:
 
@@ -186,7 +197,7 @@ To see why this takes constant space, let's use substitution rules:
 
 This is equivalent to a flat loop in an imperative language.
 
-# Tail Recursion
+## Tail Recursion
 
 * Let's encapsulate this accumulator implementation
 * Use `where` for scoped definitions
@@ -199,7 +210,7 @@ mySum xs = mySum' 0   xs
            mySum' acc (x:xs) = mySum' (acc + x) xs
 ~~~~
 
-# Towards Reusability
+## Towards Reusability
 
 * The type signature of `mySum` is quite restrictive
 * We may want to sum
@@ -209,6 +220,8 @@ mySum xs = mySum' 0   xs
 * Can we make it generic?
 
 # Type Inference
+
+## Type Inference
 
 * The compiler can infer types
 * We can neglect type signatures
@@ -228,7 +241,7 @@ mySum xs = mySum' 0   xs
 mySum :: Num a => [a] -> a
 ~~~~
 
-# Type Inference - How?
+## Type Inference - How?
 
 ~~~~ {.haskell}
 --  Says "Type a has to be a Number"
@@ -244,7 +257,7 @@ mySum xs = mySum' 0   xs
 * The "interface" that exposes `+` is `Num`
 * Therefore `mySum` can only be used on lists of `Num`s
 
-# Type Inference
+## Type Inference
 
 * Let's try on different types:
 
@@ -256,11 +269,13 @@ mySum xs = mySum' 0   xs
 30.0 :: Double
 ~~~~
 
-# Type Inference - Benefits
+## Type Inference - Benefits
 
 * Compiler infers most generic type
 * Genericity for free
 * Type annotations more useful to programmers than compiler
+
+# Abstracting loops
 
 ## Abstracting loops
 
@@ -269,7 +284,8 @@ mySum xs = mySum' 0   xs
 * Transforming a list - `map`
 * Accumulating over a list - `fold`
 
-# Functions
+
+## Functions
 
 TODO: functions
 
@@ -278,7 +294,7 @@ TODO: functions
     * Can be assigned
     * Can be created
 
-# Functions - Passed Around
+## Functions - Passed Around
 
 * Accumulating over a list is abstracted as a "fold"
 
@@ -286,19 +302,19 @@ TODO: functions
 mySum xs = foldl' (+) 0 
 ~~~~
 
-# Functions - Passed Around
+## Functions - Passed Around
 
 ~~~~ {.haskell}
 map (toUpper) "lowercase text"
 ~~~~
 
-# Functions - Assigned
+## Functions - Assigned
 
 ~~~~ {.haskell}
 stringToUpper = map (toUpper) 
 ~~~~
 
-# Functions - Created
+## Functions - Created
 
 ~~~~ {.haskell}
 map (\x -> x * 2) [1, 2, 3, 4, 5]
@@ -306,7 +322,7 @@ map (\x -> x * 2) [1, 2, 3, 4, 5]
 
 TODO: move after first "mySum" example ?
 
-# More Reusability?
+## More Reusability?
 
 * Our `mySum` function works great for adding a list of numbers
 * But more types can be aggregated:
@@ -314,6 +330,8 @@ TODO: move after first "mySum" example ?
 * Can we capture this behaviour in an "interface"?
 
 # Typeclasses
+
+## Typeclasses
 
 * Typeclasses are the "interfaces" of Haskell
 * Much more flexible and general
@@ -330,7 +348,7 @@ class Num a where
 
 * Anything can be treated as a number as long as it defines the above functions
 
-# Typeclasses - Instances
+## Typeclasses - Instances
 
 * Data can adhere to a typeclass by specifying an `instance`
 * Attach behaviour after the fact onto existing data
@@ -348,7 +366,7 @@ instance Num Int where
 
 TODO: needs knowledge of funcion assignment
 
-# Typeclasses
+## Typeclasses
 
 ~~~~ {.haskell}
 class Eq a where
@@ -367,7 +385,7 @@ class Eq a => Ord a where
     min  :: a -> a -> a
 ~~~~
 
-# Typeclasses
+## Typeclasses
 
 * Typeclasses decouple behaviour and polymorphism from data.
 * Wealth of reusable functions to be used
@@ -382,7 +400,7 @@ group :: Eq a => [a] -> [[a]]
 group "Missisauga" = ["M","i","ss","i","ss","a","u","g","a"]
 ~~~~
 
-# Typeclasses
+## Typeclasses
 
 * Haskell has various interesting typeclasses:
     * Monoids, Functors, Applicatives, Monads
@@ -390,6 +408,8 @@ group "Missisauga" = ["M","i","ss","i","ss","a","u","g","a"]
 TODO: doesn't mean anything ^
 
 # The Monoid
+
+## The Monoid
 
 * The Monoid is the simplest typeclass
 * It decribes how to append two values of a datatype together
@@ -409,7 +429,7 @@ mappend a mempty = a      -- identity
 mappend a (mappend b c) = mappend (mappend a b) c -- associativity
 ~~~~
 
-# The Monoid
+## The Monoid
 
 * You know lots of __Monoids__!
 
@@ -427,7 +447,7 @@ instance Monoid (Set a) where
     mappend s1 s2 = s1 `union` s2
 ~~~~
 
-# `mconcat`
+## `mconcat`
 
 * With a `Monoid` instance we get `mconcat` for free
 
@@ -441,7 +461,9 @@ mconcat :: (Monoid m) => [m] -> m
 * Join ethernet packets!
 * Combine Databases!
 
-# Outline of topics
+# Scrap
+
+## Outline of topics
 
 Need some kind of goal
 
@@ -452,11 +474,11 @@ Need some kind of goal
 * Strings
 * Functions
 
-# Ideas for small programs
+## Ideas for small programs
 
 * converting bank hex files to single binary file
 
-# WIP Benefits of Lazy Evaluation
+## WIP Benefits of Lazy Evaluation
 
 * Allows heavy reuse of code
 * Give example of filtering a list

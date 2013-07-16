@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Haskell Introduction</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Alexander Kondratskiy">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/moon.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/monokai_sublime.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+<section><section id="haskell" class="titleslide slide level1"><h1>HASKELL</h1></section><section id="haskell---why" class="slide level2">
+<h1>Haskell - Why?</h1>
+<blockquote>
+“The most disastrous thing that you can ever learn is your first programming language.” ― Alan Kay (pioneer in OOP)
+</blockquote>
+
+<ul>
+<li>First programming language shapes habits, limits thinking
+<ul>
+<li>Overuse of <code>new</code> in C++ coming from Java</li>
+<li>Indexed <code>for</code> loops in Python coming from C</li>
+</ul></li>
+<li>Obstructs idiomatic code in other languages</li>
+<li>What to do?</li>
+</ul>
+</section><section id="haskell---why-1" class="slide level2">
+<h1>Haskell - Why?</h1>
+<ul>
+<li>Way to idiomatic code
+<ul>
+<li>Read books of experts</li>
+<li>Read code of experts</li>
+<li>Or...</li>
+</ul></li>
+</ul>
+<p>TODO: Pictures books, github</p>
+</section><section id="haskell---why-2" class="slide level2">
+<h1>Haskell - Why?</h1>
+<ul>
+<li>Try something radically different.</li>
+<li>Try something where nothing you know even applies.</li>
+<li>Try Haskell.</li>
+</ul>
+<figure>
+<img src="../images/HaskellLogo.jpg" />
+</figure>
+</section><section id="haskell-1" class="slide level2">
+<h1>Haskell</h1>
+<blockquote>
+Haskell is a purely functional, statically typed programming language, with non-strict evaluation.
+</blockquote>
+
+</section><section id="haskell-2" class="slide level2">
+<h1>Haskell</h1>
+<blockquote>
+Haskell is a purely functional, statically typed programming language, with non-strict evaluation.
+</blockquote>
+
+<p><strong><em>WAT</em></strong></p>
+</section></section>
+<section><section id="the-language" class="titleslide slide level1"><h1>The Language</h1></section><section id="the-language-1" class="slide level2">
+<h1>The Language</h1>
+<ul>
+<li>Purely functional
+<ul>
+<li>Pure - no side effects!</li>
+<li>Functional - functions are first-class values!</li>
+</ul></li>
+<li>Statically typed
+<ul>
+<li>Rich type system</li>
+<li>Inference engine</li>
+<li>Type polymorphism, Kinds, Kind Polymorphism</li>
+</ul></li>
+<li>Non-strict evaluation
+<ul>
+<li>A.k.a. lazy evaluation</li>
+</ul></li>
+</ul>
+</section><section id="pure" class="slide level2">
+<h1>Pure</h1>
+<ul>
+<li>Functions are functions in the <em>mathematical</em> sense</li>
+<li>No side effects within functions
+<ul>
+<li>No mutation or implicit state - everything is immutable</li>
+<li>No IO</li>
+<li>No global state</li>
+</ul></li>
+</ul>
+</section><section id="pure-1" class="slide level2">
+<h1>Pure</h1>
+<ul>
+<li>Functions are referentially transparent
+<ul>
+<li>Repeatable results</li>
+<li>Great for testing</li>
+</ul></li>
+<li>Allows for pervasive sharing
+<ul>
+<li>If everything immutable, no worry about mutation</li>
+<li>Concurrency/Parallelism is trivial</li>
+</ul></li>
+</ul>
+</section><section id="pure-2" class="slide level2">
+<h1>Pure</h1>
+<ul>
+<li>Some intuition: Excel Spreadsheet
+<ul>
+<li>User-specified cells are inputs</li>
+<li>Formula cells are outputs</li>
+<li>Cells are not updated as state by Excel</li>
+<li>Can be easily parallelized</li>
+</ul></li>
+</ul>
+<p>TODO: Excel picture</p>
+</section><section id="functional" class="slide level2">
+<h1>Functional</h1>
+<ul>
+<li>Functions are first-class values
+<ul>
+<li>Can be passed around</li>
+<li>Can be defined inline (lambda functions)</li>
+</ul></li>
+<li>Higher-order functions
+<ul>
+<li>Functions that return new functions</li>
+</ul></li>
+</ul>
+</section><section id="functional-1" class="slide level2">
+<h1>Functional</h1>
+<ul>
+<li>Limited intuition in imperative languages:
+<ul>
+<li><code>q_sort</code> from C</li>
+</ul></li>
+</ul>
+<p>TODO: put code</p>
+</section><section id="lazy" class="slide level2">
+<h1>Lazy</h1>
+<ul>
+<li>Lazy by default</li>
+<li>Evaluates values when they are needed</li>
+<li>Some intuition:
+<ul>
+<li>Short circuiting of boolean expressions</li>
+</ul></li>
+</ul>
+<p>TODO: put code</p>
+</section><section id="haskell-philosophy" class="slide level2">
+<h1>Haskell Philosophy</h1>
+<ul>
+<li>&quot;What&quot; rather than &quot;How&quot;</li>
+<li>Data flow is king</li>
+<li>Keep things pure</li>
+</ul>
+</section></section>
+<section><section id="syntax-intro" class="titleslide slide level1"><h1>Syntax Intro</h1></section><section id="intro" class="slide level2">
+<h1>Intro</h1>
+<p>TODO: simple syntax breakdown</p>
+</section><section id="lists" class="slide level2">
+<h1>Lists</h1>
+<p>TODO: lists</p>
+</section><section id="reverse" class="slide level2">
+<h1>Reverse</h1>
+<p>TODO: implement a reverse function?</p>
+</section></section>
+<section><section id="function-example" class="titleslide slide level1"><h1>Function Example</h1></section><section id="summing-a-list" class="slide level2">
+<h1>Summing a list</h1>
+<pre class="haskell"><code>mySum :: [Int] -&gt; Int
+mySum []     = 0
+mySum (x:xs) = x + (mySum xs)</code></pre>
+</section><section id="substitution" class="slide level2">
+<h1>Substitution</h1>
+<p>Let's evaluate <code>mySum</code> on a small list, by following substitution rules</p>
+<pre class="haskell"><code>-- mySum []     = 0
+-- mySum (x:xs) = x + (mySum xs)
+  mySum [1,2,3]
+= mySum 1:[2,3]
+= 1 + (mySum [2,3])
+= 1 + (mySum 2:[3])
+= 1 + ( 2 + (mySum [3]))
+= 1 + ( 2 + (mySum 3:[]))
+= 1 + ( 2 + ( 3 + (mySum [])))
+= 1 + ( 2 + ( 3 + (0)))
+= 1 + ( 2 + ( 3 ))
+= 1 + ( 5 )
+= 6</code></pre>
+<p>Inefficient: requires O(n) space!</p>
+</section><section id="tail-recursion" class="slide level2">
+<h1>Tail Recursion</h1>
+<ul>
+<li>Can we use O(1) space?</li>
+<li>Use tail recursion to implement a new sum function:</li>
+</ul>
+<pre class="haskell"><code>-- Takes an accumulator as first argument
+mySum&#39; :: Int -&gt; [Int] -&gt; Int
+mySum&#39; acc []     = acc
+mySum&#39; acc (x:xs) = mySum&#39; (acc + x) xs
+-- ^ add the head of the list to the accumulator</code></pre>
+<ul>
+<li>No computation to be done after recursive call</li>
+<li>Essentially replace the current context with recursive call</li>
+</ul>
+</section><section id="tail-recursion-1" class="slide level2">
+<h1>Tail Recursion</h1>
+<p>To see why this takes constant space, let's use substitution rules:</p>
+<pre class="haskell"><code>-- mySum&#39; acc []     = acc
+-- mySum&#39; acc (x:xs) = mySum&#39; (acc + x) xs
+  mySum&#39; 0     [1,2,3]
+= mySum&#39; 0     1:[2,3]
+= mySum&#39; (0+1) [2,3]
+= mySum&#39; 1     2:[3]
+= mySum&#39; (1+2) [3]
+= mySum&#39; 3     3:[]
+= mySum&#39; (3+3) []
+= mySum&#39; 6     []
+= 6</code></pre>
+<p>This is equivalent to a flat loop in an imperative language.</p>
+</section><section id="tail-recursion-2" class="slide level2">
+<h1>Tail Recursion</h1>
+<ul>
+<li>Let's encapsulate this accumulator implementation</li>
+<li>Use <code>where</code> for scoped definitions</li>
+</ul>
+<pre class="haskell"><code>mySum :: [Int] -&gt; Int
+-- call implementation with 0 accumulator
+mySum xs = mySum&#39; 0   xs
+     where mySum&#39; acc []     = acc
+           mySum&#39; acc (x:xs) = mySum&#39; (acc + x) xs</code></pre>
+</section><section id="towards-reusability" class="slide level2">
+<h1>Towards Reusability</h1>
+<ul>
+<li>The type signature of <code>mySum</code> is quite restrictive</li>
+<li>We may want to sum
+<ul>
+<li><code>Float</code>s</li>
+<li><code>Double</code>s</li>
+<li><code>Complex</code> numbers</li>
+</ul></li>
+<li>Can we make it generic?</li>
+</ul>
+</section></section>
+<section><section id="type-inference" class="titleslide slide level1"><h1>Type Inference</h1></section><section id="type-inference-1" class="slide level2">
+<h1>Type Inference</h1>
+<ul>
+<li>The compiler can infer types</li>
+<li>We can neglect type signatures</li>
+</ul>
+<pre class="haskell"><code>-- Compiles without type signature!
+mySum xs = mySum&#39; 0   xs
+     where mySum&#39; acc []     = acc
+           mySum&#39; acc (x:xs) = mySum&#39; (acc + x) xs</code></pre>
+<ul>
+<li>And ask the compiler what it thinks:</li>
+</ul>
+<pre class="haskell"><code>-- Query the type in interpreter
+&gt; :type mySum
+mySum :: Num a =&gt; [a] -&gt; a</code></pre>
+</section><section id="type-inference---how" class="slide level2">
+<h1>Type Inference - How?</h1>
+<pre class="haskell"><code>--  Says &quot;Type a has to be a Number&quot;
+mySum :: Num a =&gt; [a] -&gt; a
+mySum xs = mySum&#39; 0   xs
+     where mySum&#39; acc []     = acc
+           mySum&#39; acc (x:xs) = mySum&#39; (acc + x) xs
+--                the clue to the compiler ^</code></pre>
+<ul>
+<li>The compiler looks at what we have used:
+<ul>
+<li>Elements combined with operator <code>+</code></li>
+</ul></li>
+<li>The &quot;interface&quot; that exposes <code>+</code> is <code>Num</code></li>
+<li>Therefore <code>mySum</code> can only be used on lists of <code>Num</code>s</li>
+</ul>
+</section><section id="type-inference-2" class="slide level2">
+<h1>Type Inference</h1>
+<ul>
+<li>Let's try on different types:</li>
+</ul>
+<pre class="haskell"><code>&gt; mySum [1, 2, 3, 4, 5, 6, 7]
+28 :: Int
+
+&gt; mySum [2.5, 3.5, 4.5, 5.5, 6.5, 7.5]
+30.0 :: Double</code></pre>
+</section><section id="type-inference---benefits" class="slide level2">
+<h1>Type Inference - Benefits</h1>
+<ul>
+<li>Compiler infers most generic type</li>
+<li>Genericity for free</li>
+<li>Type annotations more useful to programmers than compiler</li>
+</ul>
+</section></section>
+<section><section id="abstracting-loops" class="titleslide slide level1"><h1>Abstracting loops</h1></section><section id="abstracting-loops-1" class="slide level2">
+<h1>Abstracting loops</h1>
+<ul>
+<li>TODO</li>
+<li>For loops very low level - no semantics</li>
+<li>Transforming a list - <code>map</code></li>
+<li>Accumulating over a list - <code>fold</code></li>
+</ul>
+</section><section id="functions" class="slide level2">
+<h1>Functions</h1>
+<p>TODO: functions</p>
+<ul>
+<li>Functions are first class values!
+<ul>
+<li>Can be passed around</li>
+<li>Can be assigned</li>
+<li>Can be created</li>
+</ul></li>
+</ul>
+</section><section id="functions---passed-around" class="slide level2">
+<h1>Functions - Passed Around</h1>
+<ul>
+<li>Accumulating over a list is abstracted as a &quot;fold&quot;</li>
+</ul>
+<pre class="haskell"><code>mySum xs = foldl&#39; (+) 0 </code></pre>
+</section><section id="functions---passed-around-1" class="slide level2">
+<h1>Functions - Passed Around</h1>
+<pre class="haskell"><code>map (toUpper) &quot;lowercase text&quot;</code></pre>
+</section><section id="functions---assigned" class="slide level2">
+<h1>Functions - Assigned</h1>
+<pre class="haskell"><code>stringToUpper = map (toUpper) </code></pre>
+</section><section id="functions---created" class="slide level2">
+<h1>Functions - Created</h1>
+<pre class="haskell"><code>map (\x -&gt; x * 2) [1, 2, 3, 4, 5]</code></pre>
+<p>TODO: move after first &quot;mySum&quot; example ?</p>
+</section><section id="more-reusability" class="slide level2">
+<h1>More Reusability?</h1>
+<ul>
+<li>Our <code>mySum</code> function works great for adding a list of numbers</li>
+<li>But more types can be aggregated:
+<ul>
+<li>e.g. <code>String</code>s</li>
+</ul></li>
+<li>Can we capture this behaviour in an &quot;interface&quot;?</li>
+</ul>
+</section></section>
+<section><section id="typeclasses" class="titleslide slide level1"><h1>Typeclasses</h1></section><section id="typeclasses-1" class="slide level2">
+<h1>Typeclasses</h1>
+<ul>
+<li>Typeclasses are the &quot;interfaces&quot; of Haskell</li>
+<li>Much more flexible and general</li>
+</ul>
+<pre class="haskell"><code>-- The Num typeclass we saw before
+class Num a where
+    (+) :: a -&gt; a -&gt; a
+    (*) :: a -&gt; a -&gt; a
+    (-) :: a -&gt; a -&gt; a
+    negate :: a -&gt; a
+    abs :: a -&gt; a</code></pre>
+<ul>
+<li>Anything can be treated as a number as long as it defines the above functions</li>
+</ul>
+</section><section id="typeclasses---instances" class="slide level2">
+<h1>Typeclasses - Instances</h1>
+<ul>
+<li>Data can adhere to a typeclass by specifying an <code>instance</code></li>
+<li>Attach behaviour after the fact onto existing data</li>
+</ul>
+<pre class="haskell"><code>instance Num Int where
+    (+) = intSum  -- assuming intSum
+    (*) = intMult --          intMult
+    (-) = intSub  --          intSub are provided elsewhere
+    negate x =  0 - x
+    abs x = if x &lt; 0
+            then negate x
+            else x</code></pre>
+<p>TODO: needs knowledge of funcion assignment</p>
+</section><section id="typeclasses-2" class="slide level2">
+<h1>Typeclasses</h1>
+<pre class="haskell"><code>class Eq a where
+    (==) :: a -&gt; a -&gt; Bool
+    (/=) :: a -&gt; a -&gt; Bool
+
+class Eq a =&gt; Ord a where
+    -- minimal definition requires compare
+    -- the rest are automatically defined in terms of it
+    compare :: a -&gt; a -&gt; Ordering
+    (&lt;)  :: a -&gt; a -&gt; Bool
+    (&gt;=) :: a -&gt; a -&gt; Bool
+    (&gt;)  :: a -&gt; a -&gt; Bool
+    (&lt;=) :: a -&gt; a -&gt; Bool
+    max  :: a -&gt; a -&gt; a
+    min  :: a -&gt; a -&gt; a</code></pre>
+</section><section id="typeclasses-3" class="slide level2">
+<h1>Typeclasses</h1>
+<ul>
+<li>Typeclasses decouple behaviour and polymorphism from data.</li>
+<li>Wealth of reusable functions to be used</li>
+</ul>
+<pre class="haskell"><code>sort :: Ord a =&gt; [a] -&gt; [a]
+-- example:
+sort &quot;Missisauga&quot; = &quot;Maagiissssu&quot;
+
+group :: Eq a =&gt; [a] -&gt; [[a]]
+-- example:
+group &quot;Missisauga&quot; = [&quot;M&quot;,&quot;i&quot;,&quot;ss&quot;,&quot;i&quot;,&quot;ss&quot;,&quot;a&quot;,&quot;u&quot;,&quot;g&quot;,&quot;a&quot;]</code></pre>
+</section><section id="typeclasses-4" class="slide level2">
+<h1>Typeclasses</h1>
+<ul>
+<li>Haskell has various interesting typeclasses:
+<ul>
+<li>Monoids, Functors, Applicatives, Monads</li>
+</ul></li>
+<li>Each one distills some essense of composability TODO: doesn't mean anything ^</li>
+</ul>
+</section></section>
+<section><section id="the-monoid" class="titleslide slide level1"><h1>The Monoid</h1></section><section id="the-monoid-1" class="slide level2">
+<h1>The Monoid</h1>
+<ul>
+<li>The Monoid is the simplest typeclass</li>
+<li>It decribes how to append two values of a datatype together</li>
+</ul>
+<blockquote>
+&quot;In abstract algebra, a <strong>monoid</strong> is an algebraic structure with a single <strong>associative binary operation</strong> and an <strong>identity element</strong>.&quot; ― Wikipedia
+</blockquote>
+
+<pre class="haskell"><code>class Monoid a where
+    mempty :: a             -- identity
+    mappend :: a -&gt; a -&gt; a  -- binary operation
+
+-- Rules:  (not checked, but assumed in usage)
+mappend a mempty = a      -- identity
+mappend a (mappend b c) = mappend (mappend a b) c -- associativity</code></pre>
+</section><section id="the-monoid-2" class="slide level2">
+<h1>The Monoid</h1>
+<ul>
+<li>You know lots of <strong>Monoids</strong>!</li>
+</ul>
+<pre class="haskell"><code>instance Monoid String where
+    mempty = &quot;&quot;            -- empty string is identity
+    mappend a b = a ++ b   -- binary op is string concatenation
+
+instance Monoid Int where
+    mempty = 0
+    mappend a b = a + b
+
+instance Monoid (Set a) where
+    mempty = empty
+    mappend s1 s2 = s1 `union` s2</code></pre>
+</section><section id="mconcat" class="slide level2">
+<h1><code>mconcat</code></h1>
+<ul>
+<li>With a <code>Monoid</code> instance we get <code>mconcat</code> for free</li>
+</ul>
+<pre class="haskell"><code>-- Accumulate a value from a list, using mappend
+mconcat :: (Monoid m) =&gt; [m] -&gt; m</code></pre>
+<ul>
+<li>Can use it to sum numbers or concatenate a list of strings!</li>
+<li>Union a list of Sets!</li>
+<li>Join ethernet packets!</li>
+<li>Combine Databases!</li>
+</ul>
+</section></section>
+<section><section id="scrap" class="titleslide slide level1"><h1>Scrap</h1></section><section id="outline-of-topics" class="slide level2">
+<h1>Outline of topics</h1>
+<p>Need some kind of goal</p>
+<ul>
+<li>Value assignments</li>
+<li>Add/subtract</li>
+<li>Types</li>
+<li>Lists</li>
+<li>Strings</li>
+<li>Functions</li>
+</ul>
+</section><section id="ideas-for-small-programs" class="slide level2">
+<h1>Ideas for small programs</h1>
+<ul>
+<li>converting bank hex files to single binary file</li>
+</ul>
+</section><section id="wip-benefits-of-lazy-evaluation" class="slide level2">
+<h1>WIP Benefits of Lazy Evaluation</h1>
+<ul>
+<li>Allows heavy reuse of code</li>
+<li>Give example of filtering a list</li>
+<li>fold, map, filter</li>
+</ul>
+</section></section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					// { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					// { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

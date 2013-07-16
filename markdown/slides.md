@@ -28,7 +28,7 @@ TODO: Pictures books, github
 * Try something where nothing you know even applies.
 * Try Haskell.
 
-![](images/HaskellLogo.jpg)
+![](../images/HaskellLogo.jpg)
 
 ## Haskell
 

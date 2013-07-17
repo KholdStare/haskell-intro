@@ -1,6 +1,6 @@
 # HASKELL
 
-## Haskell - Why?
+## First Language
 
 <blockquote>
 “The most disastrous thing that you can ever learn is your first programming language.”
@@ -13,9 +13,9 @@
 * Obstructs idiomatic code in other languages
 * What to do?
 
-## Haskell - Why?
+## Idiomatic Code
 
-* Way to idiomatic code
+* Strive to idiomatic code
     * Read books of experts
     * Read code of experts
     * Or...
@@ -26,7 +26,7 @@ TODO: Pictures books, github
 
 * Try something radically different.
 * Try something where nothing you know even applies.
-* Try Haskell.
+* Try...
 
 ![](../images/HaskellLogo.jpg)
 
@@ -36,13 +36,7 @@ TODO: Pictures books, github
 Haskell is a purely functional, statically typed programming language, with non-strict evaluation.
 </blockquote>
 
-## Haskell
-
-<blockquote>
-Haskell is a purely functional, statically typed programming language, with non-strict evaluation.
-</blockquote>
-
-**_WAT_**
+## **WAT**
 
 # The Language
 
@@ -58,11 +52,28 @@ Haskell is a purely functional, statically typed programming language, with non-
 * Non-strict evaluation
     * A.k.a. lazy evaluation
 
+## QuickSort
+
+~~~~ {.haskell}
+quicksort :: Ord a => [a] -> [a]
+quicksort []     = []
+quicksort (p:xs) = (quicksort lesser) ++ [p] ++ (quicksort greater)
+    where
+        lesser  = filter (< p) xs
+        greater = filter (>= p) xs
+~~~~
+
+<aside class="notes">
+    * No variable assignments
+    * Breaks into cases
+</aside>
+
 ## Pure
 
 * Functions are functions in the _mathematical_ sense
 * No side effects within functions
-    * No mutation or implicit state - everything is immutable
+    * No mutation, assignment or implicit state
+       * Everything is immutable
     * No IO
     * No global state
 
@@ -320,8 +331,6 @@ stringToUpper = map (toUpper)
 map (\x -> x * 2) [1, 2, 3, 4, 5]
 ~~~~
 
-TODO: move after first "mySum" example ?
-
 ## More Reusability?
 
 * Our `mySum` function works great for adding a list of numbers
@@ -364,9 +373,7 @@ instance Num Int where
             else x
 ~~~~
 
-TODO: needs knowledge of funcion assignment
-
-## Typeclasses
+## More Typeclasses
 
 ~~~~ {.haskell}
 class Eq a where
@@ -385,7 +392,7 @@ class Eq a => Ord a where
     min  :: a -> a -> a
 ~~~~
 
-## Typeclasses
+## Generic functions
 
 * Typeclasses decouple behaviour and polymorphism from data.
 * Wealth of reusable functions to be used
@@ -403,7 +410,7 @@ group "Missisauga" = ["M","i","ss","i","ss","a","u","g","a"]
 ## Typeclasses
 
 * Haskell has various interesting typeclasses:
-    * Monoids, Functors, Applicatives, Monads
+    * `Monoid`s, `Functor`s, `Applicative`s, `Monad`s
 * Each one distills some essense of composability
 TODO: doesn't mean anything ^
 
@@ -431,7 +438,7 @@ mappend a (mappend b c) = mappend (mappend a b) c -- associativity
 
 ## The Monoid
 
-* You know lots of __Monoids__!
+* You know lots of `Monoid`s!
 
 ~~~~ {.haskell}
 instance Monoid String where

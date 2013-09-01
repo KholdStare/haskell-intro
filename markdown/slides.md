@@ -28,7 +28,7 @@ TODO: Pictures books, github
 * Try something where nothing you know even applies.
 * Try...
 
-![](../images/HaskellLogo.jpg)
+![](images/HaskellLogo.jpg)
 
 ## Haskell
 
@@ -115,10 +115,22 @@ TODO: put code
 
 * Lazy by default
 * Evaluates values when they are needed
+
+## Lazy
+
 * Some intuition:
     * Short circuiting of boolean expressions
 
-TODO: put code
+~~~~ {.cpp}
+if (pointer != NULL && pointer->doesSomething())
+{
+    // ...
+}
+else if (number < 0 || number > 100)
+{
+    // ...
+}
+~~~~
 
 ## Haskell Philosophy
 
@@ -290,10 +302,30 @@ mySum xs = mySum' 0   xs
 
 ## Abstracting loops
 
-* TODO
-* For loops very low level - no semantics
+* For loops are very low level
+    * No inherent semantics
 * Transforming a list - `map`
 * Accumulating over a list - `fold`
+
+## Map
+
+~~~~ {.haskell}
+map :: (a -> b) -> [a] -> [b]
+~~~~
+
+`map f xs` is the list obtained by applying f to each element of xs, i.e.,
+
+~~~~ {.haskell}
+> map f [x1, x2, ..., xn] == [f x1, f x2, ..., f xn]
+> map f [x1, x2, ...] == [f x1, f x2, ...] 
+~~~~
+
+## Map
+
+* Map works by applying another function over a list
+* We have to pass a function to map
+    * Similar to C's `qsort`
+
 
 
 ## Functions
@@ -310,25 +342,61 @@ TODO: functions
 * Accumulating over a list is abstracted as a "fold"
 
 ~~~~ {.haskell}
-mySum xs = foldl' (+) 0 
+foldl :: (a -> b -> a) -> a -> [b] -> a
+--       ~~~~~~~~~~~~~    ^- starting value (accumulator)
+--      binary operator
 ~~~~
+
+> foldl, applied to a __binary operator__, a __starting value__ (typically the
+> left-identity of the operator), and __a list__, reduces the list using the
+> binary operator, from left to right.
+
+TODO: diagram of foldl?
 
 ## Functions - Passed Around
 
-~~~~ {.haskell}
-map (toUpper) "lowercase text"
-~~~~
-
-## Functions - Assigned
+* Accumulating over a list is abstracted as a "fold"
 
 ~~~~ {.haskell}
-stringToUpper = map (toUpper) 
+foldl :: (a -> b -> a) -> a -> [b] -> a
+(+)   :: Num a => a -> a -> a
+
+mySum xs = foldl (+) 0 xs
 ~~~~
 
 ## Functions - Created
 
 ~~~~ {.haskell}
-map (\x -> x * 2) [1, 2, 3, 4, 5]
+map :: (a -> b) -> [a] -> [b]
+
+doubleValues xs = map (\x -> x * 2) xs
+--                    ~^~~~~~~~~~~~
+--                   lambda function
+~~~~
+
+~~~~ {.haskell}
+> doubleValues [1..5]
+[2, 4, 6, 8, 10]
+~~~~
+
+## Functions - Assigned
+
+* Functions are values
+* Values can be assigned
+* Define one function by equading to another
+    * This is called _pointfree_ notation
+
+~~~~ {.haskell}
+toUpper :: Char -> Char
+map     :: (a -> b) -> [a] -> [b]
+
+stringToUpper :: String -> String
+stringToUpper = map (toUpper) 
+~~~~
+
+~~~~ {.haskell}
+> stringToUpper "Hello World"
+"HELLO WORLD"
 ~~~~
 
 ## More Reusability?
@@ -359,8 +427,10 @@ class Num a where
 
 ## Typeclasses - Instances
 
-* Data can adhere to a typeclass by specifying an `instance`
+* A Data Type can adhere to a typeclass by specifying an `instance`
 * Attach behaviour after the fact onto existing data
+
+TODO: "filling in the 'a' "
 
 ~~~~ {.haskell}
 instance Num Int where
@@ -411,14 +481,13 @@ group "Missisauga" = ["M","i","ss","i","ss","a","u","g","a"]
 
 * Haskell has various interesting typeclasses:
     * `Monoid`s, `Functor`s, `Applicative`s, `Monad`s
-* Each one distills some essense of composability
-TODO: doesn't mean anything ^
+* Each one is a very precise definition of what it means to be composable
 
 # The Monoid
 
 ## The Monoid
 
-* The Monoid is the simplest typeclass
+* The Monoid is a simple typeclass
 * It decribes how to append two values of a datatype together
 
 <blockquote>
@@ -435,6 +504,11 @@ class Monoid a where
 mappend a mempty = a      -- identity
 mappend a (mappend b c) = mappend (mappend a b) c -- associativity
 ~~~~
+
+<aside class="notes">
+* Don't worry about math jargon
+* Examples incoming
+</aside>
 
 ## The Monoid
 

@@ -17,6 +17,7 @@ compose f g val = f $ g val
 -- getLine :: IO String
 -- putStr :: String -> IO ()
 
+alphabet :: [(Int, Char)]
 alphabet = zip [1..] ['a'..'y']
 
 maybeExample :: Int -> Maybe Char
@@ -28,6 +29,7 @@ maybeExample num = do
 
 
 -- All the cool typeclasses
+-- ========================
 class MyFunctor f where
     myfmap :: (a -> b) -> f a -> f b
 
@@ -42,7 +44,7 @@ class MyApplicative m => MyMonad m where
 
 -- 
 instance MyFunctor Maybe where
-    myfmap f Nothing  = Nothing
+    myfmap _ Nothing  = Nothing
     myfmap f (Just v) = Just $ f v
 
 instance MyApplicative Maybe where
@@ -56,10 +58,25 @@ instance MyMonad Maybe where
     mybind Nothing _ = Nothing
     mybind (Just v) f = f v
 
+
+-- Lists
+-- =====
+
+-- get first element of list
+head' :: [a] -> a
+head' (x:_) = x
+-- non-exhaustive pattern match
+-- -fwarn-incomplete-patterns
+
+tail' :: [a] -> [a]
+tail' [] = []
+tail' (x:xs) = xs
+
 -- Imperative control structures
+-- =============================
 if' :: Bool -> a -> a -> a
-if' True  t f = t
-if' False t f = f
+if' True  t _ = t
+if' False _ f = f
 
 -- show laziness (does not evaluate error)
 ifExample = if' True
@@ -80,7 +97,7 @@ whileExample = while (\i -> i < 20)
 for :: (Int, Int) -> ( (Int, s) -> s ) -> s -> s
 for (lower, upper) trans startState =
     snd $
-    while (\(i, s) -> i < upper)
+    while (\(i, _) -> i < upper)
           (\(i, s) -> (i + 1, trans (i, s)))
           (lower, startState)
 

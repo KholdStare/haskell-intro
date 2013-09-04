@@ -75,6 +75,11 @@ pre .tex .command,
 pre .prompt {
   color: #e6db74;
 }
+
+pre .haskell .type
+{
+    font-weight: bold;
+}
 pre .comment,
 pre .javadoc,
 pre .java .annotation,

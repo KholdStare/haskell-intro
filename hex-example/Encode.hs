@@ -28,9 +28,11 @@ toHexDump = LT.concatMap charToHexCode
 -- Data.Text.Lazy.Builder     toLazyText  :: Builder -> Text
 -- Data.Text.Lazy             concatMap :: (Char -> Text) -> Text -> Text
 
+type SuffixString = String
+
 -- | Given a basename, and a list of texts,
 -- | write each one out to <basename><N>.<suffix>
-dumpToBankFiles :: FilePath -> String -> [Text] -> IO ()
+dumpToBankFiles :: FilePath -> SuffixString -> [Text] -> IO ()
 dumpToBankFiles basename suffix texts = do
     let indexesAndTexts = enumerate texts
     mapM_ (uncurry $ LIO.writeFile . makeFilepath) indexesAndTexts

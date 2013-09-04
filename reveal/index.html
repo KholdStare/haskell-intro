@@ -37,8 +37,8 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 
-<section><section id="haskell" class="titleslide slide level1"><h1>HASKELL</h1></section><section id="haskell---why" class="slide level2">
-<h1>Haskell - Why?</h1>
+<section><section id="haskell" class="titleslide slide level1"><h1>HASKELL</h1></section><section id="first-language" class="slide level2">
+<h1>First Language</h1>
 <blockquote>
 “The most disastrous thing that you can ever learn is your first programming language.” ― Alan Kay (pioneer in OOP)
 </blockquote>
@@ -52,10 +52,10 @@
 <li>Obstructs idiomatic code in other languages</li>
 <li>What to do?</li>
 </ul>
-</section><section id="haskell---why-1" class="slide level2">
-<h1>Haskell - Why?</h1>
+</section><section id="idiomatic-code" class="slide level2">
+<h1>Idiomatic Code</h1>
 <ul>
-<li>Way to idiomatic code
+<li>Strive to idiomatic code
 <ul>
 <li>Read books of experts</li>
 <li>Read code of experts</li>
@@ -63,15 +63,15 @@
 </ul></li>
 </ul>
 <p>TODO: Pictures books, github</p>
-</section><section id="haskell---why-2" class="slide level2">
+</section><section id="haskell---why" class="slide level2">
 <h1>Haskell - Why?</h1>
 <ul>
 <li>Try something radically different.</li>
 <li>Try something where nothing you know even applies.</li>
-<li>Try Haskell.</li>
+<li>Try...</li>
 </ul>
 <figure>
-<img src="../images/HaskellLogo.jpg" />
+<img src="images/HaskellLogo.jpg" />
 </figure>
 </section><section id="haskell-1" class="slide level2">
 <h1>Haskell</h1>
@@ -79,13 +79,8 @@
 Haskell is a purely functional, statically typed programming language, with non-strict evaluation.
 </blockquote>
 
-</section><section id="haskell-2" class="slide level2">
-<h1>Haskell</h1>
-<blockquote>
-Haskell is a purely functional, statically typed programming language, with non-strict evaluation.
-</blockquote>
-
-<p><strong><em>WAT</em></strong></p>
+</section><section id="wat" class="slide level2">
+<h1><strong>WAT</strong></h1>
 </section></section>
 <section><section id="the-language" class="titleslide slide level1"><h1>The Language</h1></section><section id="the-language-1" class="slide level2">
 <h1>The Language</h1>
@@ -106,13 +101,33 @@ Haskell is a purely functional, statically typed programming language, with non-
 <li>A.k.a. lazy evaluation</li>
 </ul></li>
 </ul>
+</section><section id="quicksort" class="slide level2">
+<h1>QuickSort</h1>
+<pre class="haskell"><code>quicksort :: Ord a =&gt; [a] -&gt; [a]
+quicksort []     = []
+quicksort (p:xs) =
+    (quicksort lesser) ++ [p] ++ (quicksort greater)
+    where
+        lesser  = filter (&lt; p) xs
+        greater = filter (&gt;= p) xs</code></pre>
+<aside class="notes">
+    
+<ul>
+<li>No variable assignments
+<ul>
+<li>Breaks into cases
+</aside>
+</li>
+</ul></li>
+</ul>
 </section><section id="pure" class="slide level2">
 <h1>Pure</h1>
 <ul>
 <li>Functions are functions in the <em>mathematical</em> sense</li>
 <li>No side effects within functions
 <ul>
-<li>No mutation or implicit state - everything is immutable</li>
+<li>No mutation, assignment or implicit state</li>
+<li>Everything is immutable</li>
 <li>No IO</li>
 <li>No global state</li>
 </ul></li>
@@ -161,38 +176,161 @@ Haskell is a purely functional, statically typed programming language, with non-
 <ul>
 <li>Limited intuition in imperative languages:
 <ul>
-<li><code>q_sort</code> from C</li>
+<li><code>qsort</code> from C</li>
 </ul></li>
 </ul>
-<p>TODO: put code</p>
+<pre class="cpp"><code>void qsort(
+    void *ptr,
+    size_t count,
+    size_t size,
+    int (*comp)(const void *, const void *) // function as a parameter
+);</code></pre>
+<aside class="notes">
+    
+<ul>
+<li>Function pointers not a closure
+<ul>
+<li>Can't return a new function
+</aside>
+</li>
+</ul></li>
+</ul>
 </section><section id="lazy" class="slide level2">
 <h1>Lazy</h1>
 <ul>
 <li>Lazy by default</li>
 <li>Evaluates values when they are needed</li>
+</ul>
+</section><section id="lazy-1" class="slide level2">
+<h1>Lazy</h1>
+<ul>
 <li>Some intuition:
 <ul>
 <li>Short circuiting of boolean expressions</li>
 </ul></li>
 </ul>
-<p>TODO: put code</p>
+<pre class="cpp"><code>if (pointer != NULL &amp;&amp; pointer-&gt;doesSomething())
+{
+    // ...
+}
+else if (number &lt; 0 || number &gt; 100)
+{
+    // ...
+}</code></pre>
 </section><section id="haskell-philosophy" class="slide level2">
 <h1>Haskell Philosophy</h1>
 <ul>
 <li>&quot;What&quot; rather than &quot;How&quot;</li>
-<li>Data flow is king</li>
-<li>Keep things pure</li>
+<li>Data flow</li>
+<li>Purity</li>
+<li>Composition</li>
 </ul>
 </section></section>
 <section><section id="syntax-intro" class="titleslide slide level1"><h1>Syntax Intro</h1></section><section id="intro" class="slide level2">
 <h1>Intro</h1>
 <p>TODO: simple syntax breakdown</p>
+</section><section id="defining-values" class="slide level2">
+<h1>Defining Values</h1>
+<pre class="haskell"><code>-- define a value
+x = 42
+-- cannot reassign x = 7
+
+-- functions are also values
+addOneTo v = v + 1</code></pre>
+<ul>
+<li><code>=</code> is Mathematical Equality</li>
+<li><em>Not</em> assignment</li>
+<li>Both sides are <em>equivalent</em>
+<ul>
+<li>Left can be substituted by right</li>
+<li>And vice versa</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<ul>
+<li>Mention cannot reassign - not a VARiable</li>
+<li>Functions are values just like integers
+</aside>
+</li>
+</ul>
+</section><section id="type-annotations" class="slide level2">
+<h1>Type annotations</h1>
+<pre class="haskell"><code>x :: Int
+x = 5
+
+y :: Double
+y = 4.2
+
+addOneTo :: Int -&gt; Int
+addOneTo v = v + 1</code></pre>
+<ul>
+<li>Everything has a type</li>
+<li><code>::</code> allows us to annotate values with types</li>
+<li>Concrete types always <em>Capitalized</em></li>
+<li><code>a -&gt; b</code> denotes a function from <code>a</code> to <code>b</code></li>
+</ul>
+</section><section id="pattern-matching" class="slide level2">
+<h1>Pattern Matching</h1>
 </section><section id="lists" class="slide level2">
 <h1>Lists</h1>
-<p>TODO: lists</p>
-</section><section id="reverse" class="slide level2">
-<h1>Reverse</h1>
-<p>TODO: implement a reverse function?</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Syntax</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>[]</code></td>
+<td style="text-align: left;">Empty List</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>[1, 2, 3]</code></td>
+<td style="text-align: left;">List</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>1 : [2, 3]</code></td>
+<td style="text-align: left;">Prepend to a list</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>[1, 2] ++ [3, 4]</code></td>
+<td style="text-align: left;">Concatenate two lists</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>&quot;He&quot; ++ &quot;llo&quot;</code></td>
+<td style="text-align: left;">Concatenate two strings</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>&quot;Hello&quot; :: [Char]</code></td>
+<td style="text-align: left;">Strings are lists of <code>Char</code></td>
+</tr>
+</tbody>
+</table>
+</section><section id="list-operations" class="slide level2">
+<h1>List operations</h1>
+<pre class="haskell"><code>head :: [a] -&gt; a
+head (x:xs) = x</code></pre>
+<pre class="haskell"><code>tail :: [a] -&gt; [a]
+head (x:xs) = xs</code></pre>
+<aside class="notes">
+<ul>
+<li>Pattern match against list construction <code>:</code></li>
+<li>Parametric polymorphism</li>
+<li>We don't assume anything about list elements
+</aside>
+</li>
+</ul>
+</section><section id="reverse-a-list" class="slide level2">
+<h1>Reverse a List</h1>
+<p>Pattern match: ~~~~ {.haskell} myReverse :: [a] -&gt; [a] myReverse [] = [] myReverse (x:xs) = myReverse xs ++ [x] ~~~~</p>
+<p>Or reuse <code>head</code> and <code>tail</code>: ~~~~ {.haskell} myReverse :: [a] -&gt; [a] myReverse [] = [] myReverse list = myReverse (tail list) ++ [head list] ~~~~</p>
+<aside class="notes">
+<ul>
+<li>Can make it more generic
+</aside>
+</li>
+</ul>
 </section></section>
 <section><section id="function-example" class="titleslide slide level1"><h1>Function Example</h1></section><section id="summing-a-list" class="slide level2">
 <h1>Summing a list</h1>
@@ -319,14 +457,59 @@ mySum xs = mySum&#39; 0   xs
 <li>Genericity for free</li>
 <li>Type annotations more useful to programmers than compiler</li>
 </ul>
+<aside class="notes">
+<ul>
+<li>Mention UML
+</aside>
+</li>
+</ul>
+</section></section>
+<section><section id="control-structures" class="titleslide slide level1"><h1>Control Structures</h1></section><section id="control-structures-1" class="slide level2">
+<h1>Control Structures</h1>
+<ul>
+<li>Are there really no control structures?
+<ul>
+<li><code>if</code> ?</li>
+<li><code>while</code> ?</li>
+<li><code>for</code> ?</li>
+</ul></li>
+<li>We can construct our own!
+<ul>
+<li>Due to Haskell's laziness</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<ul>
+<li>Imperative control structures awkward in functional setting</li>
+<li>Better alternatives exist
+</aside>
+</li>
+</ul>
 </section></section>
 <section><section id="abstracting-loops" class="titleslide slide level1"><h1>Abstracting loops</h1></section><section id="abstracting-loops-1" class="slide level2">
 <h1>Abstracting loops</h1>
 <ul>
-<li>TODO</li>
-<li>For loops very low level - no semantics</li>
+<li>For loops are very low level
+<ul>
+<li>No inherent semantics</li>
+</ul></li>
 <li>Transforming a list - <code>map</code></li>
 <li>Accumulating over a list - <code>fold</code></li>
+</ul>
+</section><section id="map" class="slide level2">
+<h1>Map</h1>
+<pre class="haskell"><code>map :: (a -&gt; b) -&gt; [a] -&gt; [b]</code></pre>
+<p><code>map f xs</code> is the list obtained by applying f to each element of xs, i.e.,</p>
+<pre class="haskell"><code>&gt; map f [x1, x2, ..., xn] == [f x1, f x2, ..., f xn]
+&gt; map f [x1, x2, ...] == [f x1, f x2, ...] </code></pre>
+</section><section id="map-1" class="slide level2">
+<h1>Map</h1>
+<ul>
+<li>Map works by applying another function over a list</li>
+<li>We have to pass a function to map
+<ul>
+<li>Similar to C's <code>qsort</code></li>
+</ul></li>
 </ul>
 </section><section id="functions" class="slide level2">
 <h1>Functions</h1>
@@ -344,17 +527,48 @@ mySum xs = mySum&#39; 0   xs
 <ul>
 <li>Accumulating over a list is abstracted as a &quot;fold&quot;</li>
 </ul>
-<pre class="haskell"><code>mySum xs = foldl&#39; (+) 0 </code></pre>
+<pre class="haskell"><code>foldl :: (a -&gt; b -&gt; a) -&gt; a -&gt; [b] -&gt; a
+--       ~~~~~~~~~~~~~    ^- starting value (accumulator)
+--      binary operator</code></pre>
+<blockquote>
+<p>foldl, applied to a <strong>binary operator</strong>, a <strong>starting value</strong> (typically the left-identity of the operator), and <strong>a list</strong>, reduces the list using the binary operator, from left to right.</p>
+</blockquote>
+<p>TODO: diagram of foldl?</p>
 </section><section id="functions---passed-around-1" class="slide level2">
 <h1>Functions - Passed Around</h1>
-<pre class="haskell"><code>map (toUpper) &quot;lowercase text&quot;</code></pre>
-</section><section id="functions---assigned" class="slide level2">
-<h1>Functions - Assigned</h1>
-<pre class="haskell"><code>stringToUpper = map (toUpper) </code></pre>
+<ul>
+<li>Accumulating over a list is abstracted as a &quot;fold&quot;</li>
+</ul>
+<pre class="haskell"><code>foldl :: (a -&gt; b -&gt; a) -&gt; a -&gt; [b] -&gt; a
+(+)   :: Num a =&gt; a -&gt; a -&gt; a
+
+mySum xs = foldl (+) 0 xs</code></pre>
 </section><section id="functions---created" class="slide level2">
 <h1>Functions - Created</h1>
-<pre class="haskell"><code>map (\x -&gt; x * 2) [1, 2, 3, 4, 5]</code></pre>
-<p>TODO: move after first &quot;mySum&quot; example ?</p>
+<pre class="haskell"><code>map :: (a -&gt; b) -&gt; [a] -&gt; [b]
+
+doubleValues xs = map (\x -&gt; x * 2) xs
+--                    ~^~~~~~~~~~~~
+--                   lambda function</code></pre>
+<pre class="haskell"><code>&gt; doubleValues [1..5]
+[2, 4, 6, 8, 10]</code></pre>
+</section><section id="functions---assigned" class="slide level2">
+<h1>Functions - Assigned</h1>
+<ul>
+<li>Functions are values</li>
+<li>Values can be assigned</li>
+<li>Define one function by equading to another
+<ul>
+<li>This is called <em>pointfree</em> notation</li>
+</ul></li>
+</ul>
+<pre class="haskell"><code>toUpper :: Char -&gt; Char
+map     :: (a -&gt; b) -&gt; [a] -&gt; [b]
+
+stringToUpper :: String -&gt; String
+stringToUpper = map (toUpper) </code></pre>
+<pre class="haskell"><code>&gt; stringToUpper &quot;Hello World&quot;
+&quot;HELLO WORLD&quot;</code></pre>
 </section><section id="more-reusability" class="slide level2">
 <h1>More Reusability?</h1>
 <ul>
@@ -385,9 +599,10 @@ class Num a where
 </section><section id="typeclasses---instances" class="slide level2">
 <h1>Typeclasses - Instances</h1>
 <ul>
-<li>Data can adhere to a typeclass by specifying an <code>instance</code></li>
+<li>A Data Type can adhere to a typeclass by specifying an <code>instance</code></li>
 <li>Attach behaviour after the fact onto existing data</li>
 </ul>
+<p>TODO: &quot;filling in the 'a' &quot;</p>
 <pre class="haskell"><code>instance Num Int where
     (+) = intSum  -- assuming intSum
     (*) = intMult --          intMult
@@ -396,9 +611,8 @@ class Num a where
     abs x = if x &lt; 0
             then negate x
             else x</code></pre>
-<p>TODO: needs knowledge of funcion assignment</p>
-</section><section id="typeclasses-2" class="slide level2">
-<h1>Typeclasses</h1>
+</section><section id="more-typeclasses" class="slide level2">
+<h1>More Typeclasses</h1>
 <pre class="haskell"><code>class Eq a where
     (==) :: a -&gt; a -&gt; Bool
     (/=) :: a -&gt; a -&gt; Bool
@@ -413,8 +627,8 @@ class Eq a =&gt; Ord a where
     (&lt;=) :: a -&gt; a -&gt; Bool
     max  :: a -&gt; a -&gt; a
     min  :: a -&gt; a -&gt; a</code></pre>
-</section><section id="typeclasses-3" class="slide level2">
-<h1>Typeclasses</h1>
+</section><section id="generic-functions" class="slide level2">
+<h1>Generic functions</h1>
 <ul>
 <li>Typeclasses decouple behaviour and polymorphism from data.</li>
 <li>Wealth of reusable functions to be used</li>
@@ -426,20 +640,20 @@ sort &quot;Missisauga&quot; = &quot;Maagiissssu&quot;
 group :: Eq a =&gt; [a] -&gt; [[a]]
 -- example:
 group &quot;Missisauga&quot; = [&quot;M&quot;,&quot;i&quot;,&quot;ss&quot;,&quot;i&quot;,&quot;ss&quot;,&quot;a&quot;,&quot;u&quot;,&quot;g&quot;,&quot;a&quot;]</code></pre>
-</section><section id="typeclasses-4" class="slide level2">
+</section><section id="typeclasses-2" class="slide level2">
 <h1>Typeclasses</h1>
 <ul>
 <li>Haskell has various interesting typeclasses:
 <ul>
-<li>Monoids, Functors, Applicatives, Monads</li>
+<li><code>Monoid</code>s, <code>Functor</code>s, <code>Applicative</code>s, <code>Monad</code>s</li>
 </ul></li>
-<li>Each one distills some essense of composability TODO: doesn't mean anything ^</li>
+<li>Each one is a very precise definition of what it means to be composable</li>
 </ul>
 </section></section>
 <section><section id="the-monoid" class="titleslide slide level1"><h1>The Monoid</h1></section><section id="the-monoid-1" class="slide level2">
 <h1>The Monoid</h1>
 <ul>
-<li>The Monoid is the simplest typeclass</li>
+<li>The Monoid is a simple typeclass</li>
 <li>It decribes how to append two values of a datatype together</li>
 </ul>
 <blockquote>
@@ -453,10 +667,17 @@ group &quot;Missisauga&quot; = [&quot;M&quot;,&quot;i&quot;,&quot;ss&quot;,&quot
 -- Rules:  (not checked, but assumed in usage)
 mappend a mempty = a      -- identity
 mappend a (mappend b c) = mappend (mappend a b) c -- associativity</code></pre>
+<aside class="notes">
+<ul>
+<li>Don't worry about math jargon</li>
+<li>Examples incoming
+</aside>
+</li>
+</ul>
 </section><section id="the-monoid-2" class="slide level2">
 <h1>The Monoid</h1>
 <ul>
-<li>You know lots of <strong>Monoids</strong>!</li>
+<li>You know lots of <code>Monoid</code>s!</li>
 </ul>
 <pre class="haskell"><code>instance Monoid String where
     mempty = &quot;&quot;            -- empty string is identity
@@ -506,6 +727,57 @@ mconcat :: (Monoid m) =&gt; [m] -&gt; m</code></pre>
 <li>Give example of filtering a list</li>
 <li>fold, map, filter</li>
 </ul>
+</section><section id="syntax-overview" class="slide level2">
+<h1>Syntax Overview</h1>
+<ul>
+<li><code>=</code> -- Define a value</li>
+<li><code>::</code> -- Type annotation</li>
+<li><code>[1, 2, 3]</code> -- List</li>
+<li><code>:</code> -- Prepend to a list</li>
+<li><code>++</code> -- Concatenate two lists</li>
+<li><code>a -&gt; b</code> -- Function from <code>a</code> to <code>b</code></li>
+<li><code>where</code> -- scoped definition</li>
+</ul>
+</section><section id="syntax-overview-1" class="slide level2">
+<h1>Syntax Overview</h1>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Syntax</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>x = 42</code></td>
+<td style="text-align: left;">Define a value</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>42 :: Int</code></td>
+<td style="text-align: left;">Type annotation</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>a -&gt; b</code></td>
+<td style="text-align: left;">Function from <code>a</code> to <code>b</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>[1, 2, 3]</code></td>
+<td style="text-align: left;">List</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>1 : [2, 3]</code></td>
+<td style="text-align: left;">Prepend to a list</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>&quot;He&quot; ++ &quot;llo&quot;</code></td>
+<td style="text-align: left;">Concatenate two lists</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>where</code></td>
+<td style="text-align: left;">scoped definition</td>
+</tr>
+</tbody>
+</table>
 </section></section>
 
 			</div>

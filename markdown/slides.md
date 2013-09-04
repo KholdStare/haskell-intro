@@ -57,7 +57,8 @@ Haskell is a purely functional, statically typed programming language, with non-
 ~~~~ {.haskell}
 quicksort :: Ord a => [a] -> [a]
 quicksort []     = []
-quicksort (p:xs) = (quicksort lesser) ++ [p] ++ (quicksort greater)
+quicksort (p:xs) =
+    (quicksort lesser) ++ [p] ++ (quicksort greater)
     where
         lesser  = filter (< p) xs
         greater = filter (>= p) xs
@@ -107,9 +108,21 @@ TODO: Excel picture
 ## Functional
 
 * Limited intuition in imperative languages:
-    * `q_sort` from C
+    * `qsort` from C
 
-TODO: put code
+~~~~ {.cpp}
+void qsort(
+    void *ptr,
+    size_t count,
+    size_t size,
+    int (*comp)(const void *, const void *) // function as a parameter
+);
+~~~~
+
+<aside class="notes">
+    * Function pointers not a closure
+    * Can't return a new function
+</aside>
 
 ## Lazy
 
@@ -135,8 +148,9 @@ else if (number < 0 || number > 100)
 ## Haskell Philosophy
 
 * "What" rather than "How"
-* Data flow is king
-* Keep things pure
+* Data flow
+* Purity
+* Composition
 
 # Syntax Intro
 
@@ -144,13 +158,97 @@ else if (number < 0 || number > 100)
 
 TODO: simple syntax breakdown
 
+## Defining Values
+
+~~~~ {.haskell}
+-- define a value
+x = 42
+-- cannot reassign x = 7
+
+-- functions are also values
+addOneTo v = v + 1
+~~~~
+
+* `=` is Mathematical Equality
+* *Not* assignment
+* Both sides are *equivalent*
+    * Left can be substituted by right
+    * And vice versa
+
+<aside class="notes">
+* Mention cannot reassign - not a VARiable
+* Functions are values just like integers
+</aside>
+
+## Type annotations
+
+~~~~ {.haskell}
+x :: Int
+x = 5
+
+y :: Double
+y = 4.2
+
+addOneTo :: Int -> Int
+addOneTo v = v + 1
+~~~~
+
+* Everything has a type
+* `::` allows us to annotate values with types
+* Concrete types always _Capitalized_
+* `a -> b` denotes a function from `a` to `b`
+
+
+## Pattern Matching
+
 ## Lists
 
-TODO: lists
+Syntax                      Meaning
+-----------                 ------------------------
+`[]`                        Empty List
+`[1, 2, 3]`                 List
+`1 : [2, 3]`                Prepend to a list
+`[1, 2] ++ [3, 4]`          Concatenate two lists
+`"He" ++ "llo"`             Concatenate two strings
+`"Hello" :: [Char]`         Strings are lists of `Char`
 
-## Reverse
+## List operations
 
-TODO: implement a reverse function?
+~~~~ {.haskell}
+head :: [a] -> a
+head (x:xs) = x
+~~~~
+
+~~~~ {.haskell}
+tail :: [a] -> [a]
+head (x:xs) = xs
+~~~~
+
+<aside class="notes">
+* Pattern match against list construction `:`
+* Parametric polymorphism 
+* We don't assume anything about list elements
+</aside>
+
+## Reverse a List
+
+Pattern match:
+~~~~ {.haskell}
+myReverse :: [a] -> [a]
+myReverse [] = []
+myReverse (x:xs) = myReverse xs ++ [x]
+~~~~
+
+Or reuse `head` and `tail`:
+~~~~ {.haskell}
+myReverse :: [a] -> [a]
+myReverse [] = []
+myReverse list = myReverse (tail list) ++ [head list]
+~~~~
+
+<aside class="notes">
+* Can make it more generic
+</aside>
 
 # Function Example
 
@@ -298,6 +396,26 @@ mySum xs = mySum' 0   xs
 * Genericity for free
 * Type annotations more useful to programmers than compiler
 
+<aside class="notes">
+* Mention UML
+</aside>
+
+# Control Structures
+
+## Control Structures
+
+* Are there really no control structures?
+    * `if` ?
+    * `while` ?
+    * `for` ?
+* We can construct our own!
+    * Due to Haskell's laziness 
+
+<aside class="notes">
+* Imperative control structures awkward in functional setting
+* Better alternatives exist
+</aside>
+
 # Abstracting loops
 
 ## Abstracting loops
@@ -325,8 +443,6 @@ map :: (a -> b) -> [a] -> [b]
 * Map works by applying another function over a list
 * We have to pass a function to map
     * Similar to C's `qsort`
-
-
 
 ## Functions
 
@@ -564,3 +680,25 @@ Need some kind of goal
 * Allows heavy reuse of code
 * Give example of filtering a list
 * fold, map, filter
+
+## Syntax Overview
+
+* `=` -- Define a value
+* `::` -- Type annotation
+* `[1, 2, 3]` -- List
+* `:` -- Prepend to a list
+* `++` -- Concatenate two lists
+* `a -> b` -- Function from `a` to `b`
+* `where` -- scoped definition
+
+## Syntax Overview
+
+Syntax                      Meaning
+-----------                 ------------------------
+`x = 42`                    Define a value
+`42 :: Int`                 Type annotation
+`a -> b`                    Function from `a` to `b`
+`[1, 2, 3]`                 List
+`1 : [2, 3]`                Prepend to a list
+`"He" ++ "llo"`             Concatenate two lists
+`where`                     scoped definition

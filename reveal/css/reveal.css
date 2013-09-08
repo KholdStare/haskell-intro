@@ -282,7 +282,7 @@ body {
 	font-style: italic;
 }
 
-.reveal pre {
+.reveal pre, .reveal figure {
 	display: block;
 	position: relative;
 	width: 90%;
@@ -297,10 +297,13 @@ body {
 
 	box-shadow: 0px 0px 6px rgba(0,0,0,0.3);
 }
+
 .reveal code {
 	font-family: monospace;
 }
-.reveal pre code {
+
+.reveal pre code,
+.reveal figure object {
 	padding: 5px;
 	overflow: auto;
 	max-height: 400px;

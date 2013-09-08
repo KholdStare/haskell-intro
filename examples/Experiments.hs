@@ -26,7 +26,7 @@ maybeExample num = do
     return $ toUpper letter
 
 -- toUpper :: Char -> Char
-
+ 
 
 -- All the cool typeclasses
 -- ========================
@@ -71,6 +71,12 @@ head' (x:_) = x
 tail' :: [a] -> [a]
 tail' [] = []
 tail' (x:xs) = xs
+
+-- more complicated pattern miss
+swap2 :: [a] -> [a]
+swap2 [] = []
+swap2 (x:y:rest) = (y:x:rest)
+-- works for any and all structures - is generic
 
 -- Imperative control structures
 -- =============================

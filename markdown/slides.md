@@ -752,10 +752,43 @@ map length :: [String] -> [Int]
 
 ## Lifting functions
 
-* With `map` we _lift_ a function to work with lists
+With `map` we _lift_ a function to work with lists
 
-TODO: commutative diagram
+<figure>
+<object width="100%" data="diagrams/LiftingLength.svg" type="image/svg+xml">
+    <img src="diagrams/LiftingLength.png" />
+</object>
+</figure>
 
+## Lifting functions
+
+Generalizing to arbitrary types `a` and `b`
+
+<figure>
+<object width="100%" data="diagrams/Map.svg" type="image/svg+xml">
+    <img src="diagrams/Map.png" />
+</object>
+</figure>
+
+## Key insight
+
+* Have two _vertical_ types of arrows:
+    * object to object
+        * wrap inside list with `[]`
+    * function to function
+        * using `map` to _lift_ other functions
+
+> Question: Given an arbitrary type wrapper, can we come up with a unique _lifting_ function?
+
+TODO: give another motivating example in the form of `Maybe`?
+
+## Functors
+
+<figure>
+<object width="100%" data="diagrams/Functors.svg" type="image/svg+xml">
+    <img src="diagrams/Functors.png" />
+</object>
+</figure>
 
 # Scrap
 

@@ -780,10 +780,52 @@ mappend a (mappend b c) <span class="fu">=</span> mappend (mappend a b) c </code
 <span class="fu">map</span><span class="ot"> length ::</span> [<span class="dt">String</span>] <span class="ot">-&gt;</span> [<span class="dt">Int</span>]</code></pre>
 </div><div id="lifting-functions" class="slide section level2">
 <h1>Lifting functions</h1>
+<p>With <code>map</code> we <em>lift</em> a function to work with lists</p>
+<figure>
+<object width="100%" data="diagrams/LiftingLength.svg" type="image/svg+xml">
+    
+<img src="diagrams/LiftingLength.png" />
+</object>
+</figure>
+
+</div><div id="lifting-functions-1" class="slide section level2">
+<h1>Lifting functions</h1>
+<p>Generalizing to arbitrary types <code>a</code> and <code>b</code></p>
+<figure>
+<object width="100%" data="diagrams/Map.svg" type="image/svg+xml">
+    
+<img src="diagrams/Map.png" />
+</object>
+</figure>
+
+</div><div id="key-insight" class="slide section level2">
+<h1>Key insight</h1>
 <ul>
-<li>With <code>map</code> we <em>lift</em> a function to work with lists</li>
+<li>Have two <em>vertical</em> types of arrows:
+<ul>
+<li>object to object
+<ul>
+<li>wrap inside list with <code>[]</code></li>
+</ul></li>
+<li>function to function
+<ul>
+<li>using <code>map</code> to <em>lift</em> other functions</li>
+</ul></li>
+</ul></li>
 </ul>
-<p>TODO: commutative diagram</p>
+<blockquote>
+<p>Question: Given an arbitrary type wrapper, can we come up with a unique <em>lifting</em> function?</p>
+</blockquote>
+<p>TODO: give another motivating example in the form of <code>Maybe</code>?</p>
+</div><div id="functors-1" class="slide section level2">
+<h1>Functors</h1>
+<figure>
+<object width="100%" data="diagrams/Functors.svg" type="image/svg+xml">
+    
+<img src="diagrams/Functors.png" />
+</object>
+</figure>
+
 </div>
 <div id="scrap" class="titleslide slide section level1"><h1>Scrap</h1></div><div id="outline-of-topics" class="slide section level2">
 <h1>Outline of topics</h1>

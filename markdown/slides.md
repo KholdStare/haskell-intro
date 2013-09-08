@@ -115,7 +115,8 @@ void qsort(
     void *ptr,
     size_t count,
     size_t size,
-    int (*comp)(const void *, const void *) // function as a parameter
+    // function as a parameter
+    int (*comp)(const void *, const void *)
 );
 ~~~~
 
@@ -198,8 +199,42 @@ addOneTo v = v + 1
 * Concrete types always _Capitalized_
 * `a -> b` denotes a function from `a` to `b`
 
+## Simple functions?
+
+TODO: use knowledge from previous slides
+
+## New Data types
+
+* We have seen some types
+* Let's see the `Bool` definition
+
+~~~~ {.haskell}
+--   \/~~ new type name
+data Bool = True | False
+--           /\     /\
+--   Possible values in type
+~~~~
 
 ## Pattern Matching
+
+* We can inspect structure of arguments in function definitions
+    * Called Pattern Matching
+
+~~~~ {.haskell}
+-- Using built-in if
+boolToString :: Bool -> String
+boolToString b = if b then "Yes!" else "No!"
+
+-- Using Pattern Matching
+boolToString' :: Bool -> String
+boolToString' True  = "Yes!"
+boolToString' False = "No!"
+~~~~
+
+<aside class="notes">
+* "Unpacking" the argument
+* Mention `data Int = `1 | 2 | 3 | 4 ...`
+</aside>
 
 ## Lists
 
@@ -214,32 +249,41 @@ Syntax                      Meaning
 
 ## List operations
 
+Pattern match on `:` construction.
+
 ~~~~ {.haskell}
+-- Get first element
 head :: [a] -> a
 head (x:xs) = x
 ~~~~
 
 ~~~~ {.haskell}
+-- Get list after first element
 tail :: [a] -> [a]
-head (x:xs) = xs
+tail []     = []
+tail (x:xs) = xs
 ~~~~
 
 <aside class="notes">
 * Pattern match against list construction `:`
 * Parametric polymorphism 
-* We don't assume anything about list elements
+* We don't assume anything about list elements themselves
+* Cover empty case
+* mention `error "empty list"` only if asked
 </aside>
 
 ## Reverse a List
 
-Pattern match:
+Pattern matching is your friend
+
 ~~~~ {.haskell}
 myReverse :: [a] -> [a]
 myReverse [] = []
 myReverse (x:xs) = myReverse xs ++ [x]
 ~~~~
 
-Or reuse `head` and `tail`:
+Reuse `head` and `tail`:
+
 ~~~~ {.haskell}
 myReverse :: [a] -> [a]
 myReverse [] = []
@@ -365,7 +409,7 @@ mySum :: Num a => [a] -> a
 ## Type Inference - How?
 
 ~~~~ {.haskell}
---  Says "Type a has to be a Number"
+--  Says "Type parameter a has to be a Number"
 mySum :: Num a => [a] -> a
 mySum xs = mySum' 0   xs
      where mySum' acc []     = acc
@@ -450,7 +494,7 @@ TODO: functions
 
 * Functions are first class values!
     * Can be passed around
-    * Can be assigned
+    * Can be equaded
     * Can be created
 
 ## Functions - Passed Around
@@ -495,10 +539,10 @@ doubleValues xs = map (\x -> x * 2) xs
 [2, 4, 6, 8, 10]
 ~~~~
 
-## Functions - Assigned
+## Functions - Equaded
 
 * Functions are values
-* Values can be assigned
+* Values can be defined in terms of other values
 * Define one function by equading to another
     * This is called _pointfree_ notation
 
@@ -544,7 +588,7 @@ class Num a where
 ## Typeclasses - Instances
 
 * A Data Type can adhere to a typeclass by specifying an `instance`
-* Attach behaviour after the fact onto existing data
+* Attach behaviour after the fact onto existing Data Type
 
 TODO: "filling in the 'a' "
 
@@ -599,6 +643,12 @@ group "Missisauga" = ["M","i","ss","i","ss","a","u","g","a"]
     * `Monoid`s, `Functor`s, `Applicative`s, `Monad`s
 * Each one is a very precise definition of what it means to be composable
 
+
+<aside class="notes">
+* Comes from category theory in mathematics
+* We can use it anyway
+</aside>
+
 # The Monoid
 
 ## The Monoid
@@ -611,14 +661,23 @@ group "Missisauga" = ["M","i","ss","i","ss","a","u","g","a"]
 ― Wikipedia
 </blockquote>
 
+## The Monoid
+
+<blockquote>
+"In abstract algebra, a __monoid__ is an algebraic structure with a single __associative binary operation__ and an __identity element__."
+― Wikipedia
+</blockquote>
+
 ~~~~ {.haskell}
 class Monoid a where
     mempty :: a             -- identity
     mappend :: a -> a -> a  -- binary operation
 
 -- Rules:  (not checked, but assumed in usage)
-mappend a mempty = a      -- identity
-mappend a (mappend b c) = mappend (mappend a b) c -- associativity
+-- identity
+mappend a mempty = a      
+-- associativity
+mappend a (mappend b c) = mappend (mappend a b) c 
 ~~~~
 
 <aside class="notes">
@@ -633,7 +692,7 @@ mappend a (mappend b c) = mappend (mappend a b) c -- associativity
 ~~~~ {.haskell}
 instance Monoid String where
     mempty = ""            -- empty string is identity
-    mappend a b = a ++ b   -- binary op is string concatenation
+    mappend a b = a ++ b   -- op is string concatenation
 
 instance Monoid Int where
     mempty = 0
@@ -657,6 +716,46 @@ mconcat :: (Monoid m) => [m] -> m
 * Union a list of Sets!
 * Join ethernet packets!
 * Combine Databases!
+
+# Functors
+
+## Problem
+
+* You have a function `length :: String -> Int`
+* But you need to apply it to a list `[String]`
+* What do you do?
+    * Ideally want `someFunc :: [String] -> [Int]`
+
+## Map
+
+* We saw this before
+* `map` a function over a list
+
+~~~~ {.haskell}
+> map length ["Hello", "World!"]
+[5, 6] :: [Int]
+~~~~
+
+## Generalizing map
+
+* `map` applies a function to every element in a list
+* Or more interestingly...
+* It creates a new function that works on lists
+
+~~~~ {.haskell}
+> :type map
+map :: (a -> b) -> [a] -> [b]
+
+> :type map length
+map length :: [String] -> [Int]
+~~~~
+
+## Lifting functions
+
+* With `map` we _lift_ a function to work with lists
+
+TODO: commutative diagram
+
 
 # Scrap
 

@@ -165,7 +165,8 @@ quicksort (p<span class="fu">:</span>xs) <span class="fu">=</span>
     <span class="dt">void</span> *ptr,
     size_t count,
     size_t size,
-    <span class="dt">int</span> (*comp)(<span class="dt">const</span> <span class="dt">void</span> *, <span class="dt">const</span> <span class="dt">void</span> *) <span class="co">// function as a parameter</span>
+    <span class="co">// function as a parameter</span>
+    <span class="dt">int</span> (*comp)(<span class="dt">const</span> <span class="dt">void</span> *, <span class="dt">const</span> <span class="dt">void</span> *)
 );</code></pre>
 <aside class="notes">
     
@@ -251,8 +252,42 @@ addOneTo v <span class="fu">=</span> v <span class="fu">+</span> <span class="dv
 <li>Concrete types always <em>Capitalized</em></li>
 <li><code>a -&gt; b</code> denotes a function from <code>a</code> to <code>b</code></li>
 </ul>
+</div><div id="simple-functions" class="slide section level2">
+<h1>Simple functions?</h1>
+<p>TODO: use knowledge from previous slides</p>
+</div><div id="new-data-types" class="slide section level2">
+<h1>New Data types</h1>
+<ul>
+<li>We have seen some types</li>
+<li>Let's see the <code>Bool</code> definition</li>
+</ul>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">--   \/~~ new type name</span>
+<span class="kw">data</span> <span class="dt">Bool</span> <span class="fu">=</span> <span class="kw">True</span> <span class="fu">|</span> <span class="kw">False</span>
+<span class="co">--           /\     /\</span>
+<span class="co">--   Possible values in type</span></code></pre>
 </div><div id="pattern-matching" class="slide section level2">
 <h1>Pattern Matching</h1>
+<ul>
+<li>We can inspect structure of arguments in function definitions
+<ul>
+<li>Called Pattern Matching</li>
+</ul></li>
+</ul>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- Using built-in if</span>
+<span class="ot">boolToString ::</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">String</span>
+boolToString b <span class="fu">=</span> <span class="kw">if</span> b <span class="kw">then</span> <span class="st">&quot;Yes!&quot;</span> <span class="kw">else</span> <span class="st">&quot;No!&quot;</span>
+
+<span class="co">-- Using Pattern Matching</span>
+<span class="ot">boolToString&#39; ::</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">String</span>
+boolToString&#39; <span class="kw">True</span>  <span class="fu">=</span> <span class="st">&quot;Yes!&quot;</span>
+boolToString&#39; <span class="kw">False</span> <span class="fu">=</span> <span class="st">&quot;No!&quot;</span></code></pre>
+<aside class="notes">
+<ul>
+<li>&quot;Unpacking&quot; the argument</li>
+<li>Mention <code>data Int =</code>1 | 2 | 3 | 4 ...`
+</aside>
+</li>
+</ul>
 </div><div id="lists" class="slide section level2">
 <h1>Lists</h1>
 <table>
@@ -291,22 +326,34 @@ addOneTo v <span class="fu">=</span> v <span class="fu">+</span> <span class="dv
 </table>
 </div><div id="list-operations" class="slide section level2">
 <h1>List operations</h1>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">head</span><span class="ot"> ::</span> [a] <span class="ot">-&gt;</span> a
+<p>Pattern match on <code>:</code> construction.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- Get first element</span>
+<span class="fu">head</span><span class="ot"> ::</span> [a] <span class="ot">-&gt;</span> a
 <span class="fu">head</span> (x<span class="fu">:</span>xs) <span class="fu">=</span> x</code></pre>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">tail</span><span class="ot"> ::</span> [a] <span class="ot">-&gt;</span> [a]
-<span class="fu">head</span> (x<span class="fu">:</span>xs) <span class="fu">=</span> xs</code></pre>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- Get list after first element</span>
+<span class="fu">tail</span><span class="ot"> ::</span> [a] <span class="ot">-&gt;</span> [a]
+<span class="fu">tail</span> []     <span class="fu">=</span> []
+<span class="fu">tail</span> (x<span class="fu">:</span>xs) <span class="fu">=</span> xs</code></pre>
 <aside class="notes">
 <ul>
 <li>Pattern match against list construction <code>:</code></li>
 <li>Parametric polymorphism</li>
-<li>We don't assume anything about list elements
+<li>We don't assume anything about list elements themselves</li>
+<li>Cover empty case</li>
+<li>mention <code>error &quot;empty list&quot;</code> only if asked
 </aside>
 </li>
 </ul>
 </div><div id="reverse-a-list" class="slide section level2">
 <h1>Reverse a List</h1>
-<p>Pattern match: ~~~~ {.haskell} myReverse :: [a] -&gt; [a] myReverse [] = [] myReverse (x:xs) = myReverse xs ++ [x] ~~~~</p>
-<p>Or reuse <code>head</code> and <code>tail</code>: ~~~~ {.haskell} myReverse :: [a] -&gt; [a] myReverse [] = [] myReverse list = myReverse (tail list) ++ [head list] ~~~~</p>
+<p>Pattern matching is your friend</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">myReverse ::</span> [a] <span class="ot">-&gt;</span> [a]
+myReverse [] <span class="fu">=</span> []
+myReverse (x<span class="fu">:</span>xs) <span class="fu">=</span> myReverse xs <span class="fu">++</span> [x]</code></pre>
+<p>Reuse <code>head</code> and <code>tail</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">myReverse ::</span> [a] <span class="ot">-&gt;</span> [a]
+myReverse [] <span class="fu">=</span> []
+myReverse list <span class="fu">=</span> myReverse (<span class="fu">tail</span> list) <span class="fu">++</span> [<span class="fu">head</span> list]</code></pre>
 <aside class="notes">
 <ul>
 <li>Can make it more generic
@@ -408,7 +455,7 @@ mySum xs <span class="fu">=</span> mySum&#39; <span class="dv">0</span>   xs
 <span class="ot">mySum ::</span> <span class="kw">Num</span> a <span class="ot">=&gt;</span> [a] <span class="ot">-&gt;</span> a</code></pre>
 </div><div id="type-inference---how" class="slide section level2">
 <h1>Type Inference - How?</h1>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">--  Says &quot;Type a has to be a Number&quot;</span>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">--  Says &quot;Type parameter a has to be a Number&quot;</span>
 <span class="ot">mySum ::</span> <span class="kw">Num</span> a <span class="ot">=&gt;</span> [a] <span class="ot">-&gt;</span> a
 mySum xs <span class="fu">=</span> mySum&#39; <span class="dv">0</span>   xs
      <span class="kw">where</span> mySum&#39; acc []     <span class="fu">=</span> acc
@@ -500,7 +547,7 @@ mySum xs <span class="fu">=</span> mySum&#39; <span class="dv">0</span>   xs
 <li>Functions are first class values!
 <ul>
 <li>Can be passed around</li>
-<li>Can be assigned</li>
+<li>Can be equaded</li>
 <li>Can be created</li>
 </ul></li>
 </ul>
@@ -534,11 +581,11 @@ doubleValues xs <span class="fu">=</span> <span class="fu">map</span> (\x <span 
 <span class="co">--                   lambda function</span></code></pre>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&gt;</span> doubleValues [<span class="dv">1</span><span class="fu">..</span><span class="dv">5</span>]
 [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">10</span>]</code></pre>
-</div><div id="functions---assigned" class="slide section level2">
-<h1>Functions - Assigned</h1>
+</div><div id="functions---equaded" class="slide section level2">
+<h1>Functions - Equaded</h1>
 <ul>
 <li>Functions are values</li>
-<li>Values can be assigned</li>
+<li>Values can be defined in terms of other values</li>
 <li>Define one function by equading to another
 <ul>
 <li>This is called <em>pointfree</em> notation</li>
@@ -582,7 +629,7 @@ stringToUpper <span class="fu">=</span> <span class="fu">map</span> (<span class
 <h1>Typeclasses - Instances</h1>
 <ul>
 <li>A Data Type can adhere to a typeclass by specifying an <code>instance</code></li>
-<li>Attach behaviour after the fact onto existing data</li>
+<li>Attach behaviour after the fact onto existing Data Type</li>
 </ul>
 <p>TODO: &quot;filling in the 'a' &quot;</p>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="kw">Num</span> <span class="dt">Int</span> <span class="kw">where</span>
@@ -631,6 +678,13 @@ stringToUpper <span class="fu">=</span> <span class="fu">map</span> (<span class
 </ul></li>
 <li>Each one is a very precise definition of what it means to be composable</li>
 </ul>
+<aside class="notes">
+<ul>
+<li>Comes from category theory in mathematics</li>
+<li>We can use it anyway
+</aside>
+</li>
+</ul>
 </div>
 <div id="the-monoid" class="titleslide slide section level1"><h1>The Monoid</h1></div><div id="the-monoid-1" class="slide section level2">
 <h1>The Monoid</h1>
@@ -642,13 +696,21 @@ stringToUpper <span class="fu">=</span> <span class="fu">map</span> (<span class
 &quot;In abstract algebra, a <strong>monoid</strong> is an algebraic structure with a single <strong>associative binary operation</strong> and an <strong>identity element</strong>.&quot; ― Wikipedia
 </blockquote>
 
+</div><div id="the-monoid-2" class="slide section level2">
+<h1>The Monoid</h1>
+<blockquote>
+&quot;In abstract algebra, a <strong>monoid</strong> is an algebraic structure with a single <strong>associative binary operation</strong> and an <strong>identity element</strong>.&quot; ― Wikipedia
+</blockquote>
+
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="dt">Monoid</span> a <span class="kw">where</span>
 <span class="ot">    mempty ::</span> a             <span class="co">-- identity</span>
 <span class="ot">    mappend ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a  <span class="co">-- binary operation</span>
 
 <span class="co">-- Rules:  (not checked, but assumed in usage)</span>
-mappend a mempty <span class="fu">=</span> a      <span class="co">-- identity</span>
-mappend a (mappend b c) <span class="fu">=</span> mappend (mappend a b) c <span class="co">-- associativity</span></code></pre>
+<span class="co">-- identity</span>
+mappend a mempty <span class="fu">=</span> a      
+<span class="co">-- associativity</span>
+mappend a (mappend b c) <span class="fu">=</span> mappend (mappend a b) c </code></pre>
 <aside class="notes">
 <ul>
 <li>Don't worry about math jargon</li>
@@ -656,14 +718,14 @@ mappend a (mappend b c) <span class="fu">=</span> mappend (mappend a b) c <span 
 </aside>
 </li>
 </ul>
-</div><div id="the-monoid-2" class="slide section level2">
+</div><div id="the-monoid-3" class="slide section level2">
 <h1>The Monoid</h1>
 <ul>
 <li>You know lots of <code>Monoid</code>s!</li>
 </ul>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Monoid</span> <span class="dt">String</span> <span class="kw">where</span>
     mempty <span class="fu">=</span> <span class="st">&quot;&quot;</span>            <span class="co">-- empty string is identity</span>
-    mappend a b <span class="fu">=</span> a <span class="fu">++</span> b   <span class="co">-- binary op is string concatenation</span>
+    mappend a b <span class="fu">=</span> a <span class="fu">++</span> b   <span class="co">-- op is string concatenation</span>
 
 <span class="kw">instance</span> <span class="dt">Monoid</span> <span class="dt">Int</span> <span class="kw">where</span>
     mempty <span class="fu">=</span> <span class="dv">0</span>
@@ -685,6 +747,43 @@ mappend a (mappend b c) <span class="fu">=</span> mappend (mappend a b) c <span 
 <li>Join ethernet packets!</li>
 <li>Combine Databases!</li>
 </ul>
+</div>
+<div id="functors" class="titleslide slide section level1"><h1>Functors</h1></div><div id="problem" class="slide section level2">
+<h1>Problem</h1>
+<ul>
+<li>You have a function <code>length :: String -&gt; Int</code></li>
+<li>But you need to apply it to a list <code>[String]</code></li>
+<li>What do you do?
+<ul>
+<li>Ideally want <code>someFunc :: [String] -&gt; [Int]</code></li>
+</ul></li>
+</ul>
+</div><div id="map-2" class="slide section level2">
+<h1>Map</h1>
+<ul>
+<li>We saw this before</li>
+<li><code>map</code> a function over a list</li>
+</ul>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&gt;</span> <span class="fu">map</span> <span class="fu">length</span> [<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;World!&quot;</span>]
+[<span class="dv">5</span>, <span class="dv">6</span>]<span class="ot"> ::</span> [<span class="dt">Int</span>]</code></pre>
+</div><div id="generalizing-map" class="slide section level2">
+<h1>Generalizing map</h1>
+<ul>
+<li><code>map</code> applies a function to every element in a list</li>
+<li>Or more interestingly...</li>
+<li>It creates a new function that works on lists</li>
+</ul>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&gt;</span> <span class="fu">:</span><span class="kw">type</span> <span class="fu">map</span>
+<span class="fu">map</span><span class="ot"> ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b]
+
+<span class="fu">&gt;</span> <span class="fu">:</span><span class="kw">type</span> <span class="fu">map</span> <span class="fu">length</span>
+<span class="fu">map</span><span class="ot"> length ::</span> [<span class="dt">String</span>] <span class="ot">-&gt;</span> [<span class="dt">Int</span>]</code></pre>
+</div><div id="lifting-functions" class="slide section level2">
+<h1>Lifting functions</h1>
+<ul>
+<li>With <code>map</code> we <em>lift</em> a function to work with lists</li>
+</ul>
+<p>TODO: commutative diagram</p>
 </div>
 <div id="scrap" class="titleslide slide section level1"><h1>Scrap</h1></div><div id="outline-of-topics" class="slide section level2">
 <h1>Outline of topics</h1>

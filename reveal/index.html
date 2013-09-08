@@ -183,7 +183,8 @@ quicksort (p:xs) =
     void *ptr,
     size_t count,
     size_t size,
-    int (*comp)(const void *, const void *) // function as a parameter
+    // function as a parameter
+    int (*comp)(const void *, const void *)
 );</code></pre>
 <aside class="notes">
     
@@ -269,8 +270,42 @@ addOneTo v = v + 1</code></pre>
 <li>Concrete types always <em>Capitalized</em></li>
 <li><code>a -&gt; b</code> denotes a function from <code>a</code> to <code>b</code></li>
 </ul>
+</section><section id="simple-functions" class="slide level2">
+<h1>Simple functions?</h1>
+<p>TODO: use knowledge from previous slides</p>
+</section><section id="new-data-types" class="slide level2">
+<h1>New Data types</h1>
+<ul>
+<li>We have seen some types</li>
+<li>Let's see the <code>Bool</code> definition</li>
+</ul>
+<pre class="haskell"><code>--   \/~~ new type name
+data Bool = True | False
+--           /\     /\
+--   Possible values in type</code></pre>
 </section><section id="pattern-matching" class="slide level2">
 <h1>Pattern Matching</h1>
+<ul>
+<li>We can inspect structure of arguments in function definitions
+<ul>
+<li>Called Pattern Matching</li>
+</ul></li>
+</ul>
+<pre class="haskell"><code>-- Using built-in if
+boolToString :: Bool -&gt; String
+boolToString b = if b then &quot;Yes!&quot; else &quot;No!&quot;
+
+-- Using Pattern Matching
+boolToString&#39; :: Bool -&gt; String
+boolToString&#39; True  = &quot;Yes!&quot;
+boolToString&#39; False = &quot;No!&quot;</code></pre>
+<aside class="notes">
+<ul>
+<li>&quot;Unpacking&quot; the argument</li>
+<li>Mention <code>data Int =</code>1 | 2 | 3 | 4 ...`
+</aside>
+</li>
+</ul>
 </section><section id="lists" class="slide level2">
 <h1>Lists</h1>
 <table>
@@ -309,22 +344,34 @@ addOneTo v = v + 1</code></pre>
 </table>
 </section><section id="list-operations" class="slide level2">
 <h1>List operations</h1>
-<pre class="haskell"><code>head :: [a] -&gt; a
+<p>Pattern match on <code>:</code> construction.</p>
+<pre class="haskell"><code>-- Get first element
+head :: [a] -&gt; a
 head (x:xs) = x</code></pre>
-<pre class="haskell"><code>tail :: [a] -&gt; [a]
-head (x:xs) = xs</code></pre>
+<pre class="haskell"><code>-- Get list after first element
+tail :: [a] -&gt; [a]
+tail []     = []
+tail (x:xs) = xs</code></pre>
 <aside class="notes">
 <ul>
 <li>Pattern match against list construction <code>:</code></li>
 <li>Parametric polymorphism</li>
-<li>We don't assume anything about list elements
+<li>We don't assume anything about list elements themselves</li>
+<li>Cover empty case</li>
+<li>mention <code>error &quot;empty list&quot;</code> only if asked
 </aside>
 </li>
 </ul>
 </section><section id="reverse-a-list" class="slide level2">
 <h1>Reverse a List</h1>
-<p>Pattern match: ~~~~ {.haskell} myReverse :: [a] -&gt; [a] myReverse [] = [] myReverse (x:xs) = myReverse xs ++ [x] ~~~~</p>
-<p>Or reuse <code>head</code> and <code>tail</code>: ~~~~ {.haskell} myReverse :: [a] -&gt; [a] myReverse [] = [] myReverse list = myReverse (tail list) ++ [head list] ~~~~</p>
+<p>Pattern matching is your friend</p>
+<pre class="haskell"><code>myReverse :: [a] -&gt; [a]
+myReverse [] = []
+myReverse (x:xs) = myReverse xs ++ [x]</code></pre>
+<p>Reuse <code>head</code> and <code>tail</code>:</p>
+<pre class="haskell"><code>myReverse :: [a] -&gt; [a]
+myReverse [] = []
+myReverse list = myReverse (tail list) ++ [head list]</code></pre>
 <aside class="notes">
 <ul>
 <li>Can make it more generic
@@ -426,7 +473,7 @@ mySum xs = mySum&#39; 0   xs
 mySum :: Num a =&gt; [a] -&gt; a</code></pre>
 </section><section id="type-inference---how" class="slide level2">
 <h1>Type Inference - How?</h1>
-<pre class="haskell"><code>--  Says &quot;Type a has to be a Number&quot;
+<pre class="haskell"><code>--  Says &quot;Type parameter a has to be a Number&quot;
 mySum :: Num a =&gt; [a] -&gt; a
 mySum xs = mySum&#39; 0   xs
      where mySum&#39; acc []     = acc
@@ -518,7 +565,7 @@ mySum xs = mySum&#39; 0   xs
 <li>Functions are first class values!
 <ul>
 <li>Can be passed around</li>
-<li>Can be assigned</li>
+<li>Can be equaded</li>
 <li>Can be created</li>
 </ul></li>
 </ul>
@@ -552,11 +599,11 @@ doubleValues xs = map (\x -&gt; x * 2) xs
 --                   lambda function</code></pre>
 <pre class="haskell"><code>&gt; doubleValues [1..5]
 [2, 4, 6, 8, 10]</code></pre>
-</section><section id="functions---assigned" class="slide level2">
-<h1>Functions - Assigned</h1>
+</section><section id="functions---equaded" class="slide level2">
+<h1>Functions - Equaded</h1>
 <ul>
 <li>Functions are values</li>
-<li>Values can be assigned</li>
+<li>Values can be defined in terms of other values</li>
 <li>Define one function by equading to another
 <ul>
 <li>This is called <em>pointfree</em> notation</li>
@@ -600,7 +647,7 @@ class Num a where
 <h1>Typeclasses - Instances</h1>
 <ul>
 <li>A Data Type can adhere to a typeclass by specifying an <code>instance</code></li>
-<li>Attach behaviour after the fact onto existing data</li>
+<li>Attach behaviour after the fact onto existing Data Type</li>
 </ul>
 <p>TODO: &quot;filling in the 'a' &quot;</p>
 <pre class="haskell"><code>instance Num Int where
@@ -649,6 +696,13 @@ group &quot;Missisauga&quot; = [&quot;M&quot;,&quot;i&quot;,&quot;ss&quot;,&quot
 </ul></li>
 <li>Each one is a very precise definition of what it means to be composable</li>
 </ul>
+<aside class="notes">
+<ul>
+<li>Comes from category theory in mathematics</li>
+<li>We can use it anyway
+</aside>
+</li>
+</ul>
 </section></section>
 <section><section id="the-monoid" class="titleslide slide level1"><h1>The Monoid</h1></section><section id="the-monoid-1" class="slide level2">
 <h1>The Monoid</h1>
@@ -660,13 +714,21 @@ group &quot;Missisauga&quot; = [&quot;M&quot;,&quot;i&quot;,&quot;ss&quot;,&quot
 &quot;In abstract algebra, a <strong>monoid</strong> is an algebraic structure with a single <strong>associative binary operation</strong> and an <strong>identity element</strong>.&quot; ― Wikipedia
 </blockquote>
 
+</section><section id="the-monoid-2" class="slide level2">
+<h1>The Monoid</h1>
+<blockquote>
+&quot;In abstract algebra, a <strong>monoid</strong> is an algebraic structure with a single <strong>associative binary operation</strong> and an <strong>identity element</strong>.&quot; ― Wikipedia
+</blockquote>
+
 <pre class="haskell"><code>class Monoid a where
     mempty :: a             -- identity
     mappend :: a -&gt; a -&gt; a  -- binary operation
 
 -- Rules:  (not checked, but assumed in usage)
-mappend a mempty = a      -- identity
-mappend a (mappend b c) = mappend (mappend a b) c -- associativity</code></pre>
+-- identity
+mappend a mempty = a      
+-- associativity
+mappend a (mappend b c) = mappend (mappend a b) c </code></pre>
 <aside class="notes">
 <ul>
 <li>Don't worry about math jargon</li>
@@ -674,14 +736,14 @@ mappend a (mappend b c) = mappend (mappend a b) c -- associativity</code></pre>
 </aside>
 </li>
 </ul>
-</section><section id="the-monoid-2" class="slide level2">
+</section><section id="the-monoid-3" class="slide level2">
 <h1>The Monoid</h1>
 <ul>
 <li>You know lots of <code>Monoid</code>s!</li>
 </ul>
 <pre class="haskell"><code>instance Monoid String where
     mempty = &quot;&quot;            -- empty string is identity
-    mappend a b = a ++ b   -- binary op is string concatenation
+    mappend a b = a ++ b   -- op is string concatenation
 
 instance Monoid Int where
     mempty = 0
@@ -703,6 +765,43 @@ mconcat :: (Monoid m) =&gt; [m] -&gt; m</code></pre>
 <li>Join ethernet packets!</li>
 <li>Combine Databases!</li>
 </ul>
+</section></section>
+<section><section id="functors" class="titleslide slide level1"><h1>Functors</h1></section><section id="problem" class="slide level2">
+<h1>Problem</h1>
+<ul>
+<li>You have a function <code>length :: String -&gt; Int</code></li>
+<li>But you need to apply it to a list <code>[String]</code></li>
+<li>What do you do?
+<ul>
+<li>Ideally want <code>someFunc :: [String] -&gt; [Int]</code></li>
+</ul></li>
+</ul>
+</section><section id="map-2" class="slide level2">
+<h1>Map</h1>
+<ul>
+<li>We saw this before</li>
+<li><code>map</code> a function over a list</li>
+</ul>
+<pre class="haskell"><code>&gt; map length [&quot;Hello&quot;, &quot;World!&quot;]
+[5, 6] :: [Int]</code></pre>
+</section><section id="generalizing-map" class="slide level2">
+<h1>Generalizing map</h1>
+<ul>
+<li><code>map</code> applies a function to every element in a list</li>
+<li>Or more interestingly...</li>
+<li>It creates a new function that works on lists</li>
+</ul>
+<pre class="haskell"><code>&gt; :type map
+map :: (a -&gt; b) -&gt; [a] -&gt; [b]
+
+&gt; :type map length
+map length :: [String] -&gt; [Int]</code></pre>
+</section><section id="lifting-functions" class="slide level2">
+<h1>Lifting functions</h1>
+<ul>
+<li>With <code>map</code> we <em>lift</em> a function to work with lists</li>
+</ul>
+<p>TODO: commutative diagram</p>
 </section></section>
 <section><section id="scrap" class="titleslide slide level1"><h1>Scrap</h1></section><section id="outline-of-topics" class="slide level2">
 <h1>Outline of topics</h1>

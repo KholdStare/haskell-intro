@@ -790,6 +790,25 @@ TODO: give another motivating example in the form of `Maybe`?
 </object>
 </figure>
 
+## Functor Composition
+
+<figure>
+<object width="100%" data="diagrams/FunctorComposition.svg" type="image/svg+xml">
+    <img src="diagrams/FunctorComposition.png" />
+</object>
+</figure>
+
+# Monads
+
+
+## Monads
+
+<figure>
+<object width="100%" data="diagrams/Endofunctors.svg" type="image/svg+xml">
+    <img src="diagrams/Endofunctors.png" />
+</object>
+</figure>
+
 # Scrap
 
 ## Outline of topics

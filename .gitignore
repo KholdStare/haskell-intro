@@ -4,3 +4,10 @@
 # haskell intermediate files
 *.o
 *.hi
+
+# image files
+*.png
+*.svg
+
+# dia swap files
+*.autosave

@@ -15,10 +15,10 @@
 ## Haskell
 
 * Haskell is unlike any other language
-* Language Design decisions opose the status quo
+* Language Design decisions oppose the status quo
     * But brilliantly so
 * Many advantages gained as a result
-    * It's fun to program again!
+    * Plus, it's fun to program again!
 
 ![](images/HaskellLogo.jpg)
 
@@ -47,36 +47,46 @@ quicksort (p:xs) =
 ## Haskell Platform
 
 Cross-platform distribution with trusted libraries
-TODO: image
+
+[![Download Haskell Platform](http://hackage.haskell.org/platform/icons/button-100.png)](http://hackage.haskell.org/platform)
 
 ## Hackage
 
 Rich open source library repository
 
-TODO: images
-
 ## Cabal
 
 Package management
 
-TODO: images
+[![](http://hackage.haskell.org/images/Cabal-dark.png)](https://github.com/haskell/cabal/wiki/cabal-install)
 
 ## GHC
 
-Glasgow Haskell compiler
-* compiles to native code
+Glasgow Haskell Compiler
 
 ## GHCi
 
 Interpreter
-TODO: image
 
 ## Hoogle
 
-Search yours and other's libraries by type signatures (!!!)
+Search yours and other's libraries by type signatures
 
-TODO: image
-TODO: sort example?
+[![](http://www.haskell.org/hoogle/res/hoogle.png)](http://www.haskell.org/hoogle/)
+
+## School Of Haskell
+
+In-depth tutorials with inline runable/editable code
+
+[![School Of Haskell](https://www.gravatar.com/avatar/76a473697ce9ed86d1d1ef514abbd5b8?s=200)](https://www.fpcomplete.com/school)
+
+## Other Cool Stuff
+
+* [QuickCheck](http://en.wikipedia.org/wiki/QuickCheck)
+    * Generates test cases
+    * Provides *minimal* failing test case on failure
+* [Software Transaction Memory](https://www.fpcomplete.com/school/beautiful-concurrency)
+    * Composable concurrency abstraction
 
 ## Haskell
 
@@ -102,22 +112,9 @@ Haskell is a purely functional, statically typed programming language, with non-
 * Non-strict evaluation
     * A.k.a. lazy evaluation
 
-## QuickSort
+## Pure
 
-~~~~ {.haskell}
-quicksort :: Ord a => [a] -> [a]
-quicksort []     = []
-quicksort (p:xs) =
-    (quicksort lesser) ++ [p] ++ (quicksort greater)
-    where
-        lesser  = filter (< p) xs
-        greater = filter (>= p) xs
-~~~~
-
-<aside class="notes">
-    * No variable assignments
-    * Breaks into cases
-</aside>
+> Applying a function with the same parameters always returns the same value
 
 ## Pure
 
@@ -149,6 +146,10 @@ TODO: Excel picture
 
 ## Functional
 
+> Functions are first-class values
+
+## Functional
+
 * Functions are first-class values
     * Can be passed around
     * Can be defined inline (lambda functions)
@@ -174,6 +175,10 @@ void qsort(
     * Function pointers not a closure
     * Can't return a new function
 </aside>
+
+## Lazy
+
+> Values evaluated only when needed
 
 ## Lazy
 

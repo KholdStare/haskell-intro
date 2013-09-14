@@ -55,13 +55,13 @@
 <h1>Haskell</h1>
 <ul>
 <li>Haskell is unlike any other language</li>
-<li>Language Design decisions opose the status quo
+<li>Language Design decisions oppose the status quo
 <ul>
 <li>But brilliantly so</li>
 </ul></li>
 <li>Many advantages gained as a result
 <ul>
-<li>It's fun to program again!</li>
+<li>Plus, it's fun to program again!</li>
 </ul></li>
 </ul>
 <figure>
@@ -89,25 +89,42 @@ quicksort (p:xs) =
 </ul>
 </section><section id="haskell-platform" class="slide level2">
 <h1>Haskell Platform</h1>
-<p>Cross-platform distribution with trusted libraries TODO: image</p>
+<p>Cross-platform distribution with trusted libraries</p>
+<p><a href="http://hackage.haskell.org/platform"><img src="http://hackage.haskell.org/platform/icons/button-100.png" alt="Download Haskell Platform" /></a></p>
 </section><section id="hackage" class="slide level2">
 <h1>Hackage</h1>
 <p>Rich open source library repository</p>
-<p>TODO: images</p>
 </section><section id="cabal" class="slide level2">
 <h1>Cabal</h1>
 <p>Package management</p>
-<p>TODO: images</p>
+<p><a href="https://github.com/haskell/cabal/wiki/cabal-install"><img src="http://hackage.haskell.org/images/Cabal-dark.png" /></a></p>
 </section><section id="ghc" class="slide level2">
 <h1>GHC</h1>
-<p>Glasgow Haskell compiler * compiles to native code</p>
+<p>Glasgow Haskell Compiler</p>
 </section><section id="ghci" class="slide level2">
 <h1>GHCi</h1>
-<p>Interpreter TODO: image</p>
+<p>Interpreter</p>
 </section><section id="hoogle" class="slide level2">
 <h1>Hoogle</h1>
-<p>Search yours and other's libraries by type signatures (!!!)</p>
-<p>TODO: image TODO: sort example?</p>
+<p>Search yours and other's libraries by type signatures</p>
+<p><a href="http://www.haskell.org/hoogle/"><img src="http://www.haskell.org/hoogle/res/hoogle.png" /></a></p>
+</section><section id="school-of-haskell" class="slide level2">
+<h1>School Of Haskell</h1>
+<p>In-depth tutorials with inline runable/editable code</p>
+<p><a href="https://www.fpcomplete.com/school"><img src="https://www.gravatar.com/avatar/76a473697ce9ed86d1d1ef514abbd5b8?s=200" alt="School Of Haskell" /></a></p>
+</section><section id="other-cool-stuff" class="slide level2">
+<h1>Other Cool Stuff</h1>
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/QuickCheck">QuickCheck</a>
+<ul>
+<li>Generates test cases</li>
+<li>Provides <em>minimal</em> failing test case on failure</li>
+</ul></li>
+<li><a href="https://www.fpcomplete.com/school/beautiful-concurrency">Software Transaction Memory</a>
+<ul>
+<li>Composable concurrency abstraction</li>
+</ul></li>
+</ul>
 </section><section id="haskell-2" class="slide level2">
 <h1>Haskell</h1>
 <p>More formally...</p>
@@ -137,26 +154,12 @@ Haskell is a purely functional, statically typed programming language, with non-
 <li>A.k.a. lazy evaluation</li>
 </ul></li>
 </ul>
-</section><section id="quicksort-1" class="slide level2">
-<h1>QuickSort</h1>
-<pre class="haskell"><code>quicksort :: Ord a =&gt; [a] -&gt; [a]
-quicksort []     = []
-quicksort (p:xs) =
-    (quicksort lesser) ++ [p] ++ (quicksort greater)
-    where
-        lesser  = filter (&lt; p) xs
-        greater = filter (&gt;= p) xs</code></pre>
-<aside class="notes">
-    
-<ul>
-<li>No variable assignments
-<ul>
-<li>Breaks into cases
-</aside>
-</li>
-</ul></li>
-</ul>
 </section><section id="pure" class="slide level2">
+<h1>Pure</h1>
+<blockquote>
+<p>Applying a function with the same parameters always returns the same value</p>
+</blockquote>
+</section><section id="pure-1" class="slide level2">
 <h1>Pure</h1>
 <ul>
 <li>Functions are functions in the <em>mathematical</em> sense</li>
@@ -168,7 +171,7 @@ quicksort (p:xs) =
 <li>No global state</li>
 </ul></li>
 </ul>
-</section><section id="pure-1" class="slide level2">
+</section><section id="pure-2" class="slide level2">
 <h1>Pure</h1>
 <ul>
 <li>Functions are referentially transparent
@@ -182,7 +185,7 @@ quicksort (p:xs) =
 <li>Concurrency/Parallelism is trivial</li>
 </ul></li>
 </ul>
-</section><section id="pure-2" class="slide level2">
+</section><section id="pure-3" class="slide level2">
 <h1>Pure</h1>
 <ul>
 <li>Some intuition: Excel Spreadsheet
@@ -196,6 +199,11 @@ quicksort (p:xs) =
 <p>TODO: Excel picture</p>
 </section><section id="functional" class="slide level2">
 <h1>Functional</h1>
+<blockquote>
+<p>Functions are first-class values</p>
+</blockquote>
+</section><section id="functional-1" class="slide level2">
+<h1>Functional</h1>
 <ul>
 <li>Functions are first-class values
 <ul>
@@ -207,7 +215,7 @@ quicksort (p:xs) =
 <li>Functions that return new functions</li>
 </ul></li>
 </ul>
-</section><section id="functional-1" class="slide level2">
+</section><section id="functional-2" class="slide level2">
 <h1>Functional</h1>
 <ul>
 <li>Limited intuition in imperative languages:
@@ -234,11 +242,16 @@ quicksort (p:xs) =
 </ul>
 </section><section id="lazy" class="slide level2">
 <h1>Lazy</h1>
+<blockquote>
+<p>Values evaluated only when needed</p>
+</blockquote>
+</section><section id="lazy-1" class="slide level2">
+<h1>Lazy</h1>
 <ul>
 <li>Lazy by default</li>
 <li>Evaluates values when they are needed</li>
 </ul>
-</section><section id="lazy-1" class="slide level2">
+</section><section id="lazy-2" class="slide level2">
 <h1>Lazy</h1>
 <ul>
 <li>Some intuition:

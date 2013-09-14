@@ -31,32 +31,68 @@
 <li>Overuse of <code>new</code> in C++ coming from Java</li>
 <li>Indexed <code>for</code> loops in Python coming from C</li>
 </ul></li>
-<li>Obstructs idiomatic code in other languages</li>
-<li>What to do?</li>
+<li>Good to &quot;grok&quot; others to gain perspective</li>
 </ul>
-</div><div id="idiomatic-code" class="slide section level2">
-<h1>Idiomatic Code</h1>
+</div><div id="haskell-1" class="slide section level2">
+<h1>Haskell</h1>
 <ul>
-<li>Strive to idiomatic code
+<li>Haskell is unlike any other language</li>
+<li>Language Design decisions opose the status quo
 <ul>
-<li>Read books of experts</li>
-<li>Read code of experts</li>
-<li>Or...</li>
+<li>But brilliantly so</li>
 </ul></li>
-</ul>
-<p>TODO: Pictures books, github</p>
-</div><div id="haskell---why" class="slide section level2">
-<h1>Haskell - Why?</h1>
+<li>Many advantages gained as a result
 <ul>
-<li>Try something radically different.</li>
-<li>Try something where nothing you know even applies.</li>
-<li>Try...</li>
+<li>It's fun to program again!</li>
+</ul></li>
 </ul>
 <div class="figure">
 <img src="images/HaskellLogo.jpg" />
 </div>
-</div><div id="haskell-1" class="slide section level2">
+</div><div id="quicksort" class="slide section level2">
+<h1>QuickSort</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">quicksort ::</span> <span class="kw">Ord</span> a <span class="ot">=&gt;</span> [a] <span class="ot">-&gt;</span> [a]
+quicksort []     <span class="fu">=</span> []
+quicksort (p<span class="fu">:</span>xs) <span class="fu">=</span>
+    (quicksort lesser) <span class="fu">++</span> [p] <span class="fu">++</span> (quicksort greater)
+    <span class="kw">where</span>
+        lesser  <span class="fu">=</span> <span class="fu">filter</span> (<span class="fu">&lt;</span> p) xs
+        greater <span class="fu">=</span> <span class="fu">filter</span> (<span class="fu">&gt;=</span> p) xs</code></pre>
+<aside class="notes">
+
+<ul>
+<li>High level</li>
+<li>Declarative</li>
+<li><p>Elegant</p></li>
+<li>No variable assignments</li>
+<li>Breaks into cases
+</aside>
+</li>
+</ul>
+</div><div id="haskell-platform" class="slide section level2">
+<h1>Haskell Platform</h1>
+<p>Cross-platform distribution with trusted libraries TODO: image</p>
+</div><div id="hackage" class="slide section level2">
+<h1>Hackage</h1>
+<p>Rich open source library repository</p>
+<p>TODO: images</p>
+</div><div id="cabal" class="slide section level2">
+<h1>Cabal</h1>
+<p>Package management</p>
+<p>TODO: images</p>
+</div><div id="ghc" class="slide section level2">
+<h1>GHC</h1>
+<p>Glasgow Haskell compiler * compiles to native code</p>
+</div><div id="ghci" class="slide section level2">
+<h1>GHCi</h1>
+<p>Interpreter TODO: image</p>
+</div><div id="hoogle" class="slide section level2">
+<h1>Hoogle</h1>
+<p>Search yours and other's libraries by type signatures (!!!)</p>
+<p>TODO: image TODO: sort example?</p>
+</div><div id="haskell-2" class="slide section level2">
 <h1>Haskell</h1>
+<p>More formally...</p>
 <blockquote>
 Haskell is a purely functional, statically typed programming language, with non-strict evaluation.
 </blockquote>
@@ -83,7 +119,7 @@ Haskell is a purely functional, statically typed programming language, with non-
 <li>A.k.a. lazy evaluation</li>
 </ul></li>
 </ul>
-</div><div id="quicksort" class="slide section level2">
+</div><div id="quicksort-1" class="slide section level2">
 <h1>QuickSort</h1>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">quicksort ::</span> <span class="kw">Ord</span> a <span class="ot">=&gt;</span> [a] <span class="ot">-&gt;</span> [a]
 quicksort []     <span class="fu">=</span> []
@@ -209,10 +245,7 @@ quicksort (p<span class="fu">:</span>xs) <span class="fu">=</span>
 <li>Composition</li>
 </ul>
 </div>
-<div id="syntax-intro" class="titleslide slide section level1"><h1>Syntax Intro</h1></div><div id="intro" class="slide section level2">
-<h1>Intro</h1>
-<p>TODO: simple syntax breakdown</p>
-</div><div id="defining-values" class="slide section level2">
+<div id="syntax-intro" class="titleslide slide section level1"><h1>Syntax Intro</h1></div><div id="defining-values" class="slide section level2">
 <h1>Defining Values</h1>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- define a value</span>
 x <span class="fu">=</span> <span class="dv">42</span>
@@ -252,9 +285,13 @@ addOneTo v <span class="fu">=</span> v <span class="fu">+</span> <span class="dv
 <li>Concrete types always <em>Capitalized</em></li>
 <li><code>a -&gt; b</code> denotes a function from <code>a</code> to <code>b</code></li>
 </ul>
-</div><div id="simple-functions" class="slide section level2">
-<h1>Simple functions?</h1>
-<p>TODO: use knowledge from previous slides</p>
+</div><div id="function-application" class="slide section level2">
+<h1>Function application</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">six ::</span> <span class="dt">Int</span>
+six <span class="fu">=</span> addOneTo <span class="dv">5</span>
+
+<span class="ot">main ::</span> <span class="dt">IO</span> ()
+main <span class="fu">=</span> <span class="fu">print</span> six</code></pre>
 </div><div id="new-data-types" class="slide section level2">
 <h1>New Data types</h1>
 <ul>
@@ -283,7 +320,18 @@ boolToString&#39; <span class="kw">True</span>  <span class="fu">=</span> <span 
 boolToString&#39; <span class="kw">False</span> <span class="fu">=</span> <span class="st">&quot;No!&quot;</span></code></pre>
 <aside class="notes">
 <ul>
-<li>&quot;Unpacking&quot; the argument</li>
+<li>&quot;Unpacking&quot; the argument
+</aside>
+</li>
+</ul>
+</div><div id="factorial-example" class="slide section level2">
+<h1>Factorial Example</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- Pattern matching and recursion</span>
+<span class="ot">factorial ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
+factorial <span class="dv">0</span> <span class="fu">=</span> <span class="dv">1</span>
+factorial n <span class="fu">=</span> n <span class="fu">*</span> factorial (n <span class="fu">-</span> <span class="dv">1</span>)</code></pre>
+<aside class="notes">
+<ul>
 <li>Mention <code>data Int =</code>1 | 2 | 3 | 4 ...`
 </aside>
 </li>
@@ -315,12 +363,12 @@ boolToString&#39; <span class="kw">False</span> <span class="fu">=</span> <span 
 <td align="left">Concatenate two lists</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>&quot;He&quot; ++ &quot;llo&quot;</code></td>
-<td align="left">Concatenate two strings</td>
-</tr>
-<tr class="even">
 <td align="left"><code>&quot;Hello&quot; :: [Char]</code></td>
 <td align="left">Strings are lists of <code>Char</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>&quot;He&quot; ++ &quot;llo&quot;</code></td>
+<td align="left">Concatenate two strings</td>
 </tr>
 </tbody>
 </table>
@@ -540,6 +588,33 @@ mySum xs <span class="fu">=</span> mySum&#39; <span class="dv">0</span>   xs
 <li>Similar to C's <code>qsort</code></li>
 </ul></li>
 </ul>
+</div><div id="map-2" class="slide section level2">
+<h1>Map</h1>
+<figure>
+<object width="100%" data="diagrams/MapFunction.svg" type="image/svg+xml">
+    
+<img src="diagrams/MapFunction.png" />
+</object>
+</figure>
+
+</div><div id="map-3" class="slide section level2">
+<h1>Map</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&gt;</span> <span class="fu">map</span> (<span class="fu">*</span><span class="dv">2</span>) [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>]
+[<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">10</span>]</code></pre>
+<figure>
+<object width="100%" data="diagrams/MapTimesTwo.svg" type="image/svg+xml">
+    
+<img src="diagrams/MapTimesTwo.png" />
+</object>
+</figure>
+
+<aside class="notes">
+<ul>
+<li>Mention <code>std::transform</code> equivalent in stl
+</aside>
+
+</li>
+</ul>
 </div><div id="functions" class="slide section level2">
 <h1>Functions</h1>
 <p>TODO: functions</p>
@@ -595,6 +670,14 @@ doubleValues xs <span class="fu">=</span> <span class="fu">map</span> (\x <span 
 <span class="fu">map</span><span class="ot">     ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b]
 
 <span class="ot">stringToUpper ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span>
+stringToUpper s <span class="fu">=</span> <span class="fu">map</span> (<span class="fu">toUpper</span>) s
+
+<span class="co">-- factor out s</span>
+<span class="ot">stringToUpper&#39; ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span>
+stringToUpper&#39; <span class="fu">=</span> <span class="fu">map</span> (<span class="fu">toUpper</span>)</code></pre>
+</div><div id="functions---equaded-1" class="slide section level2">
+<h1>Functions - Equaded</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">stringToUpper ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span>
 stringToUpper <span class="fu">=</span> <span class="fu">map</span> (<span class="fu">toUpper</span>) </code></pre>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&gt;</span> stringToUpper <span class="st">&quot;Hello World&quot;</span>
 <span class="st">&quot;HELLO WORLD&quot;</span></code></pre>
@@ -758,7 +841,7 @@ mappend a (mappend b c) <span class="fu">=</span> mappend (mappend a b) c </code
 <li>Ideally want <code>someFunc :: [String] -&gt; [Int]</code></li>
 </ul></li>
 </ul>
-</div><div id="map-2" class="slide section level2">
+</div><div id="map-4" class="slide section level2">
 <h1>Map</h1>
 <ul>
 <li>We saw this before</li>

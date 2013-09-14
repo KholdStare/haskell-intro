@@ -10,27 +10,77 @@
 * First programming language shapes habits, limits thinking
     * Overuse of `new` in C++ coming from Java
     * Indexed `for` loops in Python coming from C
-* Obstructs idiomatic code in other languages
-* What to do?
+* Good to "grok" others to gain perspective
 
-## Idiomatic Code
+## Haskell
 
-* Strive to idiomatic code
-    * Read books of experts
-    * Read code of experts
-    * Or...
-
-TODO: Pictures books, github
-
-## Haskell - Why?
-
-* Try something radically different.
-* Try something where nothing you know even applies.
-* Try...
+* Haskell is unlike any other language
+* Language Design decisions opose the status quo
+    * But brilliantly so
+* Many advantages gained as a result
+    * It's fun to program again!
 
 ![](images/HaskellLogo.jpg)
 
+## QuickSort
+
+~~~~ {.haskell}
+quicksort :: Ord a => [a] -> [a]
+quicksort []     = []
+quicksort (p:xs) =
+    (quicksort lesser) ++ [p] ++ (quicksort greater)
+    where
+        lesser  = filter (< p) xs
+        greater = filter (>= p) xs
+~~~~
+
+<aside class="notes">
+
+* High level
+* Declarative
+* Elegant
+
+* No variable assignments
+* Breaks into cases
+</aside>
+
+## Haskell Platform
+
+Cross-platform distribution with trusted libraries
+TODO: image
+
+## Hackage
+
+Rich open source library repository
+
+TODO: images
+
+## Cabal
+
+Package management
+
+TODO: images
+
+## GHC
+
+Glasgow Haskell compiler
+* compiles to native code
+
+## GHCi
+
+Interpreter
+TODO: image
+
+## Hoogle
+
+Search yours and other's libraries by type signatures (!!!)
+
+TODO: image
+TODO: sort example?
+
 ## Haskell
+
+More formally...
 
 <blockquote>
 Haskell is a purely functional, statically typed programming language, with non-strict evaluation.
@@ -155,10 +205,6 @@ else if (number < 0 || number > 100)
 
 # Syntax Intro
 
-## Intro
-
-TODO: simple syntax breakdown
-
 ## Defining Values
 
 ~~~~ {.haskell}
@@ -199,9 +245,15 @@ addOneTo v = v + 1
 * Concrete types always _Capitalized_
 * `a -> b` denotes a function from `a` to `b`
 
-## Simple functions?
+## Function application
 
-TODO: use knowledge from previous slides
+~~~~ {.haskell}
+six :: Int
+six = addOneTo 5
+
+main :: IO ()
+main = print six
+~~~~
 
 ## New Data types
 
@@ -233,6 +285,18 @@ boolToString' False = "No!"
 
 <aside class="notes">
 * "Unpacking" the argument
+</aside>
+
+## Factorial Example
+
+~~~~ {.haskell}
+-- Pattern matching and recursion
+factorial :: Int -> Int
+factorial 0 = 1
+factorial n = n * factorial (n - 1)
+~~~~
+
+<aside class="notes">
 * Mention `data Int = `1 | 2 | 3 | 4 ...`
 </aside>
 
@@ -244,8 +308,8 @@ Syntax                      Meaning
 `[1, 2, 3]`                 List
 `1 : [2, 3]`                Prepend to a list
 `[1, 2] ++ [3, 4]`          Concatenate two lists
-`"He" ++ "llo"`             Concatenate two strings
 `"Hello" :: [Char]`         Strings are lists of `Char`
+`"He" ++ "llo"`             Concatenate two strings
 
 ## List operations
 
@@ -488,6 +552,32 @@ map :: (a -> b) -> [a] -> [b]
 * We have to pass a function to map
     * Similar to C's `qsort`
 
+## Map
+
+<figure>
+<object width="100%" data="diagrams/MapFunction.svg" type="image/svg+xml">
+    <img src="diagrams/MapFunction.png" />
+</object>
+</figure>
+
+## Map
+
+~~~~ {.haskell}
+> map (*2) [1, 2, 3, 4, 5]
+[2, 4, 6, 8, 10]
+~~~~
+
+<figure>
+<object width="100%" data="diagrams/MapTimesTwo.svg" type="image/svg+xml">
+    <img src="diagrams/MapTimesTwo.png" />
+</object>
+</figure>
+
+<aside class="notes">
+* Mention `std::transform` equivalent in stl
+</aside>
+
+
 ## Functions
 
 TODO: functions
@@ -550,6 +640,17 @@ doubleValues xs = map (\x -> x * 2) xs
 toUpper :: Char -> Char
 map     :: (a -> b) -> [a] -> [b]
 
+stringToUpper :: String -> String
+stringToUpper s = map (toUpper) s
+
+-- factor out s
+stringToUpper' :: String -> String
+stringToUpper' = map (toUpper)
+~~~~
+
+## Functions - Equaded
+
+~~~~ {.haskell}
 stringToUpper :: String -> String
 stringToUpper = map (toUpper) 
 ~~~~

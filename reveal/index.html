@@ -120,7 +120,7 @@ quicksort (p:xs) =
 <li>Generates test cases</li>
 <li>Provides <em>minimal</em> failing test case on failure</li>
 </ul></li>
-<li><a href="https://www.fpcomplete.com/school/beautiful-concurrency">Software Transaction Memory</a>
+<li><a href="https://www.fpcomplete.com/school/beautiful-concurrency">Software Transactional Memory</a>
 <ul>
 <li>Composable concurrency abstraction</li>
 </ul></li>
@@ -205,7 +205,7 @@ Haskell is a purely functional, statically typed programming language, with non-
 </section><section id="functional-1" class="slide level2">
 <h1>Functional</h1>
 <ul>
-<li>Functions are first-class values
+<li>Functions
 <ul>
 <li>Can be passed around</li>
 <li>Can be defined inline (lambda functions)</li>
@@ -246,12 +246,6 @@ Haskell is a purely functional, statically typed programming language, with non-
 <p>Values evaluated only when needed</p>
 </blockquote>
 </section><section id="lazy-1" class="slide level2">
-<h1>Lazy</h1>
-<ul>
-<li>Lazy by default</li>
-<li>Evaluates values when they are needed</li>
-</ul>
-</section><section id="lazy-2" class="slide level2">
 <h1>Lazy</h1>
 <ul>
 <li>Some intuition:
@@ -296,7 +290,8 @@ addOneTo v = v + 1</code></pre>
 <aside class="notes">
 <ul>
 <li>Mention cannot reassign - not a VARiable</li>
-<li>Functions are values just like integers
+<li>Functions are values just like integers</li>
+<li>Values are Lowercase!
 </aside>
 </li>
 </ul>
@@ -329,10 +324,14 @@ main = print six</code></pre>
 <li>We have seen some types</li>
 <li>Let's see the <code>Bool</code> definition</li>
 </ul>
-<pre class="haskell"><code>--   \/~~ new type name
-data Bool = True | False
---           /\     /\
---   Possible values in type</code></pre>
+<pre class="haskell"><code>data Bool = True | False</code></pre>
+<aside class="notes">
+<ul>
+<li><code>Bool</code> is a new typename</li>
+<li><code>True</code> and <code>False</code> are possible values
+</aside>
+</li>
+</ul>
 </section><section id="pattern-matching" class="slide level2">
 <h1>Pattern Matching</h1>
 <ul>
@@ -607,19 +606,15 @@ mySum xs = mySum&#39; 0   xs
 </section><section id="map" class="slide level2">
 <h1>Map</h1>
 <pre class="haskell"><code>map :: (a -&gt; b) -&gt; [a] -&gt; [b]</code></pre>
-<p><code>map f xs</code> is the list obtained by applying f to each element of xs, i.e.,</p>
-<pre class="haskell"><code>&gt; map f [x1, x2, ..., xn] == [f x1, f x2, ..., f xn]
-&gt; map f [x1, x2, ...] == [f x1, f x2, ...] </code></pre>
-</section><section id="map-1" class="slide level2">
-<h1>Map</h1>
+<p><code>map f xs</code> is the list obtained by applying <code>f</code> to each element of <code>xs</code>, i.e.,</p>
+<pre class="haskell"><code>&gt; map f [x1, x2, ..., xn] == [f x1, f x2, ..., f xn]</code></pre>
+<aside class="notes">
 <ul>
-<li>Map works by applying another function over a list</li>
-<li>We have to pass a function to map
-<ul>
-<li>Similar to C's <code>qsort</code></li>
-</ul></li>
+<li>Similar to C's <code>qsort</code>
+</aside>
+</li>
 </ul>
-</section><section id="map-2" class="slide level2">
+</section><section id="map-1" class="slide level2">
 <h1>Map</h1>
 <figure>
 <object width="100%" data="diagrams/MapFunction.svg" type="image/svg+xml">
@@ -628,7 +623,7 @@ mySum xs = mySum&#39; 0   xs
 </object>
 </figure>
 
-</section><section id="map-3" class="slide level2">
+</section><section id="map-2" class="slide level2">
 <h1>Map</h1>
 <pre class="haskell"><code>&gt; map (*2) [1, 2, 3, 4, 5]
 [2, 4, 6, 8, 10]</code></pre>
@@ -872,7 +867,7 @@ mconcat :: (Monoid m) =&gt; [m] -&gt; m</code></pre>
 <li>Ideally want <code>someFunc :: [String] -&gt; [Int]</code></li>
 </ul></li>
 </ul>
-</section><section id="map-4" class="slide level2">
+</section><section id="map-3" class="slide level2">
 <h1>Map</h1>
 <ul>
 <li>We saw this before</li>

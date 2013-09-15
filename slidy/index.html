@@ -102,7 +102,7 @@ quicksort (p<span class="fu">:</span>xs) <span class="fu">=</span>
 <li>Generates test cases</li>
 <li>Provides <em>minimal</em> failing test case on failure</li>
 </ul></li>
-<li><a href="https://www.fpcomplete.com/school/beautiful-concurrency">Software Transaction Memory</a>
+<li><a href="https://www.fpcomplete.com/school/beautiful-concurrency">Software Transactional Memory</a>
 <ul>
 <li>Composable concurrency abstraction</li>
 </ul></li>
@@ -187,7 +187,7 @@ Haskell is a purely functional, statically typed programming language, with non-
 </div><div id="functional-1" class="slide section level2">
 <h1>Functional</h1>
 <ul>
-<li>Functions are first-class values
+<li>Functions
 <ul>
 <li>Can be passed around</li>
 <li>Can be defined inline (lambda functions)</li>
@@ -228,12 +228,6 @@ Haskell is a purely functional, statically typed programming language, with non-
 <p>Values evaluated only when needed</p>
 </blockquote>
 </div><div id="lazy-1" class="slide section level2">
-<h1>Lazy</h1>
-<ul>
-<li>Lazy by default</li>
-<li>Evaluates values when they are needed</li>
-</ul>
-</div><div id="lazy-2" class="slide section level2">
 <h1>Lazy</h1>
 <ul>
 <li>Some intuition:
@@ -278,7 +272,8 @@ addOneTo v <span class="fu">=</span> v <span class="fu">+</span> <span class="dv
 <aside class="notes">
 <ul>
 <li>Mention cannot reassign - not a VARiable</li>
-<li>Functions are values just like integers
+<li>Functions are values just like integers</li>
+<li>Values are Lowercase!
 </aside>
 </li>
 </ul>
@@ -311,10 +306,14 @@ main <span class="fu">=</span> <span class="fu">print</span> six</code></pre>
 <li>We have seen some types</li>
 <li>Let's see the <code>Bool</code> definition</li>
 </ul>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">--   \/~~ new type name</span>
-<span class="kw">data</span> <span class="dt">Bool</span> <span class="fu">=</span> <span class="kw">True</span> <span class="fu">|</span> <span class="kw">False</span>
-<span class="co">--           /\     /\</span>
-<span class="co">--   Possible values in type</span></code></pre>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Bool</span> <span class="fu">=</span> <span class="kw">True</span> <span class="fu">|</span> <span class="kw">False</span></code></pre>
+<aside class="notes">
+<ul>
+<li><code>Bool</code> is a new typename</li>
+<li><code>True</code> and <code>False</code> are possible values
+</aside>
+</li>
+</ul>
 </div><div id="pattern-matching" class="slide section level2">
 <h1>Pattern Matching</h1>
 <ul>
@@ -589,19 +588,15 @@ mySum xs <span class="fu">=</span> mySum&#39; <span class="dv">0</span>   xs
 </div><div id="map" class="slide section level2">
 <h1>Map</h1>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">map</span><span class="ot"> ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b]</code></pre>
-<p><code>map f xs</code> is the list obtained by applying f to each element of xs, i.e.,</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&gt;</span> <span class="fu">map</span> f [x1, x2, <span class="fu">...</span>, xn] <span class="fu">==</span> [f x1, f x2, <span class="fu">...</span>, f xn]
-<span class="fu">&gt;</span> <span class="fu">map</span> f [x1, x2, <span class="fu">...</span>] <span class="fu">==</span> [f x1, f x2, <span class="fu">...</span>] </code></pre>
-</div><div id="map-1" class="slide section level2">
-<h1>Map</h1>
+<p><code>map f xs</code> is the list obtained by applying <code>f</code> to each element of <code>xs</code>, i.e.,</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&gt;</span> <span class="fu">map</span> f [x1, x2, <span class="fu">...</span>, xn] <span class="fu">==</span> [f x1, f x2, <span class="fu">...</span>, f xn]</code></pre>
+<aside class="notes">
 <ul>
-<li>Map works by applying another function over a list</li>
-<li>We have to pass a function to map
-<ul>
-<li>Similar to C's <code>qsort</code></li>
-</ul></li>
+<li>Similar to C's <code>qsort</code>
+</aside>
+</li>
 </ul>
-</div><div id="map-2" class="slide section level2">
+</div><div id="map-1" class="slide section level2">
 <h1>Map</h1>
 <figure>
 <object width="100%" data="diagrams/MapFunction.svg" type="image/svg+xml">
@@ -610,7 +605,7 @@ mySum xs <span class="fu">=</span> mySum&#39; <span class="dv">0</span>   xs
 </object>
 </figure>
 
-</div><div id="map-3" class="slide section level2">
+</div><div id="map-2" class="slide section level2">
 <h1>Map</h1>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&gt;</span> <span class="fu">map</span> (<span class="fu">*</span><span class="dv">2</span>) [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>]
 [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">10</span>]</code></pre>
@@ -854,7 +849,7 @@ mappend a (mappend b c) <span class="fu">=</span> mappend (mappend a b) c </code
 <li>Ideally want <code>someFunc :: [String] -&gt; [Int]</code></li>
 </ul></li>
 </ul>
-</div><div id="map-4" class="slide section level2">
+</div><div id="map-3" class="slide section level2">
 <h1>Map</h1>
 <ul>
 <li>We saw this before</li>

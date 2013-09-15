@@ -85,7 +85,7 @@ In-depth tutorials with inline runable/editable code
 * [QuickCheck](http://en.wikipedia.org/wiki/QuickCheck)
     * Generates test cases
     * Provides *minimal* failing test case on failure
-* [Software Transaction Memory](https://www.fpcomplete.com/school/beautiful-concurrency)
+* [Software Transactional Memory](https://www.fpcomplete.com/school/beautiful-concurrency)
     * Composable concurrency abstraction
 
 ## Haskell
@@ -150,7 +150,7 @@ TODO: Excel picture
 
 ## Functional
 
-* Functions are first-class values
+* Functions
     * Can be passed around
     * Can be defined inline (lambda functions)
 * Higher-order functions
@@ -179,11 +179,6 @@ void qsort(
 ## Lazy
 
 > Values evaluated only when needed
-
-## Lazy
-
-* Lazy by default
-* Evaluates values when they are needed
 
 ## Lazy
 
@@ -230,6 +225,7 @@ addOneTo v = v + 1
 <aside class="notes">
 * Mention cannot reassign - not a VARiable
 * Functions are values just like integers
+* Values are Lowercase!
 </aside>
 
 ## Type annotations
@@ -266,11 +262,13 @@ main = print six
 * Let's see the `Bool` definition
 
 ~~~~ {.haskell}
---   \/~~ new type name
 data Bool = True | False
---           /\     /\
---   Possible values in type
 ~~~~
+
+<aside class="notes">
+* `Bool` is a new typename
+* `True` and `False` are possible values
+</aside>
 
 ## Pattern Matching
 
@@ -544,18 +542,15 @@ mySum xs = mySum' 0   xs
 map :: (a -> b) -> [a] -> [b]
 ~~~~
 
-`map f xs` is the list obtained by applying f to each element of xs, i.e.,
+`map f xs` is the list obtained by applying `f` to each element of `xs`, i.e.,
 
 ~~~~ {.haskell}
 > map f [x1, x2, ..., xn] == [f x1, f x2, ..., f xn]
-> map f [x1, x2, ...] == [f x1, f x2, ...] 
 ~~~~
 
-## Map
-
-* Map works by applying another function over a list
-* We have to pass a function to map
-    * Similar to C's `qsort`
+<aside class="notes">
+* Similar to C's `qsort`
+</aside>
 
 ## Map
 

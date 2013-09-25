@@ -3,27 +3,37 @@ import Data.List
 
 -- do block works with a single monad
 
+-- (>>=) :: m a -> (a -> m b) -> m b
 main :: IO ()
-main = do
+main = getLine >>= putStrLn
+
+
+main' :: IO ()
+main' = do
     -- getLine :: IO String
     userLine <- getLine
     -- userLine :: String
     -- putStr :: String -> IO ()
     putStrLn userLine
 
-compose :: (b -> c) -> (a -> b) -> a -> c
-compose f g val = f $ g val
 
 -- getLine :: IO String
--- putStr :: String -> IO ()
+-- putStrLn :: String -> IO ()
+
+
 
 alphabet :: [(Int, Char)]
 alphabet = zip [1..] ['a'..'y']
 
+-- lookup :: Eq a => a -> [(a, b)] -> Maybe b
+
 maybeExample :: Int -> Maybe Char
 maybeExample num = do
     letter <- lookup num alphabet
-    return $ toUpper letter
+    return letter
+
+maybeExample' :: Int -> Maybe Char
+maybeExample' num = lookup num alphabet >>= return
 
 -- toUpper :: Char -> Char
  

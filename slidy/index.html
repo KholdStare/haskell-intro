@@ -713,9 +713,18 @@ stringToUpper <span class="fu">=</span> <span class="fu">map</span> (<span class
 <span class="ot">    (-) ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a
 <span class="ot">    negate ::</span> a <span class="ot">-&gt;</span> a
 <span class="ot">    abs ::</span> a <span class="ot">-&gt;</span> a</code></pre>
+</div><div id="typeclasses-2" class="slide section level2">
+<h1>Typeclasses</h1>
 <ul>
-<li>Anything can be treated as a number as long as it defines the above functions</li>
+<li>Anything can be treated as a number as long as it defines the below functions</li>
 </ul>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- The Num typeclass we saw before</span>
+<span class="kw">class</span> <span class="kw">Num</span> a <span class="kw">where</span>
+<span class="ot">    (+) ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a
+<span class="ot">    (*) ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a
+<span class="ot">    (-) ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a
+<span class="ot">    negate ::</span> a <span class="ot">-&gt;</span> a
+<span class="ot">    abs ::</span> a <span class="ot">-&gt;</span> a</code></pre>
 </div><div id="typeclasses---instances" class="slide section level2">
 <h1>Typeclasses - Instances</h1>
 <ul>
@@ -760,7 +769,7 @@ stringToUpper <span class="fu">=</span> <span class="fu">map</span> (<span class
 <span class="fu">group</span><span class="ot"> ::</span> <span class="kw">Eq</span> a <span class="ot">=&gt;</span> [a] <span class="ot">-&gt;</span> [[a]]
 <span class="co">-- example:</span>
 <span class="fu">group</span> <span class="st">&quot;Missisauga&quot;</span> <span class="fu">=</span> [<span class="st">&quot;M&quot;</span>,<span class="st">&quot;i&quot;</span>,<span class="st">&quot;ss&quot;</span>,<span class="st">&quot;i&quot;</span>,<span class="st">&quot;ss&quot;</span>,<span class="st">&quot;a&quot;</span>,<span class="st">&quot;u&quot;</span>,<span class="st">&quot;g&quot;</span>,<span class="st">&quot;a&quot;</span>]</code></pre>
-</div><div id="typeclasses-2" class="slide section level2">
+</div><div id="typeclasses-3" class="slide section level2">
 <h1>Typeclasses</h1>
 <ul>
 <li>Haskell has various interesting typeclasses:
@@ -936,6 +945,38 @@ mappend a (mappend b c) <span class="fu">=</span> mappend (mappend a b) c </code
 </object>
 </figure>
 
+</div><div id="monads-2" class="slide section level2">
+<h1>Monads</h1>
+<figure>
+<object width="100%" data="diagrams/EndofunctorsCompositionQuestion.svg" type="image/svg+xml">
+    
+<img src="diagrams/EndofunctorsCompositionQuestion.png" />
+</object>
+</figure>
+
+</div><div id="maybe" class="slide section level2">
+<h1>Maybe</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="kw">Monad</span> <span class="dt">Maybe</span> <span class="kw">where</span>
+    <span class="co">-- (&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b</span>
+    <span class="kw">Nothing</span> <span class="fu">&gt;&gt;=</span> f <span class="fu">=</span> <span class="kw">Nothing</span>
+    <span class="kw">Just</span> a  <span class="fu">&gt;&gt;=</span> f <span class="fu">=</span> f a
+
+    <span class="co">-- return :: a -&gt; m a</span>
+    <span class="fu">return</span> a <span class="fu">=</span> <span class="kw">Just</span> a</code></pre>
+</div><div id="lists-1" class="slide section level2">
+<h1>Lists</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">concatMap</span><span class="ot"> ::</span> (a <span class="ot">-&gt;</span> [b]) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b]
+<span class="fu">concatMap</span> f []     <span class="fu">=</span> []
+<span class="fu">concatMap</span> f (x<span class="fu">:</span>xs) <span class="fu">=</span> f x <span class="fu">++</span> <span class="fu">concatMap</span> f xs</code></pre>
+</div><div id="lists-2" class="slide section level2">
+<h1>Lists</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="kw">Monad</span> [] <span class="kw">where</span>
+    <span class="co">-- concatMap :: (a -&gt; [b]) -&gt; [a] -&gt; [b]</span>
+    <span class="co">-- (&gt;&gt;=)     :: m a -&gt; (a -&gt; m b) -&gt; m b</span>
+    (<span class="fu">&gt;&gt;=</span>) <span class="fu">=</span> <span class="fu">flip</span> <span class="fu">concatMap</span>
+
+    <span class="co">-- return :: a -&gt; m a</span>
+    <span class="fu">return</span> a <span class="fu">=</span> [a]</code></pre>
 </div>
 <div id="scrap" class="titleslide slide section level1"><h1>Scrap</h1></div><div id="outline-of-topics" class="slide section level2">
 <h1>Outline of topics</h1>

@@ -731,9 +731,18 @@ class Num a where
     (-) :: a -&gt; a -&gt; a
     negate :: a -&gt; a
     abs :: a -&gt; a</code></pre>
+</section><section id="typeclasses-2" class="slide level2">
+<h1>Typeclasses</h1>
 <ul>
-<li>Anything can be treated as a number as long as it defines the above functions</li>
+<li>Anything can be treated as a number as long as it defines the below functions</li>
 </ul>
+<pre class="haskell"><code>-- The Num typeclass we saw before
+class Num a where
+    (+) :: a -&gt; a -&gt; a
+    (*) :: a -&gt; a -&gt; a
+    (-) :: a -&gt; a -&gt; a
+    negate :: a -&gt; a
+    abs :: a -&gt; a</code></pre>
 </section><section id="typeclasses---instances" class="slide level2">
 <h1>Typeclasses - Instances</h1>
 <ul>
@@ -778,7 +787,7 @@ sort &quot;Missisauga&quot; = &quot;Maagiissssu&quot;
 group :: Eq a =&gt; [a] -&gt; [[a]]
 -- example:
 group &quot;Missisauga&quot; = [&quot;M&quot;,&quot;i&quot;,&quot;ss&quot;,&quot;i&quot;,&quot;ss&quot;,&quot;a&quot;,&quot;u&quot;,&quot;g&quot;,&quot;a&quot;]</code></pre>
-</section><section id="typeclasses-2" class="slide level2">
+</section><section id="typeclasses-3" class="slide level2">
 <h1>Typeclasses</h1>
 <ul>
 <li>Haskell has various interesting typeclasses:
@@ -954,6 +963,38 @@ map length :: [String] -&gt; [Int]</code></pre>
 </object>
 </figure>
 
+</section><section id="monads-2" class="slide level2">
+<h1>Monads</h1>
+<figure>
+<object width="100%" data="diagrams/EndofunctorsCompositionQuestion.svg" type="image/svg+xml">
+    
+<img src="diagrams/EndofunctorsCompositionQuestion.png" />
+</object>
+</figure>
+
+</section><section id="maybe" class="slide level2">
+<h1>Maybe</h1>
+<pre class="haskell"><code>instance Monad Maybe where
+    -- (&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b
+    Nothing &gt;&gt;= f = Nothing
+    Just a  &gt;&gt;= f = f a
+
+    -- return :: a -&gt; m a
+    return a = Just a</code></pre>
+</section><section id="lists-1" class="slide level2">
+<h1>Lists</h1>
+<pre class="haskell"><code>concatMap :: (a -&gt; [b]) -&gt; [a] -&gt; [b]
+concatMap f []     = []
+concatMap f (x:xs) = f x ++ concatMap f xs</code></pre>
+</section><section id="lists-2" class="slide level2">
+<h1>Lists</h1>
+<pre class="haskell"><code>instance Monad [] where
+    -- concatMap :: (a -&gt; [b]) -&gt; [a] -&gt; [b]
+    -- (&gt;&gt;=)     :: m a -&gt; (a -&gt; m b) -&gt; m b
+    (&gt;&gt;=) = flip concatMap
+
+    -- return :: a -&gt; m a
+    return a = [a]</code></pre>
 </section></section>
 <section><section id="scrap" class="titleslide slide level1"><h1>Scrap</h1></section><section id="outline-of-topics" class="slide level2">
 <h1>Outline of topics</h1>

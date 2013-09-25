@@ -684,7 +684,19 @@ class Num a where
     abs :: a -> a
 ~~~~
 
-* Anything can be treated as a number as long as it defines the above functions
+## Typeclasses
+
+* Anything can be treated as a number as long as it defines the below functions
+
+~~~~ {.haskell}
+-- The Num typeclass we saw before
+class Num a where
+    (+) :: a -> a -> a
+    (*) :: a -> a -> a
+    (-) :: a -> a -> a
+    negate :: a -> a
+    abs :: a -> a
+~~~~
 
 ## Typeclasses - Instances
 
@@ -909,6 +921,46 @@ TODO: give another motivating example in the form of `Maybe`?
     <img src="diagrams/Endofunctors.png" />
 </object>
 </figure>
+
+## Monads
+
+<figure>
+<object width="100%" data="diagrams/EndofunctorsCompositionQuestion.svg" type="image/svg+xml">
+    <img src="diagrams/EndofunctorsCompositionQuestion.png" />
+</object>
+</figure>
+
+## Maybe
+
+~~~~ {.haskell}
+instance Monad Maybe where
+    -- (>>=) :: m a -> (a -> m b) -> m b
+    Nothing >>= f = Nothing
+    Just a  >>= f = f a
+
+    -- return :: a -> m a
+    return a = Just a
+~~~~
+
+## Lists
+
+~~~~ {.haskell}
+concatMap :: (a -> [b]) -> [a] -> [b]
+concatMap f []     = []
+concatMap f (x:xs) = f x ++ concatMap f xs
+~~~~
+
+## Lists
+
+~~~~ {.haskell}
+instance Monad [] where
+    -- concatMap :: (a -> [b]) -> [a] -> [b]
+    -- (>>=)     :: m a -> (a -> m b) -> m b
+    (>>=) = flip concatMap
+
+    -- return :: a -> m a
+    return a = [a]
+~~~~
 
 # Scrap
 

@@ -703,8 +703,6 @@ class Num a where
 * A Data Type can adhere to a typeclass by specifying an `instance`
 * Attach behaviour after the fact onto existing Data Type
 
-TODO: "filling in the 'a' "
-
 ~~~~ {.haskell}
 instance Num Int where
     (+) = intSum  -- assuming intSum
@@ -715,6 +713,10 @@ instance Num Int where
             then negate x
             else x
 ~~~~
+
+<aside class="notes">
+* Filling in the `a`
+</aside>
 
 ## More Typeclasses
 
@@ -816,19 +818,117 @@ instance Monoid (Set a) where
     mappend s1 s2 = s1 `union` s2
 ~~~~
 
+<aside class="notes">
+* Mention `Sum Int` and `Product Int` as monoids
+</aside>
+
 ## `mconcat`
 
 * With a `Monoid` instance we get `mconcat` for free
 
 ~~~~ {.haskell}
 -- Accumulate a value from a list, using mappend
-mconcat :: (Monoid m) => [m] -> m
+mconcat :: Monoid m => [m] -> m
 ~~~~
 
 * Can use it to sum numbers or concatenate a list of strings!
 * Union a list of Sets!
 * Join ethernet packets!
 * Combine Databases!
+
+# Map Reduce
+
+## Map Reduce
+
+Let's apply what we have learnt so far and formulate map-reduce (Popularized by Google)
+
+> __MapReduce__ is a programming model for processing large data sets with a parallel, distributed algorithm on a cluster.
+
+It won't be parallel, but captures concept
+
+## Map Reduce
+
+Two Steps:
+
+* _Map_ ― applying transformation to input data
+* _Reduce_ ― aggregating transformed data
+
+## Map Reduce with Lists
+
+Alread have map. Need reduce.
+
+~~~~ {.haskell}
+map :: (a -> b) -> [a] -> [b]
+
+reduce :: ??
+~~~~
+
+## Reduce
+
+Reduce combines values.
+
+* Need combining function
+* Need identity element
+
+~~~~ {.haskell}
+reduce :: (b -> b -> b) -> b -> [b] -> b
+reduce combine startingValue transformedData = ??
+~~~~
+
+## Reduce
+
+This looks like properties of a `Monoid`
+
+~~~~ {.haskell}
+class Monoid a where
+    mempty :: a             -- identity
+    mappend :: a -> a -> a  -- binary operation
+
+reduce :: Monoid b => [b] -> b
+~~~~
+
+## Mconcat
+
+We already have `mconcat`!
+
+~~~~ {.haskell}
+-- Accumulate a value from a list, using mappend
+mconcat :: Monoid m => [m] -> m
+
+reduce :: Monoid b => [b] -> b
+reduce = mconcat
+~~~~
+
+## Map Reduce
+
+We can now define `mapReduce`
+
+~~~~ {.haskell}
+mapReduce :: Monoid m => (a -> m) -> [a] -> m
+mapReduce f list = reduce $ map f list
+~~~~
+
+## Map Reduce
+
+As a composition of functions ("pointfree")
+
+~~~~ {.haskell}
+mapReduce :: Monoid m => (a -> m) -> [a] -> m
+mapReduce f = reduce . map f
+~~~~
+
+## MapReduce
+
+Use on a simple example of counting characters
+
+~~~~ {.haskell}
+countCharsInWords :: [String] -> Sum Int
+countCharsInWords = mapReduce (Sum . length)
+~~~~
+~~~~ {.haskell}
+> countCharsInWords ["Hello", "MapReduce!"]
+Sum {getSum = 15}
+~~~~
 
 # Functors
 
@@ -911,6 +1011,15 @@ TODO: give another motivating example in the form of `Maybe`?
 </object>
 </figure>
 
+## Maybe Functor
+
+~~~~ {.haskell}
+instance Functor Maybe where
+    -- fmap :: (a -> b) -> f a -> f b
+    fmap f Nothing = Nothing
+    fmap f (Just a) = Just (f a)
+~~~~
+
 # Monads
 
 
@@ -960,6 +1069,97 @@ instance Monad [] where
 
     -- return :: a -> m a
     return a = [a]
+~~~~
+
+# Applicative Functor
+
+## Applicative
+
+~~~~ {.haskell}
+class Functor f => Applicative f where
+    pure :: a -> f a
+    <*> :: f (a -> b) -> f a -> f b
+~~~~
+
+## Fmap of Diadic Functions
+
+What happens if we `fmap` a function that takes more than one argument?
+
+~~~~ {.haskell}
+(+) :: Num a => a -> a -> a
+fmap :: Functor f => (a -> b) -> f a -> f b
+
+fmap (+) [1, 2, 3] = ??
+~~~~
+
+## Partially applied results
+
+~~~~ {.haskell}
+fmap :: (a -> b) -> f a -> f b
+-- what if b is (c -> d)
+fmap :: (a -> (c -> d)) -> f a -> f (c -> d)
+
+fmap (+) [1, 2, 3] :: [(Int -> Int)]
+fmap (+) [1, 2, 3] == [(+ 1), (+ 2), (+ 3)]
+~~~~
+
+## Applicative For Lists
+
+~~~~ {.haskell}
+instance Applicative [] where
+    pure x = [x]
+
+    []     <*> vals = []
+    (f:fs) <*> vals = fmap f vals ++ fs <*> vals
+~~~~
+
+## Using Applicative
+
+~~~~ {.haskell}
+<*> :: Applicative f => f (a -> b)  -> f a -> f b
+<*> ::                   [(a -> b)] -> [a] -> [b]
+~~~~
+
+~~~~ {.haskell}
+> (fmap (+) [1, 2, 3]) <*> [10, 17, 42] 
+[11,18,43,12,19,44,13,20,45]
+~~~~
+
+## Alias for fmap
+
+~~~~ {.haskell}
+<$> = fmap
+~~~~
+
+~~~~ {.haskell}
+> (+) <$> [1, 2, 3] <*> [10, 42] 
+[11,43,12,44,13,45]
+~~~~
+
+## Reduction
+
+~~~~ {.haskell}
+--  []     <*> vals = []
+--  (f:fs) <*> vals = fmap f vals ++ fs <*> vals
+                      (+) <$> [1, 2, 3] <*> [10, 42] 
+=                 [(+ 1), (+ 2), (+ 3)] <*> [10, 42]
+=                (+ 1) : [(+ 2), (+ 3)] <*> [10, 42]
+= fmap (+ 1) [10, 42] ++ [(+ 2), (+ 3)] <*> [10, 42]
+= [11, 43] ++            [(+ 2), (+ 3)] <*> [10, 42]
+= [11, 43] ++ [12, 44] ++       [(+ 3)] <*> [10, 42]
+= [11, 43, 12, 44] ++           [(+ 3)] <*> [10, 42]
+= [11, 43, 12, 44] ++ [13, 45] ++    [] <*> [10, 42]
+= [11, 43, 12, 44, 13, 45] ++        [] <*> [10, 42]
+= [11, 43, 12, 44, 13, 45] ++        []
+= [11, 43, 12, 44, 13, 45]
+~~~~
+
+## Summary
+
+~~~~ {.haskell}
+fmap       ::   (a -> b)   -> f a -> f b
+<*>        :: f (a -> b)   -> f a -> f b
+flip (>>=) ::   (a -> m b) -> m a -> m b
 ~~~~
 
 # Scrap

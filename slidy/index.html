@@ -731,7 +731,6 @@ stringToUpper <span class="fu">=</span> <span class="fu">map</span> (<span class
 <li>A Data Type can adhere to a typeclass by specifying an <code>instance</code></li>
 <li>Attach behaviour after the fact onto existing Data Type</li>
 </ul>
-<p>TODO: &quot;filling in the 'a' &quot;</p>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="kw">Num</span> <span class="dt">Int</span> <span class="kw">where</span>
     (<span class="fu">+</span>) <span class="fu">=</span> intSum  <span class="co">-- assuming intSum</span>
     (<span class="fu">*</span>) <span class="fu">=</span> intMult <span class="co">--          intMult</span>
@@ -740,6 +739,12 @@ stringToUpper <span class="fu">=</span> <span class="fu">map</span> (<span class
     <span class="fu">abs</span> x <span class="fu">=</span> <span class="kw">if</span> x <span class="fu">&lt;</span> <span class="dv">0</span>
             <span class="kw">then</span> <span class="fu">negate</span> x
             <span class="kw">else</span> x</code></pre>
+<aside class="notes">
+<ul>
+<li>Filling in the <code>a</code>
+</aside>
+</li>
+</ul>
 </div><div id="more-typeclasses" class="slide section level2">
 <h1>More Typeclasses</h1>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="kw">Eq</span> a <span class="kw">where</span>
@@ -834,19 +839,88 @@ mappend a (mappend b c) <span class="fu">=</span> mappend (mappend a b) c </code
 <span class="kw">instance</span> <span class="dt">Monoid</span> (<span class="dt">Set</span> a) <span class="kw">where</span>
     mempty <span class="fu">=</span> empty
     mappend s1 s2 <span class="fu">=</span> s1 <span class="ot">`union`</span> s2</code></pre>
+<aside class="notes">
+<ul>
+<li>Mention <code>Sum Int</code> and <code>Product Int</code> as monoids
+</aside>
+</li>
+</ul>
 </div><div id="mconcat" class="slide section level2">
 <h1><code>mconcat</code></h1>
 <ul>
 <li>With a <code>Monoid</code> instance we get <code>mconcat</code> for free</li>
 </ul>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- Accumulate a value from a list, using mappend</span>
-<span class="ot">mconcat ::</span> (<span class="dt">Monoid</span> m) <span class="ot">=&gt;</span> [m] <span class="ot">-&gt;</span> m</code></pre>
+<span class="ot">mconcat ::</span> <span class="dt">Monoid</span> m <span class="ot">=&gt;</span> [m] <span class="ot">-&gt;</span> m</code></pre>
 <ul>
 <li>Can use it to sum numbers or concatenate a list of strings!</li>
 <li>Union a list of Sets!</li>
 <li>Join ethernet packets!</li>
 <li>Combine Databases!</li>
 </ul>
+</div>
+<div id="map-reduce" class="titleslide slide section level1"><h1>Map Reduce</h1></div><div id="map-reduce-1" class="slide section level2">
+<h1>Map Reduce</h1>
+<p>Let's apply what we have learnt so far and formulate map-reduce (Popularized by Google)</p>
+<blockquote>
+<p><strong>MapReduce</strong> is a programming model for processing large data sets with a parallel, distributed algorithm on a cluster.</p>
+</blockquote>
+<p>It won't be parallel, but captures concept</p>
+</div><div id="map-reduce-2" class="slide section level2">
+<h1>Map Reduce</h1>
+<p>Two Steps:</p>
+<ul>
+<li><em>Map</em> ― applying transformation to input data</li>
+<li><em>Reduce</em> ― aggregating transformed data</li>
+</ul>
+</div><div id="map-reduce-with-lists" class="slide section level2">
+<h1>Map Reduce with Lists</h1>
+<p>Alread have map. Need reduce.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">map</span><span class="ot"> ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b]
+
+<span class="ot">reduce ::</span> <span class="fu">??</span></code></pre>
+</div><div id="reduce" class="slide section level2">
+<h1>Reduce</h1>
+<p>Reduce combines values.</p>
+<ul>
+<li>Need combining function</li>
+<li>Need identity element</li>
+</ul>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">reduce ::</span> (b <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> [b] <span class="ot">-&gt;</span> b
+reduce combine startingValue transformedData <span class="fu">=</span> <span class="fu">??</span></code></pre>
+</div><div id="reduce-1" class="slide section level2">
+<h1>Reduce</h1>
+<p>This looks like properties of a <code>Monoid</code></p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="dt">Monoid</span> a <span class="kw">where</span>
+<span class="ot">    mempty ::</span> a             <span class="co">-- identity</span>
+<span class="ot">    mappend ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a  <span class="co">-- binary operation</span>
+
+<span class="ot">reduce ::</span> <span class="dt">Monoid</span> b <span class="ot">=&gt;</span> [b] <span class="ot">-&gt;</span> b</code></pre>
+</div><div id="mconcat-1" class="slide section level2">
+<h1>Mconcat</h1>
+<p>We already have <code>mconcat</code>!</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- Accumulate a value from a list, using mappend</span>
+<span class="ot">mconcat ::</span> <span class="dt">Monoid</span> m <span class="ot">=&gt;</span> [m] <span class="ot">-&gt;</span> m
+
+<span class="ot">reduce ::</span> <span class="dt">Monoid</span> b <span class="ot">=&gt;</span> [b] <span class="ot">-&gt;</span> b
+reduce <span class="fu">=</span> mconcat</code></pre>
+</div><div id="map-reduce-3" class="slide section level2">
+<h1>Map Reduce</h1>
+<p>We can now define <code>mapReduce</code></p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">mapReduce ::</span> <span class="dt">Monoid</span> m <span class="ot">=&gt;</span> (a <span class="ot">-&gt;</span> m) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> m
+mapReduce f list <span class="fu">=</span> reduce <span class="fu">$</span> <span class="fu">map</span> f list</code></pre>
+</div><div id="map-reduce-4" class="slide section level2">
+<h1>Map Reduce</h1>
+<p>As a composition of functions (&quot;pointfree&quot;)</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">mapReduce ::</span> <span class="dt">Monoid</span> m <span class="ot">=&gt;</span> (a <span class="ot">-&gt;</span> m) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> m
+mapReduce f <span class="fu">=</span> reduce <span class="fu">.</span> <span class="fu">map</span> f</code></pre>
+</div><div id="mapreduce" class="slide section level2">
+<h1>MapReduce</h1>
+<p>Use on a simple example of counting characters</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">countCharsInWords ::</span> [<span class="dt">String</span>] <span class="ot">-&gt;</span> <span class="dt">Sum</span> <span class="dt">Int</span>
+countCharsInWords <span class="fu">=</span> mapReduce (<span class="dt">Sum</span> <span class="fu">.</span> <span class="fu">length</span>)</code></pre>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&gt;</span> countCharsInWords [<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;MapReduce!&quot;</span>]
+<span class="dt">Sum</span> {getSum <span class="fu">=</span> <span class="dv">15</span>}</code></pre>
 </div>
 <div id="functors" class="titleslide slide section level1"><h1>Functors</h1></div><div id="problem" class="slide section level2">
 <h1>Problem</h1>
@@ -935,6 +1009,12 @@ mappend a (mappend b c) <span class="fu">=</span> mappend (mappend a b) c </code
 </object>
 </figure>
 
+</div><div id="maybe-functor" class="slide section level2">
+<h1>Maybe Functor</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="kw">Functor</span> <span class="dt">Maybe</span> <span class="kw">where</span>
+    <span class="co">-- fmap :: (a -&gt; b) -&gt; f a -&gt; f b</span>
+    <span class="fu">fmap</span> f <span class="kw">Nothing</span> <span class="fu">=</span> <span class="kw">Nothing</span>
+    <span class="fu">fmap</span> f (<span class="kw">Just</span> a) <span class="fu">=</span> <span class="kw">Just</span> (f a)</code></pre>
 </div>
 <div id="monads" class="titleslide slide section level1"><h1>Monads</h1></div><div id="monads-1" class="slide section level2">
 <h1>Monads</h1>
@@ -977,6 +1057,65 @@ mappend a (mappend b c) <span class="fu">=</span> mappend (mappend a b) c </code
 
     <span class="co">-- return :: a -&gt; m a</span>
     <span class="fu">return</span> a <span class="fu">=</span> [a]</code></pre>
+</div>
+<div id="applicative-functor" class="titleslide slide section level1"><h1>Applicative Functor</h1></div><div id="applicative" class="slide section level2">
+<h1>Applicative</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="kw">Functor</span> f <span class="ot">=&gt;</span> <span class="kw">Applicative</span> f <span class="kw">where</span>
+<span class="ot">    pure ::</span> a <span class="ot">-&gt;</span> f a
+    <span class="fu">&lt;*&gt;</span><span class="ot"> ::</span> f (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> f a <span class="ot">-&gt;</span> f b</code></pre>
+</div><div id="fmap-of-diadic-functions" class="slide section level2">
+<h1>Fmap of Diadic Functions</h1>
+<p>What happens if we <code>fmap</code> a function that takes more than one argument?</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">(+) ::</span> <span class="kw">Num</span> a <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a
+<span class="fu">fmap</span><span class="ot"> ::</span> <span class="kw">Functor</span> f <span class="ot">=&gt;</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> f a <span class="ot">-&gt;</span> f b
+
+<span class="fu">fmap</span> (<span class="fu">+</span>) [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>] <span class="fu">=</span> <span class="fu">??</span></code></pre>
+</div><div id="partially-applied-results" class="slide section level2">
+<h1>Partially applied results</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">fmap</span><span class="ot"> ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> f a <span class="ot">-&gt;</span> f b
+<span class="co">-- what if b is (c -&gt; d)</span>
+<span class="fu">fmap</span><span class="ot"> ::</span> (a <span class="ot">-&gt;</span> (c <span class="ot">-&gt;</span> d)) <span class="ot">-&gt;</span> f a <span class="ot">-&gt;</span> f (c <span class="ot">-&gt;</span> d)
+
+<span class="fu">fmap</span> (<span class="fu">+</span>) [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]<span class="ot"> ::</span> [(<span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>)]
+<span class="fu">fmap</span> (<span class="fu">+</span>) [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>] <span class="fu">==</span> [(<span class="fu">+</span> <span class="dv">1</span>), (<span class="fu">+</span> <span class="dv">2</span>), (<span class="fu">+</span> <span class="dv">3</span>)]</code></pre>
+</div><div id="applicative-for-lists" class="slide section level2">
+<h1>Applicative For Lists</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="kw">Applicative</span> [] <span class="kw">where</span>
+    pure x <span class="fu">=</span> [x]
+
+    []     <span class="fu">&lt;*&gt;</span> vals <span class="fu">=</span> []
+    (f<span class="fu">:</span>fs) <span class="fu">&lt;*&gt;</span> vals <span class="fu">=</span> <span class="fu">fmap</span> f vals <span class="fu">++</span> fs <span class="fu">&lt;*&gt;</span> vals</code></pre>
+</div><div id="using-applicative" class="slide section level2">
+<h1>Using Applicative</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&lt;*&gt;</span><span class="ot"> ::</span> <span class="kw">Applicative</span> f <span class="ot">=&gt;</span> f (a <span class="ot">-&gt;</span> b)  <span class="ot">-&gt;</span> f a <span class="ot">-&gt;</span> f b
+<span class="fu">&lt;*&gt;</span><span class="ot"> ::</span>                   [(a <span class="ot">-&gt;</span> b)] <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b]</code></pre>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&gt;</span> (<span class="fu">fmap</span> (<span class="fu">+</span>) [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]) <span class="fu">&lt;*&gt;</span> [<span class="dv">10</span>, <span class="dv">17</span>, <span class="dv">42</span>] 
+[<span class="dv">11</span>,<span class="dv">18</span>,<span class="dv">43</span>,<span class="dv">12</span>,<span class="dv">19</span>,<span class="dv">44</span>,<span class="dv">13</span>,<span class="dv">20</span>,<span class="dv">45</span>]</code></pre>
+</div><div id="alias-for-fmap" class="slide section level2">
+<h1>Alias for fmap</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&lt;$&gt;</span> <span class="fu">=</span> <span class="fu">fmap</span></code></pre>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&gt;</span> (<span class="fu">+</span>) <span class="fu">&lt;$&gt;</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>] <span class="fu">&lt;*&gt;</span> [<span class="dv">10</span>, <span class="dv">42</span>] 
+[<span class="dv">11</span>,<span class="dv">43</span>,<span class="dv">12</span>,<span class="dv">44</span>,<span class="dv">13</span>,<span class="dv">45</span>]</code></pre>
+</div><div id="reduction" class="slide section level2">
+<h1>Reduction</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">--  []     &lt;*&gt; vals = []</span>
+<span class="co">--  (f:fs) &lt;*&gt; vals = fmap f vals ++ fs &lt;*&gt; vals</span>
+                      (<span class="fu">+</span>) <span class="fu">&lt;$&gt;</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>] <span class="fu">&lt;*&gt;</span> [<span class="dv">10</span>, <span class="dv">42</span>] 
+<span class="fu">=</span>                 [(<span class="fu">+</span> <span class="dv">1</span>), (<span class="fu">+</span> <span class="dv">2</span>), (<span class="fu">+</span> <span class="dv">3</span>)] <span class="fu">&lt;*&gt;</span> [<span class="dv">10</span>, <span class="dv">42</span>]
+<span class="fu">=</span>                (<span class="fu">+</span> <span class="dv">1</span>) <span class="fu">:</span> [(<span class="fu">+</span> <span class="dv">2</span>), (<span class="fu">+</span> <span class="dv">3</span>)] <span class="fu">&lt;*&gt;</span> [<span class="dv">10</span>, <span class="dv">42</span>]
+<span class="fu">=</span> <span class="fu">fmap</span> (<span class="fu">+</span> <span class="dv">1</span>) [<span class="dv">10</span>, <span class="dv">42</span>] <span class="fu">++</span> [(<span class="fu">+</span> <span class="dv">2</span>), (<span class="fu">+</span> <span class="dv">3</span>)] <span class="fu">&lt;*&gt;</span> [<span class="dv">10</span>, <span class="dv">42</span>]
+<span class="fu">=</span> [<span class="dv">11</span>, <span class="dv">43</span>] <span class="fu">++</span>            [(<span class="fu">+</span> <span class="dv">2</span>), (<span class="fu">+</span> <span class="dv">3</span>)] <span class="fu">&lt;*&gt;</span> [<span class="dv">10</span>, <span class="dv">42</span>]
+<span class="fu">=</span> [<span class="dv">11</span>, <span class="dv">43</span>] <span class="fu">++</span> [<span class="dv">12</span>, <span class="dv">44</span>] <span class="fu">++</span>       [(<span class="fu">+</span> <span class="dv">3</span>)] <span class="fu">&lt;*&gt;</span> [<span class="dv">10</span>, <span class="dv">42</span>]
+<span class="fu">=</span> [<span class="dv">11</span>, <span class="dv">43</span>, <span class="dv">12</span>, <span class="dv">44</span>] <span class="fu">++</span>           [(<span class="fu">+</span> <span class="dv">3</span>)] <span class="fu">&lt;*&gt;</span> [<span class="dv">10</span>, <span class="dv">42</span>]
+<span class="fu">=</span> [<span class="dv">11</span>, <span class="dv">43</span>, <span class="dv">12</span>, <span class="dv">44</span>] <span class="fu">++</span> [<span class="dv">13</span>, <span class="dv">45</span>] <span class="fu">++</span>    [] <span class="fu">&lt;*&gt;</span> [<span class="dv">10</span>, <span class="dv">42</span>]
+<span class="fu">=</span> [<span class="dv">11</span>, <span class="dv">43</span>, <span class="dv">12</span>, <span class="dv">44</span>, <span class="dv">13</span>, <span class="dv">45</span>] <span class="fu">++</span>        [] <span class="fu">&lt;*&gt;</span> [<span class="dv">10</span>, <span class="dv">42</span>]
+<span class="fu">=</span> [<span class="dv">11</span>, <span class="dv">43</span>, <span class="dv">12</span>, <span class="dv">44</span>, <span class="dv">13</span>, <span class="dv">45</span>] <span class="fu">++</span>        []
+<span class="fu">=</span> [<span class="dv">11</span>, <span class="dv">43</span>, <span class="dv">12</span>, <span class="dv">44</span>, <span class="dv">13</span>, <span class="dv">45</span>]</code></pre>
+</div><div id="summary" class="slide section level2">
+<h1>Summary</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">fmap</span><span class="ot">       ::</span>   (a <span class="ot">-&gt;</span> b)   <span class="ot">-&gt;</span> f a <span class="ot">-&gt;</span> f b
+<span class="fu">&lt;*&gt;</span><span class="ot">        ::</span> f (a <span class="ot">-&gt;</span> b)   <span class="ot">-&gt;</span> f a <span class="ot">-&gt;</span> f b
+<span class="fu">flip</span><span class="ot"> (&gt;&gt;=) ::</span>   (a <span class="ot">-&gt;</span> m b) <span class="ot">-&gt;</span> m a <span class="ot">-&gt;</span> m b</code></pre>
 </div>
 <div id="scrap" class="titleslide slide section level1"><h1>Scrap</h1></div><div id="outline-of-topics" class="slide section level2">
 <h1>Outline of topics</h1>

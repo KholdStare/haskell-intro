@@ -749,7 +749,6 @@ class Num a where
 <li>A Data Type can adhere to a typeclass by specifying an <code>instance</code></li>
 <li>Attach behaviour after the fact onto existing Data Type</li>
 </ul>
-<p>TODO: &quot;filling in the 'a' &quot;</p>
 <pre class="haskell"><code>instance Num Int where
     (+) = intSum  -- assuming intSum
     (*) = intMult --          intMult
@@ -758,6 +757,12 @@ class Num a where
     abs x = if x &lt; 0
             then negate x
             else x</code></pre>
+<aside class="notes">
+<ul>
+<li>Filling in the <code>a</code>
+</aside>
+</li>
+</ul>
 </section><section id="more-typeclasses" class="slide level2">
 <h1>More Typeclasses</h1>
 <pre class="haskell"><code>class Eq a where
@@ -852,19 +857,88 @@ instance Monoid Int where
 instance Monoid (Set a) where
     mempty = empty
     mappend s1 s2 = s1 `union` s2</code></pre>
+<aside class="notes">
+<ul>
+<li>Mention <code>Sum Int</code> and <code>Product Int</code> as monoids
+</aside>
+</li>
+</ul>
 </section><section id="mconcat" class="slide level2">
 <h1><code>mconcat</code></h1>
 <ul>
 <li>With a <code>Monoid</code> instance we get <code>mconcat</code> for free</li>
 </ul>
 <pre class="haskell"><code>-- Accumulate a value from a list, using mappend
-mconcat :: (Monoid m) =&gt; [m] -&gt; m</code></pre>
+mconcat :: Monoid m =&gt; [m] -&gt; m</code></pre>
 <ul>
 <li>Can use it to sum numbers or concatenate a list of strings!</li>
 <li>Union a list of Sets!</li>
 <li>Join ethernet packets!</li>
 <li>Combine Databases!</li>
 </ul>
+</section></section>
+<section><section id="map-reduce" class="titleslide slide level1"><h1>Map Reduce</h1></section><section id="map-reduce-1" class="slide level2">
+<h1>Map Reduce</h1>
+<p>Let's apply what we have learnt so far and formulate map-reduce (Popularized by Google)</p>
+<blockquote>
+<p><strong>MapReduce</strong> is a programming model for processing large data sets with a parallel, distributed algorithm on a cluster.</p>
+</blockquote>
+<p>It won't be parallel, but captures concept</p>
+</section><section id="map-reduce-2" class="slide level2">
+<h1>Map Reduce</h1>
+<p>Two Steps:</p>
+<ul>
+<li><em>Map</em> ― applying transformation to input data</li>
+<li><em>Reduce</em> ― aggregating transformed data</li>
+</ul>
+</section><section id="map-reduce-with-lists" class="slide level2">
+<h1>Map Reduce with Lists</h1>
+<p>Alread have map. Need reduce.</p>
+<pre class="haskell"><code>map :: (a -&gt; b) -&gt; [a] -&gt; [b]
+
+reduce :: ??</code></pre>
+</section><section id="reduce" class="slide level2">
+<h1>Reduce</h1>
+<p>Reduce combines values.</p>
+<ul>
+<li>Need combining function</li>
+<li>Need identity element</li>
+</ul>
+<pre class="haskell"><code>reduce :: (b -&gt; b -&gt; b) -&gt; b -&gt; [b] -&gt; b
+reduce combine startingValue transformedData = ??</code></pre>
+</section><section id="reduce-1" class="slide level2">
+<h1>Reduce</h1>
+<p>This looks like properties of a <code>Monoid</code></p>
+<pre class="haskell"><code>class Monoid a where
+    mempty :: a             -- identity
+    mappend :: a -&gt; a -&gt; a  -- binary operation
+
+reduce :: Monoid b =&gt; [b] -&gt; b</code></pre>
+</section><section id="mconcat-1" class="slide level2">
+<h1>Mconcat</h1>
+<p>We already have <code>mconcat</code>!</p>
+<pre class="haskell"><code>-- Accumulate a value from a list, using mappend
+mconcat :: Monoid m =&gt; [m] -&gt; m
+
+reduce :: Monoid b =&gt; [b] -&gt; b
+reduce = mconcat</code></pre>
+</section><section id="map-reduce-3" class="slide level2">
+<h1>Map Reduce</h1>
+<p>We can now define <code>mapReduce</code></p>
+<pre class="haskell"><code>mapReduce :: Monoid m =&gt; (a -&gt; m) -&gt; [a] -&gt; m
+mapReduce f list = reduce $ map f list</code></pre>
+</section><section id="map-reduce-4" class="slide level2">
+<h1>Map Reduce</h1>
+<p>As a composition of functions (&quot;pointfree&quot;)</p>
+<pre class="haskell"><code>mapReduce :: Monoid m =&gt; (a -&gt; m) -&gt; [a] -&gt; m
+mapReduce f = reduce . map f</code></pre>
+</section><section id="mapreduce" class="slide level2">
+<h1>MapReduce</h1>
+<p>Use on a simple example of counting characters</p>
+<pre class="haskell"><code>countCharsInWords :: [String] -&gt; Sum Int
+countCharsInWords = mapReduce (Sum . length)</code></pre>
+<pre class="haskell"><code>&gt; countCharsInWords [&quot;Hello&quot;, &quot;MapReduce!&quot;]
+Sum {getSum = 15}</code></pre>
 </section></section>
 <section><section id="functors" class="titleslide slide level1"><h1>Functors</h1></section><section id="problem" class="slide level2">
 <h1>Problem</h1>
@@ -953,6 +1027,12 @@ map length :: [String] -&gt; [Int]</code></pre>
 </object>
 </figure>
 
+</section><section id="maybe-functor" class="slide level2">
+<h1>Maybe Functor</h1>
+<pre class="haskell"><code>instance Functor Maybe where
+    -- fmap :: (a -&gt; b) -&gt; f a -&gt; f b
+    fmap f Nothing = Nothing
+    fmap f (Just a) = Just (f a)</code></pre>
 </section></section>
 <section><section id="monads" class="titleslide slide level1"><h1>Monads</h1></section><section id="monads-1" class="slide level2">
 <h1>Monads</h1>
@@ -995,6 +1075,65 @@ concatMap f (x:xs) = f x ++ concatMap f xs</code></pre>
 
     -- return :: a -&gt; m a
     return a = [a]</code></pre>
+</section></section>
+<section><section id="applicative-functor" class="titleslide slide level1"><h1>Applicative Functor</h1></section><section id="applicative" class="slide level2">
+<h1>Applicative</h1>
+<pre class="haskell"><code>class Functor f =&gt; Applicative f where
+    pure :: a -&gt; f a
+    &lt;*&gt; :: f (a -&gt; b) -&gt; f a -&gt; f b</code></pre>
+</section><section id="fmap-of-diadic-functions" class="slide level2">
+<h1>Fmap of Diadic Functions</h1>
+<p>What happens if we <code>fmap</code> a function that takes more than one argument?</p>
+<pre class="haskell"><code>(+) :: Num a =&gt; a -&gt; a -&gt; a
+fmap :: Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
+
+fmap (+) [1, 2, 3] = ??</code></pre>
+</section><section id="partially-applied-results" class="slide level2">
+<h1>Partially applied results</h1>
+<pre class="haskell"><code>fmap :: (a -&gt; b) -&gt; f a -&gt; f b
+-- what if b is (c -&gt; d)
+fmap :: (a -&gt; (c -&gt; d)) -&gt; f a -&gt; f (c -&gt; d)
+
+fmap (+) [1, 2, 3] :: [(Int -&gt; Int)]
+fmap (+) [1, 2, 3] == [(+ 1), (+ 2), (+ 3)]</code></pre>
+</section><section id="applicative-for-lists" class="slide level2">
+<h1>Applicative For Lists</h1>
+<pre class="haskell"><code>instance Applicative [] where
+    pure x = [x]
+
+    []     &lt;*&gt; vals = []
+    (f:fs) &lt;*&gt; vals = fmap f vals ++ fs &lt;*&gt; vals</code></pre>
+</section><section id="using-applicative" class="slide level2">
+<h1>Using Applicative</h1>
+<pre class="haskell"><code>&lt;*&gt; :: Applicative f =&gt; f (a -&gt; b)  -&gt; f a -&gt; f b
+&lt;*&gt; ::                   [(a -&gt; b)] -&gt; [a] -&gt; [b]</code></pre>
+<pre class="haskell"><code>&gt; (fmap (+) [1, 2, 3]) &lt;*&gt; [10, 17, 42] 
+[11,18,43,12,19,44,13,20,45]</code></pre>
+</section><section id="alias-for-fmap" class="slide level2">
+<h1>Alias for fmap</h1>
+<pre class="haskell"><code>&lt;$&gt; = fmap</code></pre>
+<pre class="haskell"><code>&gt; (+) &lt;$&gt; [1, 2, 3] &lt;*&gt; [10, 42] 
+[11,43,12,44,13,45]</code></pre>
+</section><section id="reduction" class="slide level2">
+<h1>Reduction</h1>
+<pre class="haskell"><code>--  []     &lt;*&gt; vals = []
+--  (f:fs) &lt;*&gt; vals = fmap f vals ++ fs &lt;*&gt; vals
+                      (+) &lt;$&gt; [1, 2, 3] &lt;*&gt; [10, 42] 
+=                 [(+ 1), (+ 2), (+ 3)] &lt;*&gt; [10, 42]
+=                (+ 1) : [(+ 2), (+ 3)] &lt;*&gt; [10, 42]
+= fmap (+ 1) [10, 42] ++ [(+ 2), (+ 3)] &lt;*&gt; [10, 42]
+= [11, 43] ++            [(+ 2), (+ 3)] &lt;*&gt; [10, 42]
+= [11, 43] ++ [12, 44] ++       [(+ 3)] &lt;*&gt; [10, 42]
+= [11, 43, 12, 44] ++           [(+ 3)] &lt;*&gt; [10, 42]
+= [11, 43, 12, 44] ++ [13, 45] ++    [] &lt;*&gt; [10, 42]
+= [11, 43, 12, 44, 13, 45] ++        [] &lt;*&gt; [10, 42]
+= [11, 43, 12, 44, 13, 45] ++        []
+= [11, 43, 12, 44, 13, 45]</code></pre>
+</section><section id="summary" class="slide level2">
+<h1>Summary</h1>
+<pre class="haskell"><code>fmap       ::   (a -&gt; b)   -&gt; f a -&gt; f b
+&lt;*&gt;        :: f (a -&gt; b)   -&gt; f a -&gt; f b
+flip (&gt;&gt;=) ::   (a -&gt; m b) -&gt; m a -&gt; m b</code></pre>
 </section></section>
 <section><section id="scrap" class="titleslide slide level1"><h1>Scrap</h1></section><section id="outline-of-topics" class="slide level2">
 <h1>Outline of topics</h1>

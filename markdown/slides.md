@@ -226,6 +226,7 @@ addOneTo v = v + 1
 * Mention cannot reassign - not a VARiable
 * Functions are values just like integers
 * Values are Lowercase!
+* Equational reasoning
 </aside>
 
 ## Type annotations
@@ -407,7 +408,7 @@ mySum' acc (x:xs) = mySum' (acc + x) xs
 ~~~~
 
 * No computation to be done after recursive call
-* Essentially replace the current context with recursive call
+* Essentially _replace_ the current stack with recursive call
 
 ## Tail Recursion
 
@@ -1107,8 +1108,10 @@ fmap (+) [1, 2, 3] == [(+ 1), (+ 2), (+ 3)]
 
 ~~~~ {.haskell}
 instance Applicative [] where
+    -- pure :: a -> f a
     pure x = [x]
 
+    -- <*> :: f (a -> b) -> f a -> f b
     []     <*> vals = []
     (f:fs) <*> vals = fmap f vals ++ fs <*> vals
 ~~~~

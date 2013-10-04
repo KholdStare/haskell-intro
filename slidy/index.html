@@ -273,7 +273,8 @@ addOneTo v <span class="fu">=</span> v <span class="fu">+</span> <span class="dv
 <ul>
 <li>Mention cannot reassign - not a VARiable</li>
 <li>Functions are values just like integers</li>
-<li>Values are Lowercase!
+<li>Values are Lowercase!</li>
+<li>Equational reasoning
 </aside>
 </li>
 </ul>
@@ -456,7 +457,7 @@ mySum&#39; acc (x<span class="fu">:</span>xs) <span class="fu">=</span> mySum&#3
 <span class="co">-- ^ add the head of the list to the accumulator</span></code></pre>
 <ul>
 <li>No computation to be done after recursive call</li>
-<li>Essentially replace the current context with recursive call</li>
+<li>Essentially <em>replace</em> the current stack with recursive call</li>
 </ul>
 </div><div id="tail-recursion-1" class="slide section level2">
 <h1>Tail Recursion</h1>
@@ -1081,8 +1082,10 @@ countCharsInWords <span class="fu">=</span> mapReduce (<span class="dt">Sum</spa
 </div><div id="applicative-for-lists" class="slide section level2">
 <h1>Applicative For Lists</h1>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="kw">Applicative</span> [] <span class="kw">where</span>
+    <span class="co">-- pure :: a -&gt; f a</span>
     pure x <span class="fu">=</span> [x]
 
+    <span class="co">-- &lt;*&gt; :: f (a -&gt; b) -&gt; f a -&gt; f b</span>
     []     <span class="fu">&lt;*&gt;</span> vals <span class="fu">=</span> []
     (f<span class="fu">:</span>fs) <span class="fu">&lt;*&gt;</span> vals <span class="fu">=</span> <span class="fu">fmap</span> f vals <span class="fu">++</span> fs <span class="fu">&lt;*&gt;</span> vals</code></pre>
 </div><div id="using-applicative" class="slide section level2">

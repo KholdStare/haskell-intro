@@ -291,7 +291,8 @@ addOneTo v = v + 1</code></pre>
 <ul>
 <li>Mention cannot reassign - not a VARiable</li>
 <li>Functions are values just like integers</li>
-<li>Values are Lowercase!
+<li>Values are Lowercase!</li>
+<li>Equational reasoning
 </aside>
 </li>
 </ul>
@@ -474,7 +475,7 @@ mySum&#39; acc (x:xs) = mySum&#39; (acc + x) xs
 -- ^ add the head of the list to the accumulator</code></pre>
 <ul>
 <li>No computation to be done after recursive call</li>
-<li>Essentially replace the current context with recursive call</li>
+<li>Essentially <em>replace</em> the current stack with recursive call</li>
 </ul>
 </section><section id="tail-recursion-1" class="slide level2">
 <h1>Tail Recursion</h1>
@@ -1099,8 +1100,10 @@ fmap (+) [1, 2, 3] == [(+ 1), (+ 2), (+ 3)]</code></pre>
 </section><section id="applicative-for-lists" class="slide level2">
 <h1>Applicative For Lists</h1>
 <pre class="haskell"><code>instance Applicative [] where
+    -- pure :: a -&gt; f a
     pure x = [x]
 
+    -- &lt;*&gt; :: f (a -&gt; b) -&gt; f a -&gt; f b
     []     &lt;*&gt; vals = []
     (f:fs) &lt;*&gt; vals = fmap f vals ++ fs &lt;*&gt; vals</code></pre>
 </section><section id="using-applicative" class="slide level2">

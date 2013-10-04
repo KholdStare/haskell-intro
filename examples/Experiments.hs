@@ -16,10 +16,8 @@ main' = do
     -- putStr :: String -> IO ()
     putStrLn userLine
 
-
 -- getLine :: IO String
 -- putStrLn :: String -> IO ()
-
 
 
 alphabet :: [(Int, Char)]
@@ -128,3 +126,11 @@ forExample'' = intercalate " " $ map show [5..12]
 
 -- show laziness
 forExample''' = intercalate " " $ map show $ drop 4 $ take 12 $ [1..]
+
+
+
+-- mapReduce
+-- want to map values, and then aggregate
+-- Aggregation should always remind you of Monoid
+mapReduce :: Monoid m => (a -> m) -> [a] -> m
+mapReduce f = mconcat . map f

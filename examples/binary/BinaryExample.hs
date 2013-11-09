@@ -31,17 +31,38 @@ getWord32List = do
     size <- remaining
     VEC.generateM (size `div` 4) (const getWord32host)
 
+chunksOf :: Int -> Vector a -> [Vector a]
+chunksOf n vec
+    | VEC.null vec = []
+    | otherwise    = VEC.take n vec : chunksOf n (VEC.drop n vec)
+
 toInt32 :: Integral a => a -> Int32
 toInt32 = fromInteger . toInteger
+
+-- ====================
+matlabFormat :: Show a => String -> Vector a -> String
+matlabFormat name vec =
+    name ++ " = [\n" ++
+    (unlines $ VEC.toList $ VEC.map show vec)
+    ++ "];\n"
+
+vectorNames :: [String]
+vectorNames = do
+    row <- [1,2]
+    col <- [1,2]
+    part <- ["r", "i"]
+    return $ "w" ++ show row ++ show col ++ part
 
 main = do
     binaryContents <- BS.hGetContents stdin
     let binaryBytes = BS.length binaryContents
+    let chunkSize = binaryBytes `div` (8 * 4)
     case runGet getWord32List binaryContents of
         Left a -> print a
         Right wordList -> putStr
                         $ unlines
-                        $ map (show . toInt32 . signExtend 19)
-                        $ VEC.toList
+                        $ zipWith matlabFormat vectorNames 
+                        $ chunksOf chunkSize
+                        $ VEC.map (toInt32 . signExtend 19)
                         $ wordList
 
